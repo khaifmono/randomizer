@@ -7,26 +7,33 @@ type CoinFaceProps = {
 
 function HeadsIcon() {
   return (
-    <svg viewBox="0 0 64 64" className="w-10 h-10" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Crown */}
-      <path d="M16 38L20 24L26 32L32 20L38 32L44 24L48 38Z" fill="currentColor" opacity="0.9" />
-      {/* Crown base */}
-      <rect x="16" y="38" width="32" height="4" rx="1" fill="currentColor" opacity="0.7" />
-      {/* Star on crown */}
-      <path d="M32 24L33.5 28L37 28.5L34.5 31L35 34.5L32 33L29 34.5L29.5 31L27 28.5L30.5 28Z" fill="currentColor" opacity="0.5" />
-    </svg>
+    <span className="text-2xl font-black tracking-tight leading-none">50</span>
   );
 }
 
 function TailsIcon() {
   return (
-    <svg viewBox="0 0 64 64" className="w-10 h-10" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Shield */}
-      <path d="M32 16L46 22V34C46 42 40 48 32 50C24 48 18 42 18 34V22L32 16Z" stroke="currentColor" strokeWidth="2.5" fill="currentColor" opacity="0.15" />
-      {/* Inner shield lines */}
-      <path d="M32 22L40 26V34C40 38 37 42 32 44C27 42 24 38 24 34V26L32 22Z" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0.6" />
-      {/* T letter */}
-      <text x="32" y="37" textAnchor="middle" fontSize="12" fontWeight="700" fill="currentColor" opacity="0.8">T</text>
+    <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Eagle / bird spread wings — fills the entire face */}
+      {/* Body */}
+      <ellipse cx="32" cy="34" rx="6" ry="10" fill="currentColor" opacity="0.85" />
+      {/* Head */}
+      <circle cx="32" cy="22" r="5" fill="currentColor" opacity="0.85" />
+      {/* Beak */}
+      <path d="M37 22L42 24L37 25Z" fill="currentColor" opacity="0.7" />
+      {/* Eye */}
+      <circle cx="34" cy="21" r="1" fill="oklch(0.92 0.10 80)" />
+      {/* Left wing */}
+      <path d="M26 30Q12 22 8 32Q14 30 20 34Q16 28 26 30Z" fill="currentColor" opacity="0.75" />
+      <path d="M24 34Q10 30 6 38Q14 34 22 38Z" fill="currentColor" opacity="0.55" />
+      {/* Right wing */}
+      <path d="M38 30Q52 22 56 32Q50 30 44 34Q48 28 38 30Z" fill="currentColor" opacity="0.75" />
+      <path d="M40 34Q54 30 58 38Q50 34 42 38Z" fill="currentColor" opacity="0.55" />
+      {/* Tail feathers */}
+      <path d="M28 44Q32 52 36 44Q34 48 32 50Q30 48 28 44Z" fill="currentColor" opacity="0.65" />
+      {/* Feet */}
+      <path d="M28 44L26 48M28 44L30 48" stroke="currentColor" strokeWidth="1.2" opacity="0.5" />
+      <path d="M36 44L34 48M36 44L38 48" stroke="currentColor" strokeWidth="1.2" opacity="0.5" />
     </svg>
   );
 }
