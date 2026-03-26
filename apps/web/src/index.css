@@ -130,3 +130,55 @@
     @apply font-sans;
     }
 }
+
+/* Dice roller */
+
+.dice-scene {
+  perspective: 600px;
+  width: 70px;
+  height: 70px;
+}
+
+.dice-cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.1s;
+  will-change: transform;
+}
+
+.dice-face {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  backface-visibility: hidden;
+  will-change: transform;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  padding: 8px;
+}
+
+.dice-face-1 { transform: rotateY(0deg) translateZ(35px); }
+.dice-face-2 { transform: rotateY(180deg) translateZ(35px); }
+.dice-face-3 { transform: rotateY(-90deg) translateZ(35px); }
+.dice-face-4 { transform: rotateY(90deg) translateZ(35px); }
+.dice-face-5 { transform: rotateX(90deg) translateZ(35px); }
+.dice-face-6 { transform: rotateX(-90deg) translateZ(35px); }
+
+@keyframes dice-roll {
+  0%   { transform: rotateX(0deg) rotateY(0deg); }
+  100% { transform: rotateX(720deg) rotateY(720deg); }
+}
+
+.dice-cube.dice-rolling {
+  animation: dice-roll 1.2s ease-out forwards;
+}
+
+.dice-cube.dice-show-1 { transform: rotateX(0deg) rotateY(0deg); }
+.dice-cube.dice-show-2 { transform: rotateX(0deg) rotateY(180deg); }
+.dice-cube.dice-show-3 { transform: rotateX(0deg) rotateY(90deg); }
+.dice-cube.dice-show-4 { transform: rotateX(0deg) rotateY(-90deg); }
+.dice-cube.dice-show-5 { transform: rotateX(-90deg) rotateY(0deg); }
+.dice-cube.dice-show-6 { transform: rotateX(90deg) rotateY(0deg); }
