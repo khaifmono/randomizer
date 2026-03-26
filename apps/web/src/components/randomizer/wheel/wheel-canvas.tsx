@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { animate } from "motion";
-import { getSegmentColor, calculateStopAngle } from "@/lib/randomizer/wheel-math";
+import { getSegmentColor, calculateStopAngle } from "@base-project/web/lib/randomizer/wheel-math";
 
 type WheelCanvasProps = {
   items: string[];
