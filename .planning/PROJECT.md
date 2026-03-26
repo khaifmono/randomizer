@@ -18,14 +18,13 @@ Satisfying, animated randomization that feels fun to use — the wheel spins smo
 - ✓ Vite dev server and build pipeline — existing
 - ✓ Tabbed interface with three tools: Wheel, Dice, Coin — Phase 1
 - ✓ Result history log per tab — Phase 1
+- ✓ Spinning wheel with user-entered item list — Phase 2
+- ✓ Wheel removes hit item after landing — Phase 2
+- ✓ Manual reset button to restore all wheel items — Phase 2
+- ✓ Wheel item list saved to browser local storage — Phase 2
+- ✓ Smooth wheel spin animation with deceleration — Phase 2
 
 ### Active
-
-- [ ] Spinning wheel with user-entered item list
-- [ ] Spinning wheel with user-entered item list
-- [ ] Wheel removes hit item after landing
-- [ ] Manual reset button to restore all wheel items
-- [ ] Wheel item list saved to browser local storage
 - [ ] Configurable dice roller (1-6 dice)
 - [ ] Dice roll animation
 - [ ] Multi-coin flipper with selectable coin count
@@ -81,4 +80,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-26 after Phase 1 completion*
+*Last updated: 2026-03-26 after Phase 2 completion*
