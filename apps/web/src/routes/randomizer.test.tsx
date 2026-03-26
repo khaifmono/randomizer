@@ -9,6 +9,42 @@ vi.mock("@tanstack/react-router", () => ({
   }),
 }));
 
+// Mock motion animate function (used by WheelCanvas)
+vi.mock("motion", () => ({
+  animate: vi.fn(() => ({ stop: vi.fn() })),
+}));
+
+// Mock ResizeObserver (used by WheelCanvas useEffect)
+global.ResizeObserver = vi.fn().mockImplementation(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+}));
+
+// Mock canvas getContext (used by WheelCanvas)
+HTMLCanvasElement.prototype.getContext = vi.fn((_contextId: string) => ({
+  clearRect: vi.fn(),
+  beginPath: vi.fn(),
+  moveTo: vi.fn(),
+  arc: vi.fn(),
+  closePath: vi.fn(),
+  fill: vi.fn(),
+  stroke: vi.fn(),
+  fillText: vi.fn(),
+  save: vi.fn(),
+  restore: vi.fn(),
+  translate: vi.fn(),
+  rotate: vi.fn(),
+  scale: vi.fn(),
+  set fillStyle(_: string) {},
+  set strokeStyle(_: string) {},
+  set lineWidth(_: number) {},
+  set font(_: string) {},
+  set textAlign(_: string) {},
+  set textBaseline(_: string) {},
+  measureText: vi.fn(() => ({ width: 50 })),
+})) as unknown as typeof HTMLCanvasElement.prototype.getContext;
+
 // RandomizerPage is exported as a named export from randomizer.tsx
 import { RandomizerPage } from "./randomizer";
 
@@ -30,9 +66,9 @@ describe("RandomizerPage", () => {
     expect(screen.getByText("Coin")).toBeDefined();
   });
 
-  it("Wheel tab content shows placeholder text 'Add items to spin the wheel'", () => {
+  it("Wheel tab shows item management UI with default items", () => {
     render(<RandomizerPage />);
-    expect(screen.getByText("Add items to spin the wheel")).toBeDefined();
+    expect(screen.getByText("Option 1")).toBeDefined();
   });
 
   it("renders 'History' heading in the history panel", () => {
