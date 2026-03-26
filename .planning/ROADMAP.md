@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 1: Foundation** - Shared infrastructure, routing, history component, and utilities every tool depends on
 - [x] **Phase 2: Spinning Wheel** - Full wheel tab with Canvas animation, item management, and localStorage persistence (completed 2026-03-26)
 - [x] **Phase 3: Dice Roller** - Dice tab with CSS 3D roll animation, count selector, and sum display (completed 2026-03-26)
-- [ ] **Phase 4: Coin Flipper** - Coin tab with CSS 3D flip animation, count selector, and heads/tails display
+- [x] **Phase 4: Coin Flipper** - Coin tab with CSS 3D flip animation, count selector, and heads/tails display (completed 2026-03-26)
 - [ ] **Phase 5: Polish & Differentiators** - Item count badge, empty state, re-spin UX, pip icons, session tally
 
 ## Phase Details
@@ -78,7 +78,7 @@ Plans:
 **Plans**: 2 plans
 Plans:
 - [x] 04-01-PLAN.md — useCoin hook with TDD tests and CSS 3D coin flip animation classes in index.css
-- [ ] 04-02-PLAN.md — CoinFace, CoinDisplay, CoinControls, CoinTab components, page wiring, and human verification
+- [x] 04-02-PLAN.md — CoinFace, CoinDisplay, CoinControls, CoinTab components, page wiring, and human verification
 **UI hint**: yes
 
 ### Phase 5: Polish & Differentiators
@@ -104,5 +104,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Foundation | 2/2 | Complete |  |
 | 2. Spinning Wheel | 3/3 | Complete   | 2026-03-26 |
 | 3. Dice Roller | 2/2 | Complete   | 2026-03-26 |
-| 4. Coin Flipper | 1/2 | In Progress | - |
+| 4. Coin Flipper | 2/2 | Complete   | 2026-03-26 |
 | 5. Polish & Differentiators | 0/? | Not started | - |
