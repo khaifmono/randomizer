@@ -134,16 +134,16 @@
 /* Dice roller */
 
 .dice-scene {
-  perspective: 600px;
-  width: 70px;
-  height: 200px;
+  perspective: 800px;
+  width: 90px;
+  height: 240px;
 }
 
 .dice-cube {
-  width: 70px;
-  height: 70px;
+  width: 90px;
+  height: 90px;
   position: relative;
-  top: 130px;
+  top: 150px;
   transform-style: preserve-3d;
   transition: transform 0.1s;
   will-change: transform;
@@ -151,8 +151,8 @@
 
 .dice-face {
   position: absolute;
-  width: 70px;
-  height: 70px;
+  width: 90px;
+  height: 90px;
   backface-visibility: hidden;
   will-change: transform;
   display: grid;
@@ -161,16 +161,16 @@
   padding: 8px;
 }
 
-.dice-face-1 { transform: rotateY(0deg) translateZ(35px); }
-.dice-face-2 { transform: rotateY(180deg) translateZ(35px); }
-.dice-face-3 { transform: rotateY(-90deg) translateZ(35px); }
-.dice-face-4 { transform: rotateY(90deg) translateZ(35px); }
-.dice-face-5 { transform: rotateX(90deg) translateZ(35px); }
-.dice-face-6 { transform: rotateX(-90deg) translateZ(35px); }
+.dice-face-1 { transform: rotateY(0deg) translateZ(45px); }
+.dice-face-2 { transform: rotateY(180deg) translateZ(45px); }
+.dice-face-3 { transform: rotateY(-90deg) translateZ(45px); }
+.dice-face-4 { transform: rotateY(90deg) translateZ(45px); }
+.dice-face-5 { transform: rotateX(90deg) translateZ(45px); }
+.dice-face-6 { transform: rotateX(-90deg) translateZ(45px); }
 
 @keyframes dice-roll {
   0%   { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
-  50%  { transform: translateY(-120px) rotateX(540deg) rotateY(360deg); }
+  50%  { transform: translateY(-140px) rotateX(540deg) rotateY(360deg); }
   100% { transform: translateY(0) rotateX(720deg) rotateY(720deg); }
 }
 
@@ -188,16 +188,16 @@
 /* Coin flipper */
 
 .coin-scene {
-  perspective: 600px;
-  width: 64px;
-  height: 228px;
+  perspective: 800px;
+  width: 80px;
+  height: 260px;
 }
 
 .coin-disc {
-  width: 64px;
-  height: 64px;
+  width: 80px;
+  height: 80px;
   position: relative;
-  top: 164px;
+  top: 180px;
   transform-style: preserve-3d;
   transition: transform 0.1s;
   will-change: transform;
@@ -205,8 +205,8 @@
 
 .coin-face {
   position: absolute;
-  width: 64px;
-  height: 64px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   backface-visibility: hidden;
   will-change: transform;

@@ -213,7 +213,7 @@ export function WheelCanvas({ items, spinning, winnerIndex, winner, onSpin, onSp
       <canvas
         ref={canvasRef}
         className={[
-          "w-full aspect-square max-w-[480px]",
+          "w-full aspect-square max-w-[600px]",
           canClick ? "cursor-pointer" : items.length === 0 ? "cursor-default" : "cursor-not-allowed",
         ].join(" ")}
         onClick={handleCanvasClick}

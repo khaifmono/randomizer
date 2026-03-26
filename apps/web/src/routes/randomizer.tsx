@@ -1,11 +1,10 @@
 import { useState, useRef } from "react";
-import { createFileRoute, useSearch } from "@tanstack/react-router";
+import { createFileRoute, useSearch, Link } from "@tanstack/react-router";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@base-project/web/components/ui/tabs";
 import { Button } from "@base-project/web/components/ui/button";
-import { Card, CardContent } from "@base-project/web/components/ui/card";
 import { ResultHistory } from "@base-project/web/components/result-history";
 import { cn } from "@base-project/web/lib/utils";
-import { RotateCcw, Dices, Coins, History } from "lucide-react";
+import { RotateCcw, Dices, Coins, History, ChevronLeft } from "lucide-react";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 import { WheelTab } from "@base-project/web/components/randomizer/wheel/wheel-tab";
 import { DiceTab } from "@base-project/web/components/randomizer/dice/dice-tab";
@@ -43,75 +42,88 @@ export function RandomizerPage() {
     }
   }
 
+  const tabAccentMap: Record<string, string> = {
+    wheel: "from-blue-500/20 via-transparent to-transparent",
+    dice: "from-emerald-500/20 via-transparent to-transparent",
+    coin: "from-amber-500/20 via-transparent to-transparent",
+  };
+
   return (
-    <div className="min-h-screen bg-background">
-      {/* Page header */}
-      <header className="text-center py-12 px-4">
-        <h1 className="text-xl font-semibold leading-tight">Randomizer Toolkit</h1>
-        <p className="text-sm font-normal leading-normal text-muted-foreground mt-1">
-          Spin, roll, or flip — decide anything.
-        </p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white relative overflow-hidden">
+      {/* Subtle background glow that shifts with active tab */}
+      <div className={cn("absolute inset-0 bg-gradient-to-b transition-all duration-700 pointer-events-none", tabAccentMap[activeTab] || tabAccentMap.wheel)} />
+
+      {/* Header */}
+      <header className="relative flex items-center justify-between px-6 py-4">
+        <Link to="/" className="flex items-center gap-1.5 text-white/50 hover:text-white/80 transition-colors text-sm">
+          <ChevronLeft className="h-4 w-4" />
+          Home
+        </Link>
+        <h1 className="text-lg font-bold tracking-tight">
+          <span className="bg-gradient-to-r from-blue-400 via-emerald-400 to-amber-400 bg-clip-text text-transparent">Randomizer</span>
+          {" "}Toolkit
+        </h1>
+        {/* Mobile history toggle */}
+        <Button
+          variant="ghost"
+          size="sm"
+          className="md:hidden text-white/50 hover:text-white hover:bg-white/10"
+          onClick={() => setHistoryOpen(!historyOpen)}
+        >
+          <History className="h-4 w-4 mr-1" />
+          {historyOpen ? "Hide" : "History"}
+        </Button>
+        <div className="hidden md:block w-20" />
       </header>
 
-      {/* Main content area with split layout */}
-      <div className="max-w-5xl mx-auto px-4 pb-12">
-        <div className="flex flex-col md:flex-row gap-8">
-          {/* Tool area (left) */}
+      {/* Main content */}
+      <div className="relative max-w-7xl mx-auto px-4 pb-12">
+        <div className="flex flex-col md:flex-row gap-6">
+          {/* Tool area */}
           <div className="flex-1 min-w-0">
-            {/* Mobile history toggle */}
-            <div className="flex justify-end mb-2 md:hidden">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setHistoryOpen(!historyOpen)}
-              >
-                <History className="h-4 w-4" />
-                {historyOpen ? "Hide History" : "Show History"}
-              </Button>
-            </div>
-
-            {/* Tabs */}
             <Tabs defaultValue={initialTab} onValueChange={setActiveTab}>
-              <TabsList variant="line">
-                <TabsTrigger
-                  value="wheel"
-                  className={cn(
-                    "gap-1",
-                    "data-[state=active]:border-wheel-accent"
-                  )}
-                >
-                  <RotateCcw className="h-4 w-4" />
-                  Wheel
-                </TabsTrigger>
-                <TabsTrigger
-                  value="dice"
-                  className={cn(
-                    "gap-1",
-                    "data-[state=active]:border-dice-accent"
-                  )}
-                >
-                  <Dices className="h-4 w-4" />
-                  Dice
-                </TabsTrigger>
-                <TabsTrigger
-                  value="coin"
-                  className={cn(
-                    "gap-1",
-                    "data-[state=active]:border-coin-accent"
-                  )}
-                >
-                  <Coins className="h-4 w-4" />
-                  Coin
-                </TabsTrigger>
-              </TabsList>
+              <div className="flex justify-center mb-8">
+                <TabsList variant="line" className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl px-2">
+                  <TabsTrigger
+                    value="wheel"
+                    className={cn(
+                      "gap-1.5 text-white/50 data-[state=active]:text-white",
+                      "data-[state=active]:border-blue-400"
+                    )}
+                  >
+                    <RotateCcw className="h-4 w-4" />
+                    Wheel
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="dice"
+                    className={cn(
+                      "gap-1.5 text-white/50 data-[state=active]:text-white",
+                      "data-[state=active]:border-emerald-400"
+                    )}
+                  >
+                    <Dices className="h-4 w-4" />
+                    Dice
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="coin"
+                    className={cn(
+                      "gap-1.5 text-white/50 data-[state=active]:text-white",
+                      "data-[state=active]:border-amber-400"
+                    )}
+                  >
+                    <Coins className="h-4 w-4" />
+                    Coin
+                  </TabsTrigger>
+                </TabsList>
+              </div>
 
-              <TabsContent value="wheel" className="mt-6">
+              <TabsContent value="wheel" className="mt-0">
                 <WheelTab onHistoryChange={setWheelHistory} />
               </TabsContent>
-              <TabsContent value="dice" className="mt-6">
+              <TabsContent value="dice" className="mt-0">
                 <DiceTab onHistoryChange={setDiceHistory} />
               </TabsContent>
-              <TabsContent value="coin" className="mt-6">
+              <TabsContent value="coin" className="mt-0">
                 <CoinTab
                   onHistoryChange={setCoinHistory}
                   registerClearSession={(fn) => { coinClearSessionRef.current = fn; }}
@@ -120,26 +132,22 @@ export function RandomizerPage() {
             </Tabs>
           </div>
 
-          {/* History panel (right) */}
+          {/* History panel */}
           <div
             className={cn(
-              "w-full md:w-64 shrink-0",
+              "w-full md:w-72 shrink-0",
               historyOpen ? "block" : "hidden md:block"
             )}
           >
-            <Card>
-              <CardContent>
-                <ResultHistory
-                  entries={activeHistory}
-                  onClear={handleClearHistory}
-                />
-              </CardContent>
-            </Card>
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4">
+              <ResultHistory
+                entries={activeHistory}
+                onClear={handleClearHistory}
+              />
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
-
-
