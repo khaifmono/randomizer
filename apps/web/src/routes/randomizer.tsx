@@ -4,8 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@base-project/web/comp
 import { Button } from "@base-project/web/components/ui/button";
 import { ResultHistory } from "@base-project/web/components/result-history";
 import { cn } from "@base-project/web/lib/utils";
-import { RotateCcw, Dices, Coins, History, ChevronLeft } from "lucide-react";
-// Card removed — no longer used in this page
+import { RotateCcw, Dices, Coins, History, ChevronLeft, Hash, Users, RectangleHorizontal, Lock } from "lucide-react";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 import { WheelTab } from "@base-project/web/components/randomizer/wheel/wheel-tab";
 import { DiceTab } from "@base-project/web/components/randomizer/dice/dice-tab";
@@ -105,6 +104,18 @@ export function RandomizerPage() {
                   <Coins className="h-4 w-4" />
                   Coin
                 </TabsTrigger>
+                <TabsTrigger value="number" disabled className="gap-1.5 opacity-40">
+                  <Hash className="h-4 w-4" />
+                  Number
+                </TabsTrigger>
+                <TabsTrigger value="teams" disabled className="gap-1.5 opacity-40">
+                  <Users className="h-4 w-4" />
+                  Teams
+                </TabsTrigger>
+                <TabsTrigger value="cards" disabled className="gap-1.5 opacity-40">
+                  <RectangleHorizontal className="h-4 w-4" />
+                  Cards
+                </TabsTrigger>
               </TabsList>
             </div>
 
@@ -119,6 +130,15 @@ export function RandomizerPage() {
                   onHistoryChange={setCoinHistory}
                   registerClearSession={(fn) => { coinClearSessionRef.current = fn; }}
                 />
+              </TabsContent>
+              <TabsContent value="number" className="mt-0 p-6">
+                <ComingSoon icon={<Hash className="h-10 w-10" />} title="Random Number Generator" description="Pick a number between min and max with a slot-machine rolling animation." />
+              </TabsContent>
+              <TabsContent value="teams" className="mt-0 p-6">
+                <ComingSoon icon={<Users className="h-10 w-10" />} title="Name Picker / Team Shuffler" description="Enter names and randomly split into teams or pick one person." />
+              </TabsContent>
+              <TabsContent value="cards" className="mt-0 p-6">
+                <ComingSoon icon={<RectangleHorizontal className="h-10 w-10" />} title="Card Drawer" description="Draw from a standard 52-card deck with a satisfying flip animation." />
               </TabsContent>
             </Tabs>
           </div>
@@ -137,5 +157,23 @@ export function RandomizerPage() {
           </div>
         </div>
       </div>
+  );
+}
+
+function ComingSoon({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center gap-4 py-24 text-center max-w-md mx-auto">
+      <div className="h-20 w-20 rounded-2xl bg-muted/50 flex items-center justify-center text-muted-foreground">
+        {icon}
+      </div>
+      <div className="space-y-2">
+        <h3 className="text-xl font-bold">{title}</h3>
+        <p className="text-sm text-muted-foreground">{description}</p>
+      </div>
+      <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground bg-muted/50 rounded-full px-3 py-1.5">
+        <Lock className="h-3 w-3" />
+        Coming soon
+      </div>
+    </div>
   );
 }
