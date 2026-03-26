@@ -136,13 +136,14 @@
 .dice-scene {
   perspective: 600px;
   width: 70px;
-  height: 70px;
+  height: 200px;
 }
 
 .dice-cube {
-  width: 100%;
-  height: 100%;
+  width: 70px;
+  height: 70px;
   position: relative;
+  top: 130px;
   transform-style: preserve-3d;
   transition: transform 0.1s;
   will-change: transform;
@@ -168,12 +169,13 @@
 .dice-face-6 { transform: rotateX(-90deg) translateZ(35px); }
 
 @keyframes dice-roll {
-  0%   { transform: rotateX(0deg) rotateY(0deg); }
-  100% { transform: rotateX(720deg) rotateY(720deg); }
+  0%   { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
+  50%  { transform: translateY(-120px) rotateX(540deg) rotateY(360deg); }
+  100% { transform: translateY(0) rotateX(720deg) rotateY(720deg); }
 }
 
 .dice-cube.dice-rolling {
-  animation: dice-roll 1.2s ease-out forwards;
+  animation: dice-roll 1.2s cubic-bezier(0.2, 0, 0.3, 1) forwards;
 }
 
 .dice-cube.dice-show-1 { transform: rotateX(0deg) rotateY(0deg); }
