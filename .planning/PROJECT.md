@@ -16,10 +16,12 @@ Satisfying, animated randomization that feels fun to use — the wheel spins smo
 - ✓ TanStack Router file-based routing — existing
 - ✓ Tailwind CSS + Shadcn component system — existing
 - ✓ Vite dev server and build pipeline — existing
+- ✓ Tabbed interface with three tools: Wheel, Dice, Coin — Phase 1
+- ✓ Result history log per tab — Phase 1
 
 ### Active
 
-- [ ] Tabbed interface with three tools: Wheel, Dice, Coin
+- [ ] Spinning wheel with user-entered item list
 - [ ] Spinning wheel with user-entered item list
 - [ ] Wheel removes hit item after landing
 - [ ] Manual reset button to restore all wheel items
@@ -28,7 +30,6 @@ Satisfying, animated randomization that feels fun to use — the wheel spins smo
 - [ ] Dice roll animation
 - [ ] Multi-coin flipper with selectable coin count
 - [ ] Coin flip animation
-- [ ] Result history log per tab
 - [ ] Fun, smooth animations across all tools
 
 ### Out of Scope
@@ -80,4 +81,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-26 after initialization*
+*Last updated: 2026-03-26 after Phase 1 completion*
