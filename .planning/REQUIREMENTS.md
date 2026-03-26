@@ -21,9 +21,9 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **WHEL-05**: User can reset the wheel to restore all removed items
 - [x] **WHEL-06**: Wheel item list persists in browser localStorage across sessions
 - [x] **WHEL-07**: Wheel spin uses smooth cubic-bezier deceleration that feels premium
-- [ ] **WHEL-08**: User sees an item count badge showing remaining items during draws
-- [ ] **WHEL-09**: User sees a clear empty-state when all items are removed ("reset to continue")
-- [ ] **WHEL-10**: User can re-spin instantly without clearing history
+- [x] **WHEL-08**: User sees an item count badge showing remaining items during draws
+- [x] **WHEL-09**: User sees a clear empty-state when all items are removed ("reset to continue")
+- [x] **WHEL-10**: User can re-spin instantly without clearing history
 
 ### Dice
 
@@ -79,9 +79,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | WHEL-05 | Phase 2 | Complete |
 | WHEL-06 | Phase 2 | Complete |
 | WHEL-07 | Phase 2 | Complete |
-| WHEL-08 | Phase 5 | Pending |
-| WHEL-09 | Phase 5 | Pending |
-| WHEL-10 | Phase 5 | Pending |
+| WHEL-08 | Phase 5 | Complete |
+| WHEL-09 | Phase 5 | Complete |
+| WHEL-10 | Phase 5 | Complete |
 | DICE-01 | Phase 3 | Complete |
 | DICE-02 | Phase 3 | Complete |
 | DICE-03 | Phase 3 | Complete |
@@ -99,4 +99,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-03-26*
-*Last updated: 2026-03-26 after Phase 04-01 completion (COIN-01, COIN-02, COIN-03 marked complete)*
+*Last updated: 2026-03-26 after Phase 05-01 completion (WHEL-08, WHEL-09, WHEL-10 marked complete)*

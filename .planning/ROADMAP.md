@@ -93,7 +93,7 @@ Plans:
   5. The coin history log shows a running session tally (e.g., "5H 3T across 8 flips")
 **Plans**: 2 plans
 Plans:
-- [ ] 05-01-PLAN.md — Wheel item count badge, empty state celebration with CSS confetti, and instant re-spin timing
+- [x] 05-01-PLAN.md — Wheel item count badge, empty state celebration with CSS confetti, and instant re-spin timing
 - [ ] 05-02-PLAN.md — Green pip dots on dice faces and coin session tally with accumulation and clear
 **UI hint**: yes
 
@@ -108,4 +108,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Spinning Wheel | 3/3 | Complete   | 2026-03-26 |
 | 3. Dice Roller | 2/2 | Complete   | 2026-03-26 |
 | 4. Coin Flipper | 2/2 | Complete   | 2026-03-26 |
-| 5. Polish & Differentiators | 0/2 | Not started | - |
+| 5. Polish & Differentiators | 1/2 | In progress | - |
