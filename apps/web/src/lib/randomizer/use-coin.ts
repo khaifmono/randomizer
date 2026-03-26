@@ -10,6 +10,8 @@ function useCoin() {
   const [results, setResults] = useState<("heads" | "tails")[]>([]);
   const [tally, setTally] = useState<{ heads: number; tails: number } | null>(null);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [sessionHeads, setSessionHeads] = useState(0);
+  const [sessionTails, setSessionTails] = useState(0);
 
   // Synchronous guard — prevents double-trigger during animation
   const isFlippingRef = useRef(false);
@@ -43,6 +45,10 @@ function useCoin() {
     const tails = flipped.filter((r) => r === "tails").length;
     setTally({ heads, tails });
 
+    // Accumulate session totals
+    setSessionHeads((prev) => prev + heads);
+    setSessionTails((prev) => prev + tails);
+
     // Label format: "3H 2T (5 coins)"
     const label = `${heads}H ${tails}T (${flipped.length} coins)`;
     const entry: HistoryEntry = {
@@ -60,15 +66,23 @@ function useCoin() {
     }, 200);
   }, []);
 
+  const clearSession = useCallback(() => {
+    setSessionHeads(0);
+    setSessionTails(0);
+  }, []);
+
   return {
     count,
     flipping,
     results,
     tally,
     history,
+    sessionHeads,
+    sessionTails,
     setCount,
     startFlip,
     onFlipEnd,
+    clearSession,
   };
 }
 
