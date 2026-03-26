@@ -206,17 +206,76 @@ describe("useWheel", () => {
     expect(result.current.hasRemovedItems).toBe(true);
   });
 
-  // Test 15: spinning state clears after onSpinEnd timeout
-  it("spinning becomes false after 2200ms timeout from onSpinEnd", () => {
+  // Test 15: spinning state clears after onSpinEnd 600ms timeout (WHEL-10 split)
+  it("spinning becomes false after 600ms timeout from onSpinEnd", () => {
     const { result } = renderHook(() => useWheel());
     act(() => { result.current.startSpin(); });
     act(() => { result.current.onSpinEnd(); });
     // Still spinning right after (before timeout)
     expect(result.current.spinning).toBe(true);
 
-    // Advance fake timers by 2200ms
-    act(() => { vi.advanceTimersByTime(2200); });
+    // Advance fake timers by 600ms — spin lock should release
+    act(() => { vi.advanceTimersByTime(600); });
     expect(result.current.spinning).toBe(false);
+  });
+});
+
+describe("re-spin timing (WHEL-10)", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    localStorage.clear();
+    vi.useRealTimers();
+  });
+
+  it("spinning becomes false within 600ms after onSpinEnd", () => {
+    const { result } = renderHook(() => useWheel());
+    act(() => { result.current.startSpin(); });
+    act(() => { result.current.onSpinEnd(); });
+
+    // Before 600ms: still spinning
+    expect(result.current.spinning).toBe(true);
+
+    // After 600ms: spin lock released
+    act(() => { vi.advanceTimersByTime(600); });
+    expect(result.current.spinning).toBe(false);
+  });
+
+  it("winner remains non-null at 600ms after onSpinEnd", () => {
+    const { result } = renderHook(() => useWheel());
+    act(() => { result.current.startSpin(); });
+    act(() => { result.current.onSpinEnd(); });
+
+    // Advance to 600ms — overlay still visible
+    act(() => { vi.advanceTimersByTime(600); });
+    expect(result.current.winner).not.toBeNull();
+  });
+
+  it("winner becomes null after 2200ms after onSpinEnd", () => {
+    const { result } = renderHook(() => useWheel());
+    act(() => { result.current.startSpin(); });
+    act(() => { result.current.onSpinEnd(); });
+
+    // Advance past 2200ms — overlay dismissed
+    act(() => { vi.advanceTimersByTime(2200); });
     expect(result.current.winner).toBeNull();
+  });
+
+  it("user can call startSpin again after 600ms while winner still visible", () => {
+    const { result } = renderHook(() => useWheel());
+    act(() => { result.current.startSpin(); });
+    act(() => { result.current.onSpinEnd(); });
+
+    // After 600ms, spin lock released — should be able to spin again
+    act(() => { vi.advanceTimersByTime(600); });
+    expect(result.current.spinning).toBe(false);
+    expect(result.current.winner).not.toBeNull();
+
+    // Start another spin — should succeed
+    act(() => { result.current.startSpin(); });
+    expect(result.current.spinning).toBe(true);
   });
 });

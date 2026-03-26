@@ -104,10 +104,15 @@ function useWheel() {
     });
     applyItems(next);
 
+    // Unlock spin early — user can re-spin while overlay is still visible
     setTimeout(() => {
-      setWinner(null);
       isSpinningRef.current = false;
       setSpinning(false);
+    }, 600);
+
+    // Dismiss winner overlay on its own schedule
+    setTimeout(() => {
+      setWinner(null);
     }, 2200);
   }, [applyItems]);
 
