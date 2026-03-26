@@ -7,12 +7,11 @@ import { ResultHistory } from "@base-project/web/components/result-history";
 import { cn } from "@base-project/web/lib/utils";
 import { RotateCcw, Dices, Coins, History } from "lucide-react";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
+import { WheelTab } from "@base-project/web/components/randomizer/wheel/wheel-tab";
 
 export const Route = createFileRoute("/randomizer")({
   component: RandomizerPage,
 });
-
-const MAX_HISTORY = 50;
 
 export function RandomizerPage() {
   const [wheelHistory, setWheelHistory] = useState<HistoryEntry[]>([]);
@@ -99,7 +98,7 @@ export function RandomizerPage() {
               </TabsList>
 
               <TabsContent value="wheel" className="mt-6">
-                <WheelPlaceholder />
+                <WheelTab onHistoryChange={setWheelHistory} />
               </TabsContent>
               <TabsContent value="dice" className="mt-6">
                 <DicePlaceholder />
@@ -128,15 +127,6 @@ export function RandomizerPage() {
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function WheelPlaceholder() {
-  return (
-    <div className="flex flex-col items-center justify-center py-12 text-center">
-      <RotateCcw className="h-12 w-12 text-muted-foreground/50 mb-4" />
-      <p className="text-sm text-muted-foreground">Add items to spin the wheel</p>
     </div>
   );
 }
@@ -179,5 +169,3 @@ function CoinPlaceholder() {
   );
 }
 
-// Suppress MAX_HISTORY unused var lint — will be used when tools are implemented
-void MAX_HISTORY;
