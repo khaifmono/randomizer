@@ -30,7 +30,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. A result history list is visible in each tab and correctly displays entries in newest-first order
 **Plans**: 2 plans
 Plans:
-- [ ] 01-01-PLAN.md — Install Shadcn Tabs, shared types, CSS accent tokens, ResultHistory component with tests
+- [x] 01-01-PLAN.md — Install Shadcn Tabs, shared types, CSS accent tokens, ResultHistory component with tests
 - [ ] 01-02-PLAN.md — Randomizer page route with tabbed layout, placeholders, mobile history toggle, per-tab history state
 **UI hint**: yes
 
@@ -91,7 +91,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/2 | Planning complete | - |
+| 1. Foundation | 1/2 | In Progress|  |
 | 2. Spinning Wheel | 0/? | Not started | - |
 | 3. Dice Roller | 0/? | Not started | - |
 | 4. Coin Flipper | 0/? | Not started | - |

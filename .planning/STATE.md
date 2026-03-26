@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Phase 1 UI-SPEC approved
-last_updated: "2026-03-26T09:36:04.273Z"
+stopped_at: Completed 01-foundation-01-PLAN.md
+last_updated: "2026-03-26T09:54:45.109Z"
 last_activity: 2026-03-26 — Roadmap created, ready to begin Phase 1 planning
 progress:
   total_phases: 5
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 2
+  completed_plans: 1
   percent: 0
 ---
 
@@ -52,6 +52,7 @@ Progress: [░░░░░░░░░░] 0%
 - Trend: -
 
 *Updated after each plan completion*
+| Phase 01-foundation P01 | 15 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -66,6 +67,9 @@ Recent decisions affecting current work:
 - Init: Use `motion@^12.37.0` for wheel spin deceleration (NOT the old `framer-motion` package name)
 - Init: HTML5 Canvas for wheel rendering — correct primitive for dynamic segment count and 60fps rotation
 - Init: Pre-determine winner before animation starts — prevents angle mismatch bugs
+- [Phase 01-foundation]: Shadcn Tabs @/ alias issue: manually copy to src/ and fix import to @base-project/web/ per project convention
+- [Phase 01-foundation]: Accent color tokens use direct oklch values in @theme inline (not CSS variable indirection) since they are new additive colors not participating in dark-mode theming
+- [Phase 01-foundation]: Shadcn generated Tabs already includes line variant via CVA on TabsList - no manual augmentation needed
 
 ### Pending Todos
 
@@ -77,6 +81,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-26T09:36:04.269Z
-Stopped at: Phase 1 UI-SPEC approved
-Resume file: .planning/phases/01-foundation/01-UI-SPEC.md
+Last session: 2026-03-26T09:54:45.106Z
+Stopped at: Completed 01-foundation-01-PLAN.md
+Resume file: None

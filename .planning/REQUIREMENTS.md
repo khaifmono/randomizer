@@ -10,7 +10,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Shared
 
 - [ ] **SHRD-01**: User sees a tabbed interface with three tools: Wheel, Dice, Coin
-- [ ] **SHRD-02**: User can view result history per tab (append-only, newest at top)
+- [x] **SHRD-02**: User can view result history per tab (append-only, newest at top)
 
 ### Wheel
 
@@ -71,7 +71,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | SHRD-01 | Phase 1 | Pending |
-| SHRD-02 | Phase 1 | Pending |
+| SHRD-02 | Phase 1 | Complete |
 | WHEL-01 | Phase 2 | Pending |
 | WHEL-02 | Phase 2 | Pending |
 | WHEL-03 | Phase 2 | Pending |
