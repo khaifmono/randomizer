@@ -70,33 +70,33 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SHRD-01 | Pending | Pending |
-| SHRD-02 | Pending | Pending |
-| WHEL-01 | Pending | Pending |
-| WHEL-02 | Pending | Pending |
-| WHEL-03 | Pending | Pending |
-| WHEL-04 | Pending | Pending |
-| WHEL-05 | Pending | Pending |
-| WHEL-06 | Pending | Pending |
-| WHEL-07 | Pending | Pending |
-| WHEL-08 | Pending | Pending |
-| WHEL-09 | Pending | Pending |
-| WHEL-10 | Pending | Pending |
-| DICE-01 | Pending | Pending |
-| DICE-02 | Pending | Pending |
-| DICE-03 | Pending | Pending |
-| DICE-04 | Pending | Pending |
-| DICE-05 | Pending | Pending |
-| COIN-01 | Pending | Pending |
-| COIN-02 | Pending | Pending |
-| COIN-03 | Pending | Pending |
-| COIN-04 | Pending | Pending |
+| SHRD-01 | Phase 1 | Pending |
+| SHRD-02 | Phase 1 | Pending |
+| WHEL-01 | Phase 2 | Pending |
+| WHEL-02 | Phase 2 | Pending |
+| WHEL-03 | Phase 2 | Pending |
+| WHEL-04 | Phase 2 | Pending |
+| WHEL-05 | Phase 2 | Pending |
+| WHEL-06 | Phase 2 | Pending |
+| WHEL-07 | Phase 2 | Pending |
+| WHEL-08 | Phase 5 | Pending |
+| WHEL-09 | Phase 5 | Pending |
+| WHEL-10 | Phase 5 | Pending |
+| DICE-01 | Phase 3 | Pending |
+| DICE-02 | Phase 3 | Pending |
+| DICE-03 | Phase 3 | Pending |
+| DICE-04 | Phase 3 | Pending |
+| DICE-05 | Phase 5 | Pending |
+| COIN-01 | Phase 4 | Pending |
+| COIN-02 | Phase 4 | Pending |
+| COIN-03 | Phase 4 | Pending |
+| COIN-04 | Phase 5 | Pending |
 
 **Coverage:**
 - v1 requirements: 21 total
-- Mapped to phases: 0
-- Unmapped: 21 ⚠️
+- Mapped to phases: 21
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-26*
-*Last updated: 2026-03-26 after initial definition*
+*Last updated: 2026-03-26 after roadmap creation*
