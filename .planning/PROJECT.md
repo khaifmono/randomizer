@@ -23,10 +23,12 @@ Satisfying, animated randomization that feels fun to use — the wheel spins smo
 - ✓ Manual reset button to restore all wheel items — Phase 2
 - ✓ Wheel item list saved to browser local storage — Phase 2
 - ✓ Smooth wheel spin animation with deceleration — Phase 2
+- ✓ Configurable dice roller (1-6 dice) — Phase 3
+- ✓ Dice roll animation with CSS 3D transforms — Phase 3
+- ✓ Simultaneous dice animation on roll — Phase 3
+- ✓ Sum total display after each roll — Phase 3
 
 ### Active
-- [ ] Configurable dice roller (1-6 dice)
-- [ ] Dice roll animation
 - [ ] Multi-coin flipper with selectable coin count
 - [ ] Coin flip animation
 - [ ] Fun, smooth animations across all tools
@@ -80,4 +82,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-26 after Phase 2 completion*
+*Last updated: 2026-03-26 after Phase 3 completion*
