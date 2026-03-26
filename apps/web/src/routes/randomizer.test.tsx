@@ -9,9 +9,8 @@ vi.mock("@tanstack/react-router", () => ({
   }),
 }));
 
-// Import the page component after mocking
-// We need to access the inner component for testing
-const { RandomizerPage } = await import("./randomizer");
+// RandomizerPage is exported as a named export from randomizer.tsx
+import { RandomizerPage } from "./randomizer";
 
 describe("RandomizerPage", () => {
   it("renders page title 'Randomizer Toolkit'", () => {
