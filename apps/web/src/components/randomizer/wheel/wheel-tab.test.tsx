@@ -58,4 +58,44 @@ describe("WheelTab", () => {
     render(<WheelTab onHistoryChange={onHistoryChange} />);
     expect(onHistoryChange).toHaveBeenCalledWith(mockHistory);
   });
+
+  it("shows item count badge when items exist", () => {
+    mockUseWheel.mockReturnValue({
+      ...defaultWheelState,
+      liveItems: ["A", "B", "C"],
+    });
+    render(<WheelTab onHistoryChange={vi.fn()} />);
+    expect(screen.getByText("3 items remaining")).toBeInTheDocument();
+  });
+
+  it("hides badge when no items remain", () => {
+    mockUseWheel.mockReturnValue({
+      ...defaultWheelState,
+      liveItems: [],
+      hasRemovedItems: false,
+    });
+    render(<WheelTab onHistoryChange={vi.fn()} />);
+    expect(screen.queryByText(/remaining/)).not.toBeInTheDocument();
+  });
+
+  it("shows empty celebration when all items drawn via spinning", () => {
+    mockUseWheel.mockReturnValue({
+      ...defaultWheelState,
+      liveItems: [],
+      hasRemovedItems: true,
+    });
+    render(<WheelTab onHistoryChange={vi.fn()} />);
+    expect(screen.getByText("All done!")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /reset wheel/i })).toBeInTheDocument();
+  });
+
+  it("does NOT show celebration when items manually deleted", () => {
+    mockUseWheel.mockReturnValue({
+      ...defaultWheelState,
+      liveItems: [],
+      hasRemovedItems: false,
+    });
+    render(<WheelTab onHistoryChange={vi.fn()} />);
+    expect(screen.queryByText("All done!")).not.toBeInTheDocument();
+  });
 });

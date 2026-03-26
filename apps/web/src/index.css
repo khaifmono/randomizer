@@ -246,3 +246,20 @@
 
 .coin-disc.coin-show-heads { transform: rotateX(0deg); }
 .coin-disc.coin-show-tails { transform: rotateX(180deg); }
+
+/* Wheel empty state confetti */
+
+@keyframes confetti-fall {
+  0%   { transform: translateY(-10px) rotate(0deg) scale(1); opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(100px) rotate(720deg) scale(0.5); opacity: 0; }
+}
+
+.confetti-particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  animation: confetti-fall 1.2s ease-in forwards;
+  pointer-events: none;
+}
