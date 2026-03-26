@@ -31,7 +31,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 Plans:
 - [x] 01-01-PLAN.md — Install Shadcn Tabs, shared types, CSS accent tokens, ResultHistory component with tests
-- [ ] 01-02-PLAN.md — Randomizer page route with tabbed layout, placeholders, mobile history toggle, per-tab history state
+- [x] 01-02-PLAN.md — Randomizer page route with tabbed layout, placeholders, mobile history toggle, per-tab history state
 **UI hint**: yes
 
 ### Phase 2: Spinning Wheel
