@@ -62,7 +62,7 @@ Plans:
   4. Each roll result is appended to the history log in the Dice tab
 **Plans**: 2 plans
 Plans:
-- [ ] 03-01-PLAN.md — useDice hook with TDD tests and CSS 3D dice animation classes in index.css
+- [x] 03-01-PLAN.md — useDice hook with TDD tests and CSS 3D dice animation classes in index.css
 - [ ] 03-02-PLAN.md — DieCube, DiceDisplay, DiceControls, DiceTab components, page wiring, and human verification
 **UI hint**: yes
 
@@ -100,6 +100,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete |  |
 | 2. Spinning Wheel | 3/3 | Complete   | 2026-03-26 |
-| 3. Dice Roller | 0/2 | Planned | - |
+| 3. Dice Roller | 1/2 | In progress | - |
 | 4. Coin Flipper | 0/? | Not started | - |
 | 5. Polish & Differentiators | 0/? | Not started | - |

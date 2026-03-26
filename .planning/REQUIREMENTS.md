@@ -27,10 +27,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Dice
 
-- [ ] **DICE-01**: User can select number of dice to roll (1-6)
-- [ ] **DICE-02**: User sees dice roll animation using CSS 3D transforms
-- [ ] **DICE-03**: User sees sum total displayed after each roll
-- [ ] **DICE-04**: All dice animate simultaneously on roll
+- [x] **DICE-01**: User can select number of dice to roll (1-6)
+- [x] **DICE-02**: User sees dice roll animation using CSS 3D transforms
+- [x] **DICE-03**: User sees sum total displayed after each roll
+- [x] **DICE-04**: All dice animate simultaneously on roll
 - [ ] **DICE-05**: Each die displays pip face icons (dot patterns) instead of plain numbers
 
 ### Coin
@@ -82,10 +82,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | WHEL-08 | Phase 5 | Pending |
 | WHEL-09 | Phase 5 | Pending |
 | WHEL-10 | Phase 5 | Pending |
-| DICE-01 | Phase 3 | Pending |
-| DICE-02 | Phase 3 | Pending |
-| DICE-03 | Phase 3 | Pending |
-| DICE-04 | Phase 3 | Pending |
+| DICE-01 | Phase 3 | Complete |
+| DICE-02 | Phase 3 | Complete |
+| DICE-03 | Phase 3 | Complete |
+| DICE-04 | Phase 3 | Complete |
 | DICE-05 | Phase 5 | Pending |
 | COIN-01 | Phase 4 | Pending |
 | COIN-02 | Phase 4 | Pending |
