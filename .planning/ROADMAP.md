@@ -60,7 +60,10 @@ Plans:
   2. All selected dice animate simultaneously with a visible 3D tumbling motion
   3. After the roll completes, the sum total of all dice is displayed
   4. Each roll result is appended to the history log in the Dice tab
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 03-01-PLAN.md — useDice hook with TDD tests and CSS 3D dice animation classes in index.css
+- [ ] 03-02-PLAN.md — DieCube, DiceDisplay, DiceControls, DiceTab components, page wiring, and human verification
 **UI hint**: yes
 
 ### Phase 4: Coin Flipper
@@ -97,6 +100,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete |  |
 | 2. Spinning Wheel | 3/3 | Complete   | 2026-03-26 |
-| 3. Dice Roller | 0/? | Not started | - |
+| 3. Dice Roller | 0/2 | Planned | - |
 | 4. Coin Flipper | 0/? | Not started | - |
 | 5. Polish & Differentiators | 0/? | Not started | - |
