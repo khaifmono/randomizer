@@ -15,12 +15,12 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Wheel
 
 - [x] **WHEL-01**: User can enter custom items for the wheel (add/remove from list)
-- [ ] **WHEL-02**: User sees a spinning wheel that animates with smooth deceleration to a result
-- [ ] **WHEL-03**: User sees the winning item clearly announced after the wheel stops
+- [x] **WHEL-02**: User sees a spinning wheel that animates with smooth deceleration to a result
+- [x] **WHEL-03**: User sees the winning item clearly announced after the wheel stops
 - [x] **WHEL-04**: Winning item is automatically removed from the active wheel after each spin
 - [x] **WHEL-05**: User can reset the wheel to restore all removed items
 - [x] **WHEL-06**: Wheel item list persists in browser localStorage across sessions
-- [ ] **WHEL-07**: Wheel spin uses smooth cubic-bezier deceleration that feels premium
+- [x] **WHEL-07**: Wheel spin uses smooth cubic-bezier deceleration that feels premium
 - [ ] **WHEL-08**: User sees an item count badge showing remaining items during draws
 - [ ] **WHEL-09**: User sees a clear empty-state when all items are removed ("reset to continue")
 - [ ] **WHEL-10**: User can re-spin instantly without clearing history
@@ -73,12 +73,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SHRD-01 | Phase 1 | Complete |
 | SHRD-02 | Phase 1 | Complete |
 | WHEL-01 | Phase 2 | Complete |
-| WHEL-02 | Phase 2 | Pending |
-| WHEL-03 | Phase 2 | Pending |
+| WHEL-02 | Phase 2 | Complete |
+| WHEL-03 | Phase 2 | Complete |
 | WHEL-04 | Phase 2 | Complete |
 | WHEL-05 | Phase 2 | Complete |
 | WHEL-06 | Phase 2 | Complete |
-| WHEL-07 | Phase 2 | Pending |
+| WHEL-07 | Phase 2 | Complete |
 | WHEL-08 | Phase 5 | Pending |
 | WHEL-09 | Phase 5 | Pending |
 | WHEL-10 | Phase 5 | Pending |

@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-spinning-wheel 02-01-PLAN.md
-last_updated: "2026-03-26T11:15:01.901Z"
+stopped_at: Completed 02-spinning-wheel 02-02-PLAN.md
+last_updated: "2026-03-26T11:22:00.000Z"
 last_activity: 2026-03-26
 progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 5
-  completed_plans: 3
-  percent: 60
+  completed_plans: 4
+  percent: 80
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-26)
 ## Current Position
 
 Phase: 2
-Plan: 1 (complete)
+Plan: 2 (complete)
 Status: Executing
 Last activity: 2026-03-26
 
-Progress: [██████░░░░] 60%
+Progress: [████████░░] 80%
 
 ## Performance Metrics
 
@@ -54,6 +54,7 @@ Progress: [██████░░░░] 60%
 *Updated after each plan completion*
 | Phase 01-foundation P02 | 4 | 1 tasks | 3 files |
 | Phase 02-spinning-wheel P01 | 524866min | 2 tasks | 8 files |
+| Phase 02-spinning-wheel P02 | 5min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -73,6 +74,9 @@ Recent decisions affecting current work:
 - [Phase 02-spinning-wheel]: itemsRef pattern: useRef mirrors useState so callbacks in useWheel always access latest items without stale closure
 - [Phase 02-spinning-wheel]: originalItemsRef initialized via readStorage directly (not from useState initial value) to avoid initialization order issues
 - [Phase 02-spinning-wheel]: onSpinEnd does NOT update originalItemsRef — only user-initiated add/remove do, so reset() can restore all spin-removed items
+- [Phase 02-02]: animate() from 'motion' (not useAnimate from motion/react) — imperative API targets plain number ref, not DOM element
+- [Phase 02-02]: SVG pointer triangle as HTML overlay rather than CSS border-trick — cleaner and exact control
+- [Phase 02-02]: onSpinEnd excluded from spin effect deps to prevent animation from restarting on callback identity changes
 
 ### Pending Todos
 
@@ -84,6 +88,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-26T11:15:01.898Z
-Stopped at: Completed 02-spinning-wheel 02-01-PLAN.md
+Last session: 2026-03-26T11:22:00.000Z
+Stopped at: Completed 02-spinning-wheel 02-02-PLAN.md
 Resume file: None
