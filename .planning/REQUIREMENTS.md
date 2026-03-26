@@ -35,9 +35,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Coin
 
-- [ ] **COIN-01**: User can select number of coins to flip (1+)
-- [ ] **COIN-02**: User sees coin flip animation using CSS 3D transforms
-- [ ] **COIN-03**: User sees heads/tails count displayed after each flip
+- [x] **COIN-01**: User can select number of coins to flip (1+)
+- [x] **COIN-02**: User sees coin flip animation using CSS 3D transforms
+- [x] **COIN-03**: User sees heads/tails count displayed after each flip
 - [ ] **COIN-04**: User sees running session tally in history ("5H 3T across 8 flips")
 
 ## v2 Requirements
@@ -87,9 +87,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DICE-03 | Phase 3 | Complete |
 | DICE-04 | Phase 3 | Complete |
 | DICE-05 | Phase 5 | Pending |
-| COIN-01 | Phase 4 | Pending |
-| COIN-02 | Phase 4 | Pending |
-| COIN-03 | Phase 4 | Pending |
+| COIN-01 | Phase 4 | Complete |
+| COIN-02 | Phase 4 | Complete |
+| COIN-03 | Phase 4 | Complete |
 | COIN-04 | Phase 5 | Pending |
 
 **Coverage:**
@@ -99,4 +99,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-03-26*
-*Last updated: 2026-03-26 after roadmap creation*
+*Last updated: 2026-03-26 after Phase 04-01 completion (COIN-01, COIN-02, COIN-03 marked complete)*

@@ -77,7 +77,7 @@ Plans:
   4. Each flip result is appended to the history log in the Coin tab
 **Plans**: 2 plans
 Plans:
-- [ ] 04-01-PLAN.md — useCoin hook with TDD tests and CSS 3D coin flip animation classes in index.css
+- [x] 04-01-PLAN.md — useCoin hook with TDD tests and CSS 3D coin flip animation classes in index.css
 - [ ] 04-02-PLAN.md — CoinFace, CoinDisplay, CoinControls, CoinTab components, page wiring, and human verification
 **UI hint**: yes
 
@@ -104,5 +104,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Foundation | 2/2 | Complete |  |
 | 2. Spinning Wheel | 3/3 | Complete   | 2026-03-26 |
 | 3. Dice Roller | 2/2 | Complete   | 2026-03-26 |
-| 4. Coin Flipper | 0/2 | In Progress | - |
+| 4. Coin Flipper | 1/2 | In Progress | - |
 | 5. Polish & Differentiators | 0/? | Not started | - |
