@@ -44,7 +44,11 @@ Plans:
   3. The winning item disappears from the wheel list automatically after the spin completes
   4. User can click Reset to restore all removed items to the wheel
   5. Refreshing the page restores the wheel item list from the previous session
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 02-01-PLAN.md — Install motion, localStorage utility, wheel math utilities, and useWheel hook with tests
+- [ ] 02-02-PLAN.md — WheelCanvas component with Canvas rendering, motion animation, DPR scaling, and winner overlay
+- [ ] 02-03-PLAN.md — WheelItemList, WheelControls, WheelTab container, page integration, and human verification
 **UI hint**: yes
 
 ### Phase 3: Dice Roller
@@ -91,8 +95,8 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 1/2 | In Progress|  |
-| 2. Spinning Wheel | 0/? | Not started | - |
+| 1. Foundation | 2/2 | Complete |  |
+| 2. Spinning Wheel | 0/3 | In Progress | - |
 | 3. Dice Roller | 0/? | Not started | - |
 | 4. Coin Flipper | 0/? | Not started | - |
 | 5. Polish & Differentiators | 0/? | Not started | - |
