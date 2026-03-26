@@ -37,7 +37,7 @@ export function DieCube({ value, rolling }: DieCubeProps) {
             {Array.from({ length: 9 }, (_, i) => (
               <div key={i} className="flex items-center justify-center">
                 {PIP_POSITIONS[face].includes(i) && (
-                  <div className="w-2.5 h-2.5 rounded-full bg-neutral-900" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-dice-accent" />
                 )}
               </div>
             ))}
