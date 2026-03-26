@@ -8,6 +8,7 @@ import { cn } from "@base-project/web/lib/utils";
 import { RotateCcw, Dices, Coins, History } from "lucide-react";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 import { WheelTab } from "@base-project/web/components/randomizer/wheel/wheel-tab";
+import { DiceTab } from "@base-project/web/components/randomizer/dice/dice-tab";
 
 export const Route = createFileRoute("/randomizer")({
   component: RandomizerPage,
@@ -79,7 +80,6 @@ export function RandomizerPage() {
                     "gap-1",
                     "data-[state=active]:border-dice-accent"
                   )}
-                  disabled
                 >
                   <Dices className="h-4 w-4" />
                   Dice
@@ -101,7 +101,7 @@ export function RandomizerPage() {
                 <WheelTab onHistoryChange={setWheelHistory} />
               </TabsContent>
               <TabsContent value="dice" className="mt-6">
-                <DicePlaceholder />
+                <DiceTab onHistoryChange={setDiceHistory} />
               </TabsContent>
               <TabsContent value="coin" className="mt-6">
                 <CoinPlaceholder />
@@ -131,25 +131,6 @@ export function RandomizerPage() {
   );
 }
 
-function DicePlaceholder() {
-  return (
-    <div className="opacity-50 pointer-events-none space-y-4">
-      <p className="text-base font-semibold">Dice Roller</p>
-      <p className="text-sm text-muted-foreground">Coming in the next phase</p>
-      <div className="flex gap-2">
-        {[1, 2, 3, 4, 5, 6].map((n) => (
-          <div
-            key={n}
-            className="h-12 w-12 rounded-lg border-2 border-border bg-muted flex items-center justify-center text-lg font-bold text-muted-foreground"
-          >
-            {n}
-          </div>
-        ))}
-      </div>
-      <Button disabled className="w-full">Roll Dice</Button>
-    </div>
-  );
-}
 
 function CoinPlaceholder() {
   return (
