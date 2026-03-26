@@ -9,6 +9,7 @@ import { RotateCcw, Dices, Coins, History } from "lucide-react";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 import { WheelTab } from "@base-project/web/components/randomizer/wheel/wheel-tab";
 import { DiceTab } from "@base-project/web/components/randomizer/dice/dice-tab";
+import { CoinTab } from "@base-project/web/components/randomizer/coin/coin-tab";
 
 export const Route = createFileRoute("/randomizer")({
   component: RandomizerPage,
@@ -90,7 +91,6 @@ export function RandomizerPage() {
                     "gap-1",
                     "data-[state=active]:border-coin-accent"
                   )}
-                  disabled
                 >
                   <Coins className="h-4 w-4" />
                   Coin
@@ -104,7 +104,7 @@ export function RandomizerPage() {
                 <DiceTab onHistoryChange={setDiceHistory} />
               </TabsContent>
               <TabsContent value="coin" className="mt-6">
-                <CoinPlaceholder />
+                <CoinTab onHistoryChange={setCoinHistory} />
               </TabsContent>
             </Tabs>
           </div>
@@ -131,22 +131,4 @@ export function RandomizerPage() {
   );
 }
 
-
-function CoinPlaceholder() {
-  return (
-    <div className="opacity-50 pointer-events-none space-y-4">
-      <p className="text-base font-semibold">Coin Flipper</p>
-      <p className="text-sm text-muted-foreground">Coming in the next phase</p>
-      <div className="flex gap-2">
-        <div className="h-16 w-16 rounded-full border-2 border-border bg-muted flex items-center justify-center text-sm font-bold text-muted-foreground">
-          H
-        </div>
-        <div className="h-16 w-16 rounded-full border-2 border-border bg-muted flex items-center justify-center text-sm font-bold text-muted-foreground">
-          T
-        </div>
-      </div>
-      <Button disabled className="w-full">Flip Coin</Button>
-    </div>
-  );
-}
 
