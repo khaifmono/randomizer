@@ -28,7 +28,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   1. User can navigate to the randomizer page and see a tabbed interface with three tabs: Wheel, Dice, Coin
   2. Clicking each tab shows the correct tab panel without a page reload
   3. A result history list is visible in each tab and correctly displays entries in newest-first order
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 01-01-PLAN.md — Install Shadcn Tabs, shared types, CSS accent tokens, ResultHistory component with tests
+- [ ] 01-02-PLAN.md — Randomizer page route with tabbed layout, placeholders, mobile history toggle, per-tab history state
 **UI hint**: yes
 
 ### Phase 2: Spinning Wheel
@@ -88,7 +91,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/? | Not started | - |
+| 1. Foundation | 0/2 | Planning complete | - |
 | 2. Spinning Wheel | 0/? | Not started | - |
 | 3. Dice Roller | 0/? | Not started | - |
 | 4. Coin Flipper | 0/? | Not started | - |
