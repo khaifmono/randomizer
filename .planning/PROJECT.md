@@ -31,9 +31,16 @@ Satisfying, animated randomization that feels fun to use — the wheel spins smo
 - ✓ Multi-coin flipper with selectable coin count — Phase 4
 - ✓ Coin flip animation with CSS 3D toss arc — Phase 4
 - ✓ Heads/tails count display — Phase 4
+- ✓ Wheel item count badge — Phase 5
+- ✓ Wheel empty state celebration with confetti — Phase 5
+- ✓ Instant re-spin without clearing — Phase 5
+- ✓ Green pip dot patterns on dice faces — Phase 5
+- ✓ Coin session tally in history — Phase 5
+- ✓ Fun, smooth animations across all tools — Phase 5
 
 ### Active
-- [ ] Fun, smooth animations across all tools
+
+(All v1 requirements validated)
 
 ### Out of Scope
 
@@ -84,4 +91,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-27 after Phase 4 completion*
+*Last updated: 2026-03-27 after Phase 5 completion — all v1 requirements shipped*
