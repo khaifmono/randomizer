@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@base-project/web/components/ui/tabs";
 import { Button } from "@base-project/web/components/ui/button";
 import { Card, CardContent } from "@base-project/web/components/ui/card";
@@ -13,13 +13,17 @@ import { CoinTab } from "@base-project/web/components/randomizer/coin/coin-tab";
 
 export const Route = createFileRoute("/randomizer")({
   component: RandomizerPage,
+  validateSearch: (search: Record<string, unknown>) => ({
+    tab: (search.tab as string) || "wheel",
+  }),
 });
 
 export function RandomizerPage() {
+  const { tab: initialTab } = useSearch({ from: "/randomizer" });
   const [wheelHistory, setWheelHistory] = useState<HistoryEntry[]>([]);
   const [diceHistory, setDiceHistory] = useState<HistoryEntry[]>([]);
   const [coinHistory, setCoinHistory] = useState<HistoryEntry[]>([]);
-  const [activeTab, setActiveTab] = useState<string>("wheel");
+  const [activeTab, setActiveTab] = useState<string>(initialTab);
   const [historyOpen, setHistoryOpen] = useState(false);
   const coinClearSessionRef = useRef<(() => void) | null>(null);
 
@@ -67,7 +71,7 @@ export function RandomizerPage() {
             </div>
 
             {/* Tabs */}
-            <Tabs defaultValue="wheel" onValueChange={setActiveTab}>
+            <Tabs defaultValue={initialTab} onValueChange={setActiveTab}>
               <TabsList variant="line">
                 <TabsTrigger
                   value="wheel"
