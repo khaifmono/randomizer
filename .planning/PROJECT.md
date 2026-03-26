@@ -28,9 +28,11 @@ Satisfying, animated randomization that feels fun to use — the wheel spins smo
 - ✓ Simultaneous dice animation on roll — Phase 3
 - ✓ Sum total display after each roll — Phase 3
 
+- ✓ Multi-coin flipper with selectable coin count — Phase 4
+- ✓ Coin flip animation with CSS 3D toss arc — Phase 4
+- ✓ Heads/tails count display — Phase 4
+
 ### Active
-- [ ] Multi-coin flipper with selectable coin count
-- [ ] Coin flip animation
 - [ ] Fun, smooth animations across all tools
 
 ### Out of Scope
@@ -82,4 +84,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-26 after Phase 3 completion*
+*Last updated: 2026-03-27 after Phase 4 completion*
