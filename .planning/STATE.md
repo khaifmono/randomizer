@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: "Completed 05-polish-differentiators 05-01-PLAN.md"
-last_updated: "2026-03-26T16:50:00.000Z"
+stopped_at: Completed 05-polish-differentiators 05-02-PLAN.md
+last_updated: "2026-03-26T16:52:05.718Z"
 last_activity: 2026-03-26
 progress:
   total_phases: 5
   completed_phases: 4
   total_plans: 11
   completed_plans: 10
-  percent: 91
+  percent: 100
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-26)
 
 **Core value:** Satisfying, animated randomization that feels fun to use — the wheel spins smoothly, dice tumble, coins flip with personality.
-**Current focus:** Phase 05 — polish-differentiators
+**Current focus:** Phase 03 — dice-roller
 
 ## Current Position
 
 Phase: 5
-Plan: 2
-Status: Executing Phase 05
+Plan: Not started
+Status: Executing Phase 03
 Last activity: 2026-03-26
 
-Progress: [█████████░] 91%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -56,7 +56,7 @@ Progress: [█████████░] 91%
 | Phase 02-spinning-wheel P01 | 524866min | 2 tasks | 8 files |
 | Phase 02-spinning-wheel P02 | 5min | 2 tasks | 3 files |
 | Phase 02-spinning-wheel P03 | 9min | 2 tasks | 8 files |
-| Phase 05-polish-differentiators P01 | 5min | 2 tasks | 5 files |
+| Phase 05-polish-differentiators P02 | 5 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -82,9 +82,7 @@ Recent decisions affecting current work:
 - [Phase 02-03]: WheelItemList holds its own input state (inputValue, bulkOpen, bulkValue) — keeps form state local, parent receives callbacks
 - [Phase 02-03]: vi.hoisted() used for mock fn in wheel-tab.test.tsx — vi.mock() is hoisted before variable declarations
 - [Phase 02-03]: node_modules symlinked from main repo apps/web into worktree for test runner access
-- [Phase 05-01]: Split onSpinEnd timeout into two: isSpinningRef.current=false at 600ms (spin lock), setWinner(null) at 2200ms (overlay dismiss) — enables instant re-spin while winner overlay persists
-- [Phase 05-01]: CONFETTI_PARTICLES array defined as module-level constant outside component to avoid recreation on each render
-- [Phase 05-01]: hasRemovedItems && liveItems.length===0 guards celebration — manual deletion does not trigger "All done!" screen
+- [Phase 05-02]: registerClearSession ref callback pattern: parent stores ref to child's clearSession, child registers via useEffect on mount, called in handleClearHistory alongside setCoinHistory([])
 
 ### Pending Todos
 
@@ -96,6 +94,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-26T16:50:00.000Z
-Stopped at: Completed 05-polish-differentiators 05-01-PLAN.md
+Last session: 2026-03-26T16:52:05.715Z
+Stopped at: Completed 05-polish-differentiators 05-02-PLAN.md
 Resume file: None

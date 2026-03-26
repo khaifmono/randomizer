@@ -31,14 +31,14 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **DICE-02**: User sees dice roll animation using CSS 3D transforms
 - [x] **DICE-03**: User sees sum total displayed after each roll
 - [x] **DICE-04**: All dice animate simultaneously on roll
-- [ ] **DICE-05**: Each die displays pip face icons (dot patterns) instead of plain numbers
+- [x] **DICE-05**: Each die displays pip face icons (dot patterns) instead of plain numbers
 
 ### Coin
 
 - [x] **COIN-01**: User can select number of coins to flip (1+)
 - [x] **COIN-02**: User sees coin flip animation using CSS 3D transforms
 - [x] **COIN-03**: User sees heads/tails count displayed after each flip
-- [ ] **COIN-04**: User sees running session tally in history ("5H 3T across 8 flips")
+- [x] **COIN-04**: User sees running session tally in history ("5H 3T across 8 flips")
 
 ## v2 Requirements
 
@@ -86,11 +86,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DICE-02 | Phase 3 | Complete |
 | DICE-03 | Phase 3 | Complete |
 | DICE-04 | Phase 3 | Complete |
-| DICE-05 | Phase 5 | Pending |
+| DICE-05 | Phase 5 | Complete |
 | COIN-01 | Phase 4 | Complete |
 | COIN-02 | Phase 4 | Complete |
 | COIN-03 | Phase 4 | Complete |
-| COIN-04 | Phase 5 | Pending |
+| COIN-04 | Phase 5 | Complete |
 
 **Coverage:**
 - v1 requirements: 21 total

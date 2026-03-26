@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { DiceTab } from "./dice-tab";
+import { DieCube } from "./die-cube";
 
 const defaultDiceState = {
   count: 2,
@@ -59,5 +60,20 @@ describe("DiceTab", () => {
     const onHistoryChange = vi.fn();
     render(<DiceTab onHistoryChange={onHistoryChange} />);
     expect(onHistoryChange).toHaveBeenCalledWith(mockHistory);
+  });
+});
+
+describe("DieCube", () => {
+  it("pip dots use dice-accent color class", () => {
+    const { container } = render(<DieCube value={6} rolling={false} />);
+    const roundedDots = container.querySelectorAll(".rounded-full");
+    const accentDots = container.querySelectorAll(".bg-dice-accent");
+    // Should have at least one pip dot with the dice-accent class
+    expect(accentDots.length).toBeGreaterThan(0);
+    // Should NOT have any pips using bg-neutral-900
+    const neutralDots = container.querySelectorAll(".bg-neutral-900");
+    expect(neutralDots.length).toBe(0);
+    // roundedDots sanity check: all rounded-full elements should be accented
+    expect(roundedDots.length).toBe(accentDots.length);
   });
 });

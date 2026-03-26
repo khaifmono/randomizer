@@ -185,3 +185,74 @@ describe("useCoin", () => {
     expect(result.current.count).toBe(1);
   });
 });
+
+describe("session tally (COIN-04)", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("initializes with sessionHeads=0 and sessionTails=0", () => {
+    const { result } = renderHook(() => useCoin());
+    expect(result.current.sessionHeads).toBe(0);
+    expect(result.current.sessionTails).toBe(0);
+  });
+
+  it("accumulates sessionHeads and sessionTails across multiple onFlipEnd calls", () => {
+    const { result } = renderHook(() => useCoin());
+
+    // First flip: 3 coins yielding 2H 1T
+    act(() => { result.current.setCount(3); });
+    const mock1 = vi
+      .spyOn(Math, "random")
+      .mockReturnValueOnce(0.3)
+      .mockReturnValueOnce(0.3)
+      .mockReturnValueOnce(0.7);
+    act(() => { result.current.startFlip(); });
+    mock1.mockRestore();
+    act(() => { result.current.onFlipEnd(); });
+    act(() => { vi.advanceTimersByTime(200); });
+
+    expect(result.current.sessionHeads).toBe(2);
+    expect(result.current.sessionTails).toBe(1);
+
+    // Second flip: 2 coins yielding 1H 1T
+    act(() => { result.current.setCount(2); });
+    const mock2 = vi
+      .spyOn(Math, "random")
+      .mockReturnValueOnce(0.3)
+      .mockReturnValueOnce(0.7);
+    act(() => { result.current.startFlip(); });
+    mock2.mockRestore();
+    act(() => { result.current.onFlipEnd(); });
+    act(() => { vi.advanceTimersByTime(200); });
+
+    // Accumulated: 2+1=3 heads, 1+1=2 tails
+    expect(result.current.sessionHeads).toBe(3);
+    expect(result.current.sessionTails).toBe(2);
+  });
+
+  it("clearSession resets sessionHeads and sessionTails to 0", () => {
+    const { result } = renderHook(() => useCoin());
+
+    // Do a flip to accumulate some tally
+    const mock = vi
+      .spyOn(Math, "random")
+      .mockReturnValueOnce(0.3)
+      .mockReturnValueOnce(0.7);
+    act(() => { result.current.startFlip(); });
+    mock.mockRestore();
+    act(() => { result.current.onFlipEnd(); });
+    act(() => { vi.advanceTimersByTime(200); });
+
+    expect(result.current.sessionHeads).toBeGreaterThan(0);
+
+    // Clear session
+    act(() => { result.current.clearSession(); });
+    expect(result.current.sessionHeads).toBe(0);
+    expect(result.current.sessionTails).toBe(0);
+  });
+});

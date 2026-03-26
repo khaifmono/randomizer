@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@base-project/web/components/ui/tabs";
 import { Button } from "@base-project/web/components/ui/button";
@@ -21,6 +21,7 @@ export function RandomizerPage() {
   const [coinHistory, setCoinHistory] = useState<HistoryEntry[]>([]);
   const [activeTab, setActiveTab] = useState<string>("wheel");
   const [historyOpen, setHistoryOpen] = useState(false);
+  const coinClearSessionRef = useRef<(() => void) | null>(null);
 
   const activeHistory =
     activeTab === "wheel"
@@ -32,7 +33,10 @@ export function RandomizerPage() {
   function handleClearHistory() {
     if (activeTab === "wheel") setWheelHistory([]);
     else if (activeTab === "dice") setDiceHistory([]);
-    else setCoinHistory([]);
+    else {
+      setCoinHistory([]);
+      coinClearSessionRef.current?.();
+    }
   }
 
   return (
@@ -104,7 +108,10 @@ export function RandomizerPage() {
                 <DiceTab onHistoryChange={setDiceHistory} />
               </TabsContent>
               <TabsContent value="coin" className="mt-6">
-                <CoinTab onHistoryChange={setCoinHistory} />
+                <CoinTab
+                  onHistoryChange={setCoinHistory}
+                  registerClearSession={(fn) => { coinClearSessionRef.current = fn; }}
+                />
               </TabsContent>
             </Tabs>
           </div>

@@ -8,9 +8,12 @@ const defaultCoinState = {
   results: ["heads" as const],
   tally: { heads: 1, tails: 0 },
   history: [],
+  sessionHeads: 0,
+  sessionTails: 0,
   setCount: vi.fn(),
   startFlip: vi.fn(),
   onFlipEnd: vi.fn(),
+  clearSession: vi.fn(),
 };
 
 const mockUseCoin = vi.hoisted(() => vi.fn(() => defaultCoinState));
@@ -59,5 +62,19 @@ describe("CoinTab", () => {
     const onHistoryChange = vi.fn();
     render(<CoinTab onHistoryChange={onHistoryChange} />);
     expect(onHistoryChange).toHaveBeenCalledWith(mockHistory);
+  });
+
+  it("shows session tally after flips", () => {
+    mockUseCoin.mockReturnValue({ ...defaultCoinState, sessionHeads: 5, sessionTails: 3 });
+    render(<CoinTab onHistoryChange={vi.fn()} />);
+    expect(screen.getByTestId("session-tally")).toBeInTheDocument();
+    expect(screen.getByText(/5H 3T across 8 flips/)).toBeInTheDocument();
+  });
+
+  it("hides session tally when no flips have occurred", () => {
+    mockUseCoin.mockReturnValue({ ...defaultCoinState, sessionHeads: 0, sessionTails: 0 });
+    render(<CoinTab onHistoryChange={vi.fn()} />);
+    expect(screen.queryByTestId("session-tally")).not.toBeInTheDocument();
+    expect(screen.queryByText(/across/)).not.toBeInTheDocument();
   });
 });
