@@ -17,11 +17,9 @@ export function WheelCanvas({ items, spinning, winnerIndex, winner, onSpin, onSp
   const rafRef = useRef(0);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const cssSizeRef = useRef(0);
-  // Store the items in a ref so the draw loop always has the latest value
   const itemsRef = useRef(items);
   itemsRef.current = items;
 
-  // DPR-aware canvas initialization with ResizeObserver
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -43,11 +41,8 @@ export function WheelCanvas({ items, spinning, winnerIndex, winner, onSpin, onSp
       }
     });
 
-    // Observe the parent element for size changes
     const parent = canvas.parentElement;
-    if (parent) {
-      observer.observe(parent);
-    }
+    if (parent) observer.observe(parent);
 
     return () => {
       observer.disconnect();
@@ -55,7 +50,6 @@ export function WheelCanvas({ items, spinning, winnerIndex, winner, onSpin, onSp
     };
   }, []);
 
-  // Draw loop — runs continuously via requestAnimationFrame
   useEffect(() => {
     function draw() {
       const ctx = ctxRef.current;
@@ -69,19 +63,19 @@ export function WheelCanvas({ items, spinning, winnerIndex, winner, onSpin, onSp
 
       const cx = cssSize / 2;
       const cy = cssSize / 2;
-      const radius = cssSize / 2 - 4;
+      const radius = cssSize / 2 - 2;
+      const hubRadius = radius * 0.15;
 
       ctx.clearRect(0, 0, cssSize, cssSize);
 
       if (currentItems.length === 0) {
-        // Empty state: placeholder circle with text
         ctx.beginPath();
         ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
         ctx.fillStyle = "#e5e5e5";
         ctx.fill();
 
         ctx.fillStyle = "#737373";
-        ctx.font = "14px sans-serif";
+        ctx.font = `bold ${cssSize * 0.04}px system-ui, sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText("Add items to spin", cx, cy);
@@ -105,21 +99,24 @@ export function WheelCanvas({ items, spinning, winnerIndex, winner, onSpin, onSp
         ctx.fillStyle = getSegmentColor(i);
         ctx.fill();
 
-        // Stroke segment border
+        // White border between segments
         ctx.beginPath();
         ctx.moveTo(cx, cy);
-        ctx.arc(cx, cy, radius, startAngle, endAngle);
-        ctx.closePath();
-        ctx.strokeStyle = "rgba(255,255,255,0.4)";
-        ctx.lineWidth = 1.5;
+        ctx.lineTo(cx + Math.cos(startAngle) * radius, cy + Math.sin(startAngle) * radius);
+        ctx.strokeStyle = "rgba(255,255,255,0.6)";
+        ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Draw radial text
+        // Draw text — bold, large, white, radial
         const midAngle = startAngle + segmentAngle / 2;
-        const text = currentItems[i].length > 16
-          ? currentItems[i].slice(0, 16) + "…"
+        const text = currentItems[i].length > 12
+          ? currentItems[i].slice(0, 12) + "…"
           : currentItems[i];
-        const fontSize = Math.max(11, Math.min(14, radius / currentItems.length * 1.5));
+
+        // Scale font size based on wheel size and item count
+        const maxFontSize = cssSize * 0.055;
+        const minFontSize = cssSize * 0.025;
+        const fontSize = Math.max(minFontSize, Math.min(maxFontSize, (radius * 0.9) / currentItems.length * 2.2));
 
         ctx.save();
         ctx.translate(cx, cy);
@@ -127,28 +124,36 @@ export function WheelCanvas({ items, spinning, winnerIndex, winner, onSpin, onSp
         ctx.textAlign = "right";
         ctx.textBaseline = "middle";
         ctx.fillStyle = "#ffffff";
-        ctx.shadowColor = "rgba(0,0,0,0.5)";
-        ctx.shadowBlur = 2;
-        ctx.font = `${fontSize}px sans-serif`;
-        ctx.fillText(text, radius - 10, 4);
+        ctx.shadowColor = "rgba(0,0,0,0.4)";
+        ctx.shadowBlur = 3;
+        ctx.font = `bold ${fontSize}px system-ui, sans-serif`;
+        ctx.fillText(text, radius - 14, 0);
+        ctx.shadowBlur = 0;
         ctx.restore();
       }
 
-      // Draw outer ring
+      // Outer ring
       ctx.beginPath();
       ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
-      ctx.strokeStyle = "rgba(255,255,255,0.3)";
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = "rgba(0,0,0,0.15)";
+      ctx.lineWidth = 3;
       ctx.stroke();
 
-      // Draw center hub
+      // White center hub
       ctx.beginPath();
-      ctx.arc(cx, cy, 14, 0, 2 * Math.PI);
+      ctx.arc(cx, cy, hubRadius, 0, 2 * Math.PI);
       ctx.fillStyle = "#ffffff";
-      ctx.shadowColor = "rgba(0,0,0,0.2)";
-      ctx.shadowBlur = 4;
+      ctx.shadowColor = "rgba(0,0,0,0.25)";
+      ctx.shadowBlur = 8;
       ctx.fill();
       ctx.shadowBlur = 0;
+
+      // Hub border
+      ctx.beginPath();
+      ctx.arc(cx, cy, hubRadius, 0, 2 * Math.PI);
+      ctx.strokeStyle = "rgba(0,0,0,0.1)";
+      ctx.lineWidth = 2;
+      ctx.stroke();
 
       rafRef.current = requestAnimationFrame(draw);
     }
@@ -160,13 +165,13 @@ export function WheelCanvas({ items, spinning, winnerIndex, winner, onSpin, onSp
     };
   }, [items]);
 
-  // Motion animation effect — triggers when spinning becomes true
+  // Motion animation
   useEffect(() => {
     if (!spinning || winnerIndex === null || items.length === 0) return;
 
-    const fullRotations = 4 + Math.floor(Math.random() * 3); // 4-6 rotations
+    const fullRotations = 4 + Math.floor(Math.random() * 3);
     const targetAngle = calculateStopAngle(rotationRef.current, winnerIndex, items.length, fullRotations);
-    const duration = 4 + Math.random(); // 4-5 seconds
+    const duration = 4 + Math.random();
 
     const controls = animate(rotationRef.current, targetAngle, {
       duration,
@@ -182,41 +187,31 @@ export function WheelCanvas({ items, spinning, winnerIndex, winner, onSpin, onSp
     return () => {
       controls.stop();
     };
-  // onSpinEnd is intentionally excluded — it should not restart animation when it changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spinning, winnerIndex, items.length]);
 
   const canClick = !spinning && items.length > 0;
 
-  const handleCanvasClick = () => {
-    if (canClick) {
-      onSpin();
-    }
-  };
-
   return (
-    <div className="relative">
-      {/* Pointer triangle at 12 o'clock — SVG with white fill and dark stroke */}
+    <div className="relative w-full">
+      {/* Pointer on the right side */}
       <svg
-        className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-0.5 pointer-events-none z-10"
-        width="24"
-        height="26"
-        viewBox="0 0 24 26"
+        className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1 pointer-events-none z-10 drop-shadow-md"
+        width="32"
+        height="40"
+        viewBox="0 0 32 40"
         aria-hidden="true"
       >
-        {/* Dark shadow/stroke triangle */}
-        <polygon points="12,25 1,1 23,1" fill="#1a1a1a" />
-        {/* White fill triangle */}
-        <polygon points="12,23 3,2 21,2" fill="#ffffff" />
+        <polygon points="0,0 32,20 0,40" fill="#fdd835" stroke="#e6c200" strokeWidth="2" />
       </svg>
 
       <canvas
         ref={canvasRef}
         className={[
-          "w-full aspect-square max-w-[min(70vh,700px)]",
+          "w-full aspect-square",
           canClick ? "cursor-pointer" : items.length === 0 ? "cursor-default" : "cursor-not-allowed",
         ].join(" ")}
-        onClick={handleCanvasClick}
+        onClick={() => canClick && onSpin()}
         role="img"
         aria-label="Spinning wheel"
       />
@@ -224,12 +219,9 @@ export function WheelCanvas({ items, spinning, winnerIndex, winner, onSpin, onSp
       {/* Winner overlay */}
       {winner !== null && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-          <div
-            className="px-6 py-3 rounded-xl animate-in fade-in zoom-in-95 duration-200"
-            style={{ backgroundColor: "oklch(0.55 0.18 240 / 0.85)" }}
-          >
-            <p className="text-sm font-semibold text-white/80 text-center">Winner!</p>
-            <p className="text-xl font-semibold text-white text-center">{winner}</p>
+          <div className="bg-black/80 backdrop-blur-sm px-8 py-5 rounded-2xl animate-in fade-in zoom-in-95 duration-200 shadow-2xl">
+            <p className="text-sm font-semibold text-white/60 text-center">Winner!</p>
+            <p className="text-3xl font-black text-white text-center">{winner}</p>
           </div>
         </div>
       )}

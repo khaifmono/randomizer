@@ -51,10 +51,10 @@ export function WheelTab({ onHistoryChange }: WheelTabProps) {
   const showCelebration = liveItems.length === 0 && hasRemovedItems;
 
   return (
-    <div className="flex flex-col md:flex-row gap-8">
-      {/* Left column: Wheel + Controls */}
-      <div className="flex-1 flex flex-col items-center gap-4">
-        {/* Item count badge — visible when items exist */}
+    <div className="flex flex-col lg:flex-row gap-6 w-full max-w-6xl mx-auto">
+      {/* Wheel area — takes all available space */}
+      <div className="flex-1 flex flex-col items-center gap-3 min-w-0">
+        {/* Item count badge */}
         {liveItems.length > 0 && (
           <Badge className="bg-wheel-accent text-white border-0 text-sm px-3 py-1">
             {liveItems.length} {liveItems.length === 1 ? "item" : "items"} remaining
@@ -62,29 +62,29 @@ export function WheelTab({ onHistoryChange }: WheelTabProps) {
         )}
 
         {showCelebration ? (
-          /* Empty state celebration — only after spin-removal */
-          <div className="relative flex flex-col items-center gap-4 py-12 w-full max-w-[480px]">
-            {/* Confetti particles */}
+          <div className="relative flex flex-col items-center gap-4 py-24 w-full">
             {CONFETTI_PARTICLES.map((p) => (
               <div key={p.id} className="confetti-particle" style={p.style} />
             ))}
-            <p className="text-2xl font-bold animate-in fade-in zoom-in-95 duration-300">All done!</p>
-            <p className="text-sm text-muted-foreground">All items have been drawn.</p>
-            <Button onClick={reset} className="mt-2 gap-1.5">
-              <RotateCcw className="h-4 w-4" />
+            <p className="text-3xl font-black animate-in fade-in zoom-in-95 duration-300">All done!</p>
+            <p className="text-muted-foreground">All items have been drawn.</p>
+            <Button onClick={reset} size="lg" className="mt-4 gap-2">
+              <RotateCcw className="h-5 w-5" />
               Reset Wheel
             </Button>
           </div>
         ) : (
           <>
-            <WheelCanvas
-              items={items}
-              spinning={spinning}
-              winnerIndex={winnerIndex}
-              winner={winner}
-              onSpin={startSpin}
-              onSpinEnd={onSpinEnd}
-            />
+            <div className="w-full max-w-[min(75vh,640px)] mx-auto">
+              <WheelCanvas
+                items={items}
+                spinning={spinning}
+                winnerIndex={winnerIndex}
+                winner={winner}
+                onSpin={startSpin}
+                onSpinEnd={onSpinEnd}
+              />
+            </div>
             <WheelControls
               onSpin={startSpin}
               onReset={reset}
@@ -96,8 +96,8 @@ export function WheelTab({ onHistoryChange }: WheelTabProps) {
         )}
       </div>
 
-      {/* Right column: Item management */}
-      <div className="w-full md:w-72 shrink-0">
+      {/* Item list sidebar */}
+      <div className="w-full lg:w-64 shrink-0">
         <WheelItemList
           items={liveItems}
           onAddItem={addItem}

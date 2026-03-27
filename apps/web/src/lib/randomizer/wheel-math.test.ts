@@ -64,16 +64,16 @@ describe("SEGMENT_COLORS", () => {
 
   it("contains exactly the specified hex color strings", () => {
     expect(SEGMENT_COLORS).toEqual([
-      "#6366f1",
-      "#f59e0b",
-      "#10b981",
-      "#ef4444",
-      "#8b5cf6",
-      "#3b82f6",
-      "#f97316",
-      "#14b8a6",
-      "#ec4899",
-      "#84cc16",
+      "#e53935",
+      "#1e88e5",
+      "#43a047",
+      "#fdd835",
+      "#e53935",
+      "#1e88e5",
+      "#43a047",
+      "#fdd835",
+      "#e53935",
+      "#1e88e5",
     ]);
   });
 });

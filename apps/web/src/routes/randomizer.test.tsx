@@ -2,11 +2,13 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-// Mock TanStack Router's createFileRoute to avoid router context errors in test
+// Mock TanStack Router to avoid router context errors in test
 vi.mock("@tanstack/react-router", () => ({
   createFileRoute: () => (opts: { component: unknown }) => ({
     component: opts.component,
   }),
+  useSearch: () => ({ tab: "wheel" }),
+  Link: ({ children, ...props }: { children: React.ReactNode; to?: string }) => <a {...props}>{children}</a>,
 }));
 
 // Mock motion animate function (used by WheelCanvas)
@@ -49,14 +51,14 @@ HTMLCanvasElement.prototype.getContext = vi.fn((_contextId: string) => ({
 import { RandomizerPage } from "./randomizer";
 
 describe("RandomizerPage", () => {
-  it("renders page title 'Randomizer Toolkit'", () => {
+  it("renders page title with 'Randomizer' text", () => {
     render(<RandomizerPage />);
-    expect(screen.getByText("Randomizer Toolkit")).toBeDefined();
+    expect(screen.getByText("Randomizer")).toBeDefined();
   });
 
-  it("renders page tagline 'Spin, roll, or flip — decide anything.'", () => {
+  it("renders 'Toolkit' in the header", () => {
     render(<RandomizerPage />);
-    expect(screen.getByText(/Spin, roll, or flip/)).toBeDefined();
+    expect(screen.getByText(/Toolkit/)).toBeDefined();
   });
 
   it("renders three tab triggers: Wheel, Dice, Coin", () => {
@@ -71,9 +73,9 @@ describe("RandomizerPage", () => {
     expect(screen.getByText("Option 1")).toBeDefined();
   });
 
-  it("renders 'History' heading in the history panel", () => {
+  it("renders 'History' in the page", () => {
     render(<RandomizerPage />);
-    expect(screen.getByText("History")).toBeDefined();
+    expect(screen.getAllByText("History").length).toBeGreaterThan(0);
   });
 
   it("renders 'No results yet' in the history panel initially", () => {

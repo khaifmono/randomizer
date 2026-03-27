@@ -1,14 +1,14 @@
 const SEGMENT_COLORS: readonly string[] = [
-  "#6366f1",
-  "#f59e0b",
-  "#10b981",
-  "#ef4444",
-  "#8b5cf6",
-  "#3b82f6",
-  "#f97316",
-  "#14b8a6",
-  "#ec4899",
-  "#84cc16",
+  "#e53935", // red
+  "#1e88e5", // blue
+  "#43a047", // green
+  "#fdd835", // yellow
+  "#e53935", // red
+  "#1e88e5", // blue
+  "#43a047", // green
+  "#fdd835", // yellow
+  "#e53935", // red
+  "#1e88e5", // blue
 ];
 
 function normalizeAngle(angle: number): number {
