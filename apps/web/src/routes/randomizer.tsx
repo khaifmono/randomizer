@@ -11,6 +11,7 @@ import { DiceTab } from "@base-project/web/components/randomizer/dice/dice-tab";
 import { CoinTab } from "@base-project/web/components/randomizer/coin/coin-tab";
 import { NumberTab } from "@base-project/web/components/randomizer/number/number-tab";
 import { TeamsTab } from "@base-project/web/components/randomizer/teams/teams-tab";
+import { CardsTab } from "@base-project/web/components/randomizer/cards/cards-tab";
 
 export const Route = createFileRoute("/randomizer")({
   component: RandomizerPage,
@@ -26,20 +27,14 @@ export function RandomizerPage() {
   const [coinHistory, setCoinHistory] = useState<HistoryEntry[]>([]);
   const [numberHistory, setNumberHistory] = useState<HistoryEntry[]>([]);
   const [teamsHistory, setTeamsHistory] = useState<HistoryEntry[]>([]);
+  const [cardsHistory, setCardsHistory] = useState<HistoryEntry[]>([]);
   const [activeTab, setActiveTab] = useState<string>(initialTab);
   const [historyOpen, setHistoryOpen] = useState(false);
   const coinClearSessionRef = useRef<(() => void) | null>(null);
 
-  const activeHistory =
-    activeTab === "wheel"
-      ? wheelHistory
-      : activeTab === "dice"
-        ? diceHistory
-        : activeTab === "coin"
-          ? coinHistory
-          : activeTab === "number"
-            ? numberHistory
-            : teamsHistory;
+  const activeHistory = (
+    { wheel: wheelHistory, dice: diceHistory, coin: coinHistory, number: numberHistory, teams: teamsHistory, cards: cardsHistory } as Record<string, HistoryEntry[]>
+  )[activeTab] ?? [];
 
   function handleClearHistory() {
     if (activeTab === "wheel") setWheelHistory([]);
@@ -48,6 +43,7 @@ export function RandomizerPage() {
       setCoinHistory([]);
       coinClearSessionRef.current?.();
     }
+    else if (activeTab === "cards") setCardsHistory([]);
     else if (activeTab === "number") setNumberHistory([]);
     else if (activeTab === "teams") setTeamsHistory([]);
   }
@@ -128,7 +124,10 @@ export function RandomizerPage() {
                   <Users className="h-5 w-5" />
                   Teams
                 </TabsTrigger>
-                <TabsTrigger value="cards" disabled className="gap-2 text-base font-semibold px-5 py-2.5 opacity-40">
+                <TabsTrigger
+                  value="cards"
+                  className={cn("gap-2 text-base font-semibold px-5 py-2.5", "data-[state=active]:border-cards-accent")}
+                >
                   <RectangleHorizontal className="h-5 w-5" />
                   Cards
                 </TabsTrigger>
@@ -153,8 +152,8 @@ export function RandomizerPage() {
               <TabsContent value="teams" className="mt-0 p-6 flex items-start justify-center">
                 <TeamsTab onHistoryChange={setTeamsHistory} />
               </TabsContent>
-              <TabsContent value="cards" className="mt-0 p-6">
-                <ComingSoon icon={<RectangleHorizontal className="h-10 w-10" />} title="Card Drawer" description="Draw from a standard 52-card deck with a satisfying flip animation." />
+              <TabsContent value="cards" className="mt-0 p-6 flex items-start justify-center">
+                <CardsTab onHistoryChange={setCardsHistory} />
               </TabsContent>
             </Tabs>
           </div>
