@@ -70,10 +70,14 @@ function LandingPage() {
             glowColor="shadow-amber-500/25"
             tab="coin"
           />
-          <ComingSoonCard
+          <ToolCard
             icon={<Hash className="h-8 w-8" />}
-            title="Number Generator"
-            description="Pick a random number with a slot-machine rolling animation."
+            title="Lucky Number"
+            description="Pull the lever on a casino-style slot machine and get your random number."
+            gradientFrom="from-purple-500"
+            gradientTo="to-purple-600"
+            glowColor="shadow-purple-500/25"
+            tab="number"
           />
           <ComingSoonCard
             icon={<Users className="h-8 w-8" />}
