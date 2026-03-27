@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useNumber, REEL_STAGGER_MS, BASE_REEL_DURATION_MS } from "@base-project/web/lib/randomizer/use-number";
 import { NumberDisplay } from "./number-display";
 import { NumberControls } from "./number-controls";

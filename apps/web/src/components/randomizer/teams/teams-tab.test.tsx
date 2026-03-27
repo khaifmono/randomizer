@@ -1,14 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { TeamsTab } from "./teams-tab";
+import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
+import type { ShuffleResult } from "@base-project/web/lib/randomizer/use-teams";
 
 const defaultTeamsState = {
-  names: [],
+  names: [] as string[],
   mode: "split" as const,
   teamCount: 2,
   shuffling: false,
-  result: null,
-  history: [],
+  result: null as ShuffleResult | null,
+  history: [] as HistoryEntry[],
   setNames: vi.fn(),
   setMode: vi.fn(),
   setTeamCount: vi.fn(),

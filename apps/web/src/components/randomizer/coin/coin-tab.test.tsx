@@ -1,13 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { CoinTab } from "./coin-tab";
+import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 
 const defaultCoinState = {
   count: 1,
   flipping: false,
   results: ["heads" as const],
-  tally: { heads: 1, tails: 0 },
-  history: [],
+  tally: { heads: 1, tails: 0 } as { heads: number; tails: number } | null,
+  history: [] as HistoryEntry[],
   sessionHeads: 0,
   sessionTails: 0,
   setCount: vi.fn(),

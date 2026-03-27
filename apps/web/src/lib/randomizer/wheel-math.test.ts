@@ -3,7 +3,6 @@ import { normalizeAngle, calculateStopAngle, SEGMENT_COLORS, getSegmentColor } f
 
 const PI = Math.PI;
 const TWO_PI = 2 * PI;
-const TOLERANCE = 1e-9;
 
 describe("normalizeAngle", () => {
   it("returns 0 for 0", () => {

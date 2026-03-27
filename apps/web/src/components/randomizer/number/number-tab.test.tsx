@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { NumberTab } from "./number-tab";
+import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 
 const defaultNumberState = {
   min: 1,
@@ -8,7 +9,7 @@ const defaultNumberState = {
   rolling: false,
   result: 42,
   digits: [4, 2],
-  history: [],
+  history: [] as HistoryEntry[],
   setRange: vi.fn(),
   startRoll: vi.fn(),
   onRollEnd: vi.fn(),

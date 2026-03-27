@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@base-project/web/comp
 import { Button } from "@base-project/web/components/ui/button";
 import { ResultHistory } from "@base-project/web/components/result-history";
 import { cn } from "@base-project/web/lib/utils";
-import { RotateCcw, Dices, Coins, History, ChevronLeft, Hash, Users, RectangleHorizontal, Lock } from "lucide-react";
+import { RotateCcw, Dices, Coins, History, ChevronLeft, Hash, Users, RectangleHorizontal } from "lucide-react";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 import { WheelTab } from "@base-project/web/components/randomizer/wheel/wheel-tab";
 import { DiceTab } from "@base-project/web/components/randomizer/dice/dice-tab";
@@ -206,20 +206,3 @@ export function RandomizerPage() {
   );
 }
 
-function ComingSoon({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
-  return (
-    <div className="flex flex-col items-center justify-center gap-4 py-24 text-center max-w-md mx-auto">
-      <div className="h-20 w-20 rounded-2xl bg-muted/50 flex items-center justify-center text-muted-foreground">
-        {icon}
-      </div>
-      <div className="space-y-2">
-        <h3 className="text-xl font-bold">{title}</h3>
-        <p className="text-sm text-muted-foreground">{description}</p>
-      </div>
-      <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground bg-muted/50 rounded-full px-3 py-1.5">
-        <Lock className="h-3 w-3" />
-        Coming soon
-      </div>
-    </div>
-  );
-}

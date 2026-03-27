@@ -8,6 +8,7 @@ vi.mock("motion", () => ({
 }));
 
 // Mock canvas getContext to prevent jsdom errors
+// eslint-disable-next-line ts/no-explicit-any
 HTMLCanvasElement.prototype.getContext = vi.fn((_contextId: string) => ({
   clearRect: vi.fn(),
   beginPath: vi.fn(),
@@ -30,7 +31,7 @@ HTMLCanvasElement.prototype.getContext = vi.fn((_contextId: string) => ({
   set textBaseline(_: string) {},
   set shadowColor(_: string) {},
   set shadowBlur(_: number) {},
-})) as HTMLCanvasElement["getContext"];
+})) as unknown as typeof HTMLCanvasElement.prototype.getContext;
 
 // Mock ResizeObserver
 global.ResizeObserver = vi.fn().mockImplementation(() => ({

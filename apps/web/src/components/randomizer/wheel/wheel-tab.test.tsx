@@ -1,14 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { WheelTab } from "./wheel-tab";
+import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 
 const defaultWheelState = {
   items: ["A", "B", "C"],
   liveItems: ["A", "B", "C"],
   spinning: false,
-  winner: null,
-  winnerIndex: null,
-  history: [],
+  winner: null as string | null,
+  winnerIndex: null as number | null,
+  history: [] as HistoryEntry[],
   addItem: vi.fn(),
   addBulk: vi.fn(),
   removeItem: vi.fn(),

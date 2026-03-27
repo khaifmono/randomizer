@@ -1,6 +1,5 @@
 import { createFileRoute, Outlet, Link } from "@tanstack/react-router"
 import {
-    LayoutDashboard,
     Kanban,
     CheckSquare,
     Users,

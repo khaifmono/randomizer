@@ -2,13 +2,14 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { DiceTab } from "./dice-tab";
 import { DieCube } from "./die-cube";
+import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 
 const defaultDiceState = {
   count: 2,
   rolling: false,
   results: [3, 5],
-  sum: 8,
-  history: [],
+  sum: 8 as number | null,
+  history: [] as HistoryEntry[],
   setCount: vi.fn(),
   startRoll: vi.fn(),
   onRollEnd: vi.fn(),

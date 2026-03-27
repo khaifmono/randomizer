@@ -101,7 +101,7 @@ function LandingPage() {
 
         {/* CTA */}
         <Button size="lg" className="h-14 px-10 text-lg font-bold bg-gradient-to-r from-violet-500 to-indigo-500 hover:from-violet-400 hover:to-indigo-400 shadow-xl shadow-violet-500/25 border-0 text-white" asChild>
-          <Link to="/randomizer">
+          <Link to="/randomizer" search={{ tab: "wheel" }}>
             <Zap className="h-5 w-5 mr-2" />
             Let&apos;s go!
           </Link>

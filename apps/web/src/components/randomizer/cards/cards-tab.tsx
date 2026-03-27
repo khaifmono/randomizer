@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useCards, ANIMATION_DURATION } from "@base-project/web/lib/randomizer/use-cards";
+import { useCards } from "@base-project/web/lib/randomizer/use-cards";
 import { CardDisplay } from "./card-display";
 import { CardControls } from "./card-controls";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
