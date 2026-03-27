@@ -97,10 +97,25 @@ Plans:
 - [x] 05-02-PLAN.md — Green pip dots on dice faces and coin session tally with accumulation and clear
 **UI hint**: yes
 
+### Phase 6: Number Generator — Random number picker with slot-machine rolling animation, min/max range selector
+**Goal**: Users can generate a random number within a configurable range with a slot-machine reel animation that locks digits left-to-right
+**Depends on:** Phase 5
+**Requirements**: NUM-01, NUM-02, NUM-03, NUM-04, NUM-05, NUM-06, NUM-07
+**Success Criteria** (what must be TRUE):
+  1. User can select a range via quick presets (1-10, 1-100, 1-1000) or custom min/max inputs
+  2. User clicks Generate and sees individual digit reels spin with staggered left-to-right stops
+  3. After all reels stop, the result number is displayed large and bold with range context below
+  4. Each generation result is appended to the history log in the Number tab
+**Plans**: 2 plans
+Plans:
+- [ ] 06-01-PLAN.md — useNumber hook with TDD tests, CSS slot-machine reel animation, number accent token
+- [ ] 06-02-PLAN.md — NumberReel, NumberDisplay, NumberControls, NumberTab components, page wiring, and human verification
+**UI hint**: yes
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -109,16 +124,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 3. Dice Roller | 2/2 | Complete   | 2026-03-26 |
 | 4. Coin Flipper | 2/2 | Complete   | 2026-03-26 |
 | 5. Polish & Differentiators | 1/2 | In Progress|  |
-
-### Phase 6: Number Generator — Random number picker with slot-machine rolling animation, min/max range selector
-
-**Goal:** [To be planned]
-**Requirements**: TBD
-**Depends on:** Phase 5
-**Plans:** 0 plans
-
-Plans:
-- [ ] TBD (run /gsd:plan-phase 6 to break down)
+| 6. Number Generator | 0/2 | Not Started |  |
 
 ### Phase 7: Team Shuffler — Enter names, randomly split into N teams or pick one person
 
