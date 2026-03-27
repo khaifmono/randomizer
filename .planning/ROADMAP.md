@@ -131,10 +131,10 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 **Goal:** Users can enter a list of names and either pick one randomly or split them into N balanced teams, with a shuffle animation and history tracking
 **Requirements**: TEAM-01, TEAM-02, TEAM-03, TEAM-04
 **Depends on:** Phase 6
-**Plans:** 2/2 plans complete
+**Plans:** 1/2 plans executed
 
 Plans:
-- [ ] 07-01-PLAN.md — useTeams hook with TDD tests: name list, mode toggle (pick-one/split), Fisher-Yates shuffle, history entries
+- [x] 07-01-PLAN.md — useTeams hook with TDD tests: name list, mode toggle (pick-one/split), Fisher-Yates shuffle, history entries
 - [ ] 07-02-PLAN.md — TeamsNameEntry, TeamsControls, TeamsDisplay, TeamsTab components, page wiring, and human verification
 
 ### Phase 8: Card Drawer — Draw from a standard 52-card deck with flip animation
