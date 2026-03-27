@@ -73,12 +73,12 @@ export function RandomizerPage() {
   };
 
   const tabs = [
-    { value: "wheel", icon: RotateCcw, label: "Wheel", accent: "data-[state=active]:border-wheel-accent" },
-    { value: "dice", icon: Dices, label: "Dice", accent: "data-[state=active]:border-dice-accent" },
-    { value: "coin", icon: Coins, label: "Coin", accent: "data-[state=active]:border-coin-accent" },
-    { value: "number", icon: Hash, label: "Number", accent: "data-[state=active]:border-number-accent" },
-    { value: "teams", icon: Users, label: "Teams", accent: "data-[state=active]:border-teams-accent" },
-    { value: "cards", icon: RectangleHorizontal, label: "Cards", accent: "data-[state=active]:border-rose-500" },
+    { value: "wheel", icon: RotateCcw, label: "Wheel", accent: "data-[state=active]:border-wheel-accent data-[state=active]:text-wheel-accent" },
+    { value: "dice", icon: Dices, label: "Dice", accent: "data-[state=active]:border-dice-accent data-[state=active]:text-dice-accent" },
+    { value: "coin", icon: Coins, label: "Coin", accent: "data-[state=active]:border-coin-accent data-[state=active]:text-coin-accent" },
+    { value: "number", icon: Hash, label: "Number", accent: "data-[state=active]:border-number-accent data-[state=active]:text-number-accent" },
+    { value: "teams", icon: Users, label: "Teams", accent: "data-[state=active]:border-teams-accent data-[state=active]:text-teams-accent" },
+    { value: "cards", icon: RectangleHorizontal, label: "Cards", accent: "data-[state=active]:border-rose-500 data-[state=active]:text-rose-500" },
   ];
 
   return (
