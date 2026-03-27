@@ -9,6 +9,7 @@ import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 import { WheelTab } from "@base-project/web/components/randomizer/wheel/wheel-tab";
 import { DiceTab } from "@base-project/web/components/randomizer/dice/dice-tab";
 import { CoinTab } from "@base-project/web/components/randomizer/coin/coin-tab";
+import { NumberTab } from "@base-project/web/components/randomizer/number/number-tab";
 
 export const Route = createFileRoute("/randomizer")({
   component: RandomizerPage,
@@ -22,6 +23,7 @@ export function RandomizerPage() {
   const [wheelHistory, setWheelHistory] = useState<HistoryEntry[]>([]);
   const [diceHistory, setDiceHistory] = useState<HistoryEntry[]>([]);
   const [coinHistory, setCoinHistory] = useState<HistoryEntry[]>([]);
+  const [numberHistory, setNumberHistory] = useState<HistoryEntry[]>([]);
   const [activeTab, setActiveTab] = useState<string>(initialTab);
   const [historyOpen, setHistoryOpen] = useState(false);
   const coinClearSessionRef = useRef<(() => void) | null>(null);
@@ -31,15 +33,18 @@ export function RandomizerPage() {
       ? wheelHistory
       : activeTab === "dice"
         ? diceHistory
-        : coinHistory;
+        : activeTab === "coin"
+          ? coinHistory
+          : numberHistory;
 
   function handleClearHistory() {
     if (activeTab === "wheel") setWheelHistory([]);
     else if (activeTab === "dice") setDiceHistory([]);
-    else {
+    else if (activeTab === "coin") {
       setCoinHistory([]);
       coinClearSessionRef.current?.();
     }
+    else if (activeTab === "number") setNumberHistory([]);
   }
 
   return (
@@ -104,7 +109,10 @@ export function RandomizerPage() {
                   <Coins className="h-4 w-4" />
                   Coin
                 </TabsTrigger>
-                <TabsTrigger value="number" disabled className="gap-1.5 opacity-40">
+                <TabsTrigger
+                  value="number"
+                  className={cn("gap-1.5", "data-[state=active]:border-number-accent")}
+                >
                   <Hash className="h-4 w-4" />
                   Number
                 </TabsTrigger>
@@ -131,8 +139,8 @@ export function RandomizerPage() {
                   registerClearSession={(fn) => { coinClearSessionRef.current = fn; }}
                 />
               </TabsContent>
-              <TabsContent value="number" className="mt-0 p-6">
-                <ComingSoon icon={<Hash className="h-10 w-10" />} title="Random Number Generator" description="Pick a number between min and max with a slot-machine rolling animation." />
+              <TabsContent value="number" className="mt-0 p-6 flex items-start justify-center">
+                <NumberTab onHistoryChange={setNumberHistory} />
               </TabsContent>
               <TabsContent value="teams" className="mt-0 p-6">
                 <ComingSoon icon={<Users className="h-10 w-10" />} title="Name Picker / Team Shuffler" description="Enter names and randomly split into teams or pick one person." />
