@@ -62,7 +62,7 @@ export function CardsTab({ onHistoryChange }: CardsTabProps) {
   }, [isDrawing]);
 
   return (
-    <div className="flex flex-col items-center gap-6 w-full max-w-md">
+    <div className="flex flex-col items-center gap-6 w-full max-w-3xl">
       {drawnCards.length > 0 && (
         <CardDisplay
           drawnCards={drawnCards}

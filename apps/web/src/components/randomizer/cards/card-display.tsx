@@ -10,7 +10,7 @@ type CardDisplayProps = {
 
 export function CardDisplay({ drawnCards, isDrawing, revealedCount, isCycling }: CardDisplayProps) {
   return (
-    <div className="flex flex-wrap justify-center gap-3 min-h-[112px]">
+    <div className="flex flex-wrap justify-center gap-4 min-h-[196px]">
       {drawnCards.map((card, i) => (
         <CardFace
           key={i}
