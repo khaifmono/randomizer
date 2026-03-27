@@ -256,12 +256,12 @@ body {
 /* Number generator — casino slot-machine reels */
 
 .number-reel {
-  height: 80px;
+  height: 120px;
   overflow: hidden;
   position: relative;
-  width: 64px;
+  width: 90px;
   border: 3px solid #333;
-  border-radius: 10px;
+  border-radius: 12px;
   background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
   box-shadow:
     inset 0 2px 8px rgba(0,0,0,0.6),
@@ -300,11 +300,11 @@ body {
 }
 
 .number-reel-digit {
-  height: 80px;
+  height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
+  font-size: 3.5rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   color: #ffd700;
@@ -314,8 +314,8 @@ body {
 
 @keyframes number-reel-scroll {
   0%   { transform: translateY(0); }
-  80%  { transform: translateY(calc(var(--reel-target) - 80px)); }
-  92%  { transform: translateY(calc(var(--reel-target) + 12px)); }
+  80%  { transform: translateY(calc(var(--reel-target) - 120px)); }
+  92%  { transform: translateY(calc(var(--reel-target) + 14px)); }
   100% { transform: translateY(var(--reel-target)); }
 }
 
