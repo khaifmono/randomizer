@@ -3,6 +3,8 @@ import { useDice, ANIMATION_DURATION } from "@base-project/web/lib/randomizer/us
 import { DiceDisplay } from "./dice-display";
 import { DiceControls } from "./dice-controls";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
+import { TutorialButton } from "@base-project/web/components/randomizer/tutorial-modal";
+import { diceTutorial } from "@base-project/web/components/randomizer/tutorials";
 
 type DiceTabProps = {
   onHistoryChange: (entries: HistoryEntry[]) => void;
@@ -26,6 +28,7 @@ export function DiceTab({ onHistoryChange }: DiceTabProps) {
 
   return (
     <div className="flex flex-col items-center gap-6">
+      <TutorialButton toolName="Dice Roller" accentColor="#10b981" steps={diceTutorial} />
       <DiceDisplay count={count} results={results} rolling={rolling} />
       <DiceControls count={count} rolling={rolling} onSetCount={setCount} onRoll={startRoll} />
       {sum !== null && !rolling && (

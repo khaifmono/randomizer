@@ -7,6 +7,8 @@ import { WheelControls } from "./wheel-controls";
 import { Badge } from "@base-project/web/components/ui/badge";
 import { Button } from "@base-project/web/components/ui/button";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
+import { TutorialButton } from "@base-project/web/components/randomizer/tutorial-modal";
+import { wheelTutorial } from "@base-project/web/components/randomizer/tutorials";
 
 type WheelTabProps = {
   onHistoryChange: (entries: HistoryEntry[]) => void;
@@ -54,6 +56,7 @@ export function WheelTab({ onHistoryChange }: WheelTabProps) {
     <div className="flex flex-col lg:flex-row gap-6 w-full max-w-6xl mx-auto">
       {/* Wheel area — takes all available space */}
       <div className="flex-1 flex flex-col items-center gap-3 min-w-0">
+        <TutorialButton toolName="Spinning Wheel" accentColor="#3b82f6" steps={wheelTutorial} />
         {/* Item count badge */}
         {liveItems.length > 0 && (
           <Badge className="bg-wheel-accent text-white border-0 text-sm px-3 py-1">

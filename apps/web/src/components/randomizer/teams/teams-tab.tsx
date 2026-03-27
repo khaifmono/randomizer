@@ -4,6 +4,8 @@ import { TeamsNameEntry } from "./teams-name-entry";
 import { TeamsControls } from "./teams-controls";
 import { TeamsDisplay } from "./teams-display";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
+import { TutorialButton } from "@base-project/web/components/randomizer/tutorial-modal";
+import { teamsTutorial } from "@base-project/web/components/randomizer/tutorials";
 
 type TeamsTabProps = {
   onHistoryChange: (entries: HistoryEntry[]) => void;
@@ -49,6 +51,7 @@ export function TeamsTab({ onHistoryChange }: TeamsTabProps) {
 
   return (
     <div className="flex flex-col items-center gap-6 w-full max-w-lg">
+      <TutorialButton toolName="Team Shuffler" accentColor="#8b5cf6" steps={teamsTutorial} />
       <TeamsNameEntry
         rawText={rawText}
         onChange={handleTextChange}

@@ -3,6 +3,8 @@ import { useCards } from "@base-project/web/lib/randomizer/use-cards";
 import { CardDisplay } from "./card-display";
 import { CardControls } from "./card-controls";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
+import { TutorialButton } from "@base-project/web/components/randomizer/tutorial-modal";
+import { cardsTutorial } from "@base-project/web/components/randomizer/tutorials";
 
 const CYCLE_DURATION = 400;
 const STAGGER_DELAY = 150;
@@ -63,6 +65,7 @@ export function CardsTab({ onHistoryChange }: CardsTabProps) {
 
   return (
     <div className="flex flex-col items-center gap-6 w-full max-w-3xl">
+      <TutorialButton toolName="Card Drawer" accentColor="#e11d48" steps={cardsTutorial} />
       {drawnCards.length > 0 && (
         <CardDisplay
           drawnCards={drawnCards}

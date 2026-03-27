@@ -3,6 +3,8 @@ import { useCoin, ANIMATION_DURATION } from "@base-project/web/lib/randomizer/us
 import { CoinDisplay } from "./coin-display";
 import { CoinControls } from "./coin-controls";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
+import { TutorialButton } from "@base-project/web/components/randomizer/tutorial-modal";
+import { coinTutorial } from "@base-project/web/components/randomizer/tutorials";
 
 type CoinTabProps = {
   onHistoryChange: (entries: HistoryEntry[]) => void;
@@ -32,6 +34,7 @@ export function CoinTab({ onHistoryChange, registerClearSession }: CoinTabProps)
 
   return (
     <div className="flex flex-col items-center gap-6">
+      <TutorialButton toolName="Coin Flipper" accentColor="#f59e0b" steps={coinTutorial} />
       {sessionHeads + sessionTails > 0 && (
         <p className="text-sm font-medium text-muted-foreground" data-testid="session-tally">
           {sessionHeads}H {sessionTails}T across {sessionHeads + sessionTails} flips

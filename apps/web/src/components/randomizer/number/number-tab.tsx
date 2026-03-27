@@ -3,6 +3,8 @@ import { useNumber, REEL_STAGGER_MS, BASE_REEL_DURATION_MS } from "@base-project
 import { NumberDisplay } from "./number-display";
 import { NumberControls } from "./number-controls";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
+import { TutorialButton } from "@base-project/web/components/randomizer/tutorial-modal";
+import { numberTutorial } from "@base-project/web/components/randomizer/tutorials";
 
 type NumberTabProps = {
   onHistoryChange: (entries: HistoryEntry[]) => void;
@@ -49,6 +51,7 @@ export function NumberTab({ onHistoryChange }: NumberTabProps) {
 
   return (
     <div className="flex flex-col items-center gap-6">
+      <TutorialButton toolName="Number Generator" accentColor="#a855f7" steps={numberTutorial} />
       <NumberDisplay
         digits={digits}
         result={result}
