@@ -135,7 +135,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 Plans:
 - [x] 07-01-PLAN.md — useTeams hook with TDD tests: name list, mode toggle (pick-one/split), Fisher-Yates shuffle, history entries
-- [ ] 07-02-PLAN.md — TeamsNameEntry, TeamsControls, TeamsDisplay, TeamsTab components, page wiring, and human verification
+- [x] 07-02-PLAN.md — TeamsNameEntry, TeamsControls, TeamsDisplay, TeamsTab components, page wiring, and human verification
 
 ### Phase 8: Card Drawer — Draw from a standard 52-card deck with flip animation
 
