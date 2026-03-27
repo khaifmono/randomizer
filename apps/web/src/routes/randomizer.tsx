@@ -32,9 +32,15 @@ export function RandomizerPage() {
   const [historyOpen, setHistoryOpen] = useState(false);
   const coinClearSessionRef = useRef<(() => void) | null>(null);
 
-  const activeHistory = (
-    { wheel: wheelHistory, dice: diceHistory, coin: coinHistory, number: numberHistory, teams: teamsHistory, cards: cardsHistory } as Record<string, HistoryEntry[]>
-  )[activeTab] ?? [];
+  const historyMap: Record<string, HistoryEntry[]> = {
+    wheel: wheelHistory,
+    dice: diceHistory,
+    coin: coinHistory,
+    number: numberHistory,
+    teams: teamsHistory,
+    cards: cardsHistory,
+  };
+  const activeHistory = historyMap[activeTab] || [];
 
   function handleClearHistory() {
     if (activeTab === "wheel") setWheelHistory([]);
@@ -43,9 +49,9 @@ export function RandomizerPage() {
       setCoinHistory([]);
       coinClearSessionRef.current?.();
     }
-    else if (activeTab === "cards") setCardsHistory([]);
     else if (activeTab === "number") setNumberHistory([]);
     else if (activeTab === "teams") setTeamsHistory([]);
+    else if (activeTab === "cards") setCardsHistory([]);
   }
 
   const bgAccentMap: Record<string, string> = {
@@ -66,9 +72,18 @@ export function RandomizerPage() {
     cards: "text-rose-200/40",
   };
 
+  const tabs = [
+    { value: "wheel", icon: RotateCcw, label: "Wheel", accent: "data-[state=active]:border-wheel-accent" },
+    { value: "dice", icon: Dices, label: "Dice", accent: "data-[state=active]:border-dice-accent" },
+    { value: "coin", icon: Coins, label: "Coin", accent: "data-[state=active]:border-coin-accent" },
+    { value: "number", icon: Hash, label: "Number", accent: "data-[state=active]:border-number-accent" },
+    { value: "teams", icon: Users, label: "Teams", accent: "data-[state=active]:border-teams-accent" },
+    { value: "cards", icon: RectangleHorizontal, label: "Cards", accent: "data-[state=active]:border-rose-500" },
+  ];
+
   return (
     <div className={cn("min-h-screen relative transition-colors duration-500 bg-gradient-to-br", bgAccentMap[activeTab] || bgAccentMap.wheel)}>
-      {/* Subtle dot pattern overlay */}
+      {/* Background accents */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <svg className={cn("absolute -top-24 -right-24 w-96 h-96 transition-colors duration-500", dotAccentMap[activeTab])} viewBox="0 0 200 200" fill="currentColor">
           <circle cx="100" cy="100" r="80" opacity="0.3" />
@@ -85,124 +100,86 @@ export function RandomizerPage() {
       <header className="relative flex items-center justify-between px-6 py-4 border-b border-border/40 bg-background/60 backdrop-blur-sm">
         <Link to="/" className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
           <ChevronLeft className="h-5 w-5" />
-          Home
+          <span className="hidden sm:inline">Home</span>
         </Link>
-        <h1 className="text-xl font-bold tracking-tight">
+        <h1 className="text-lg md:text-xl font-bold tracking-tight">
           <span className="bg-gradient-to-r from-blue-500 via-emerald-500 to-amber-500 bg-clip-text text-transparent">Randomizer</span>
           {" "}Toolkit
         </h1>
-        {/* Mobile history toggle */}
         <Button
           variant="ghost"
           size="sm"
           className="md:hidden"
           onClick={() => setHistoryOpen(!historyOpen)}
         >
-          <History className="h-4 w-4 mr-1" />
-          {historyOpen ? "Hide" : "History"}
+          <History className="h-4 w-4" />
         </Button>
         <div className="hidden md:block w-20" />
       </header>
 
-      {/* Main content — full height */}
-      <div className="flex flex-col md:flex-row h-[calc(100vh-53px)]">
-        {/* Tool area — takes all available space */}
+      {/* Main content */}
+      <div className="relative flex flex-col md:flex-row h-[calc(100vh-57px)]">
+        {/* Tool area */}
         <div className="flex-1 min-w-0 overflow-y-auto">
           <Tabs defaultValue={initialTab} onValueChange={setActiveTab}>
-            <div className="flex justify-center py-5 sticky top-0 bg-background/60 backdrop-blur-md z-10 border-b border-border/20">
-              <TabsList variant="line" className="gap-1">
-                <TabsTrigger
-                  value="wheel"
-                  className={cn(
-                    "gap-2 text-base font-semibold px-5 py-2.5",
-                    "data-[state=active]:border-wheel-accent"
-                  )}
-                >
-                  <RotateCcw className="h-5 w-5" />
-                  Wheel
-                </TabsTrigger>
-                <TabsTrigger
-                  value="dice"
-                  className={cn(
-                    "gap-2 text-base font-semibold px-5 py-2.5",
-                    "data-[state=active]:border-dice-accent"
-                  )}
-                >
-                  <Dices className="h-5 w-5" />
-                  Dice
-                </TabsTrigger>
-                <TabsTrigger
-                  value="coin"
-                  className={cn(
-                    "gap-2 text-base font-semibold px-5 py-2.5",
-                    "data-[state=active]:border-coin-accent"
-                  )}
-                >
-                  <Coins className="h-5 w-5" />
-                  Coin
-                </TabsTrigger>
-                <TabsTrigger
-                  value="number"
-                  className={cn("gap-2 text-base font-semibold px-5 py-2.5", "data-[state=active]:border-number-accent")}
-                >
-                  <Hash className="h-5 w-5" />
-                  Number
-                </TabsTrigger>
-                <TabsTrigger
-                  value="teams"
-                  className={cn("gap-2 text-base font-semibold px-5 py-2.5", "data-[state=active]:border-teams-accent")}
-                >
-                  <Users className="h-5 w-5" />
-                  Teams
-                </TabsTrigger>
-                <TabsTrigger
-                  value="cards"
-                  className={cn("gap-2 text-base font-semibold px-5 py-2.5", "data-[state=active]:border-cards-accent")}
-                >
-                  <RectangleHorizontal className="h-5 w-5" />
-                  Cards
-                </TabsTrigger>
-              </TabsList>
+            {/* Tab bar — horizontally scrollable on mobile, icon-only on small screens */}
+            <div className="sticky top-0 bg-background/60 backdrop-blur-md z-10 border-b border-border/20">
+              <div className="overflow-x-auto scrollbar-none">
+                <TabsList variant="line" className="gap-0 w-max min-w-full justify-center px-2 py-3 md:py-5">
+                  {tabs.map(({ value, icon: Icon, label, accent }) => (
+                    <TabsTrigger
+                      key={value}
+                      value={value}
+                      className={cn(
+                        "gap-1 md:gap-2 text-xs md:text-base font-semibold px-3 md:px-5 py-2 md:py-2.5 shrink-0",
+                        accent
+                      )}
+                    >
+                      <Icon className="h-4 w-4 md:h-5 md:w-5" />
+                      <span className="hidden sm:inline">{label}</span>
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </div>
             </div>
 
-              <TabsContent value="wheel" className="mt-0 p-4 flex items-start justify-center">
-                <WheelTab onHistoryChange={setWheelHistory} />
-              </TabsContent>
-              <TabsContent value="dice" className="mt-0 p-6 flex items-start justify-center">
-                <DiceTab onHistoryChange={setDiceHistory} />
-              </TabsContent>
-              <TabsContent value="coin" className="mt-0 p-6 flex items-start justify-center">
-                <CoinTab
-                  onHistoryChange={setCoinHistory}
-                  registerClearSession={(fn) => { coinClearSessionRef.current = fn; }}
-                />
-              </TabsContent>
-              <TabsContent value="number" className="mt-0 p-6 flex items-start justify-center">
-                <NumberTab onHistoryChange={setNumberHistory} />
-              </TabsContent>
-              <TabsContent value="teams" className="mt-0 p-6 flex items-start justify-center">
-                <TeamsTab onHistoryChange={setTeamsHistory} />
-              </TabsContent>
-              <TabsContent value="cards" className="mt-0 p-6 flex items-start justify-center">
-                <CardsTab onHistoryChange={setCardsHistory} />
-              </TabsContent>
-            </Tabs>
-          </div>
+            <TabsContent value="wheel" className="mt-0 p-4 flex items-start justify-center">
+              <WheelTab onHistoryChange={setWheelHistory} />
+            </TabsContent>
+            <TabsContent value="dice" className="mt-0 p-6 flex items-start justify-center">
+              <DiceTab onHistoryChange={setDiceHistory} />
+            </TabsContent>
+            <TabsContent value="coin" className="mt-0 p-6 flex items-start justify-center">
+              <CoinTab
+                onHistoryChange={setCoinHistory}
+                registerClearSession={(fn) => { coinClearSessionRef.current = fn; }}
+              />
+            </TabsContent>
+            <TabsContent value="number" className="mt-0 p-6 flex items-start justify-center">
+              <NumberTab onHistoryChange={setNumberHistory} />
+            </TabsContent>
+            <TabsContent value="teams" className="mt-0 p-6 flex items-start justify-center">
+              <TeamsTab onHistoryChange={setTeamsHistory} />
+            </TabsContent>
+            <TabsContent value="cards" className="mt-0 p-6 flex items-start justify-center">
+              <CardsTab onHistoryChange={setCardsHistory} />
+            </TabsContent>
+          </Tabs>
+        </div>
 
-          {/* History sidebar */}
-          <div
-            className={cn(
-              "w-full md:w-72 shrink-0 border-l border-border/40 overflow-y-auto p-4 bg-background/40 backdrop-blur-sm",
-              historyOpen ? "block" : "hidden md:block"
-            )}
-          >
-            <ResultHistory
-              entries={activeHistory}
-              onClear={handleClearHistory}
-            />
-          </div>
+        {/* History sidebar */}
+        <div
+          className={cn(
+            "w-full md:w-72 shrink-0 border-l border-border/40 overflow-y-auto p-4 bg-background/40 backdrop-blur-sm",
+            historyOpen ? "block" : "hidden md:block"
+          )}
+        >
+          <ResultHistory
+            entries={activeHistory}
+            onClear={handleClearHistory}
+          />
         </div>
       </div>
+    </div>
   );
 }
-
