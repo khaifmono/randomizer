@@ -4,7 +4,7 @@ import { CardDisplay } from "./card-display";
 import { CardControls } from "./card-controls";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 
-// Delay between each card flip reveal in hand mode (ms)
+const CYCLE_DURATION = 600; // deck cycling animation before flip
 const STAGGER_DELAY = 200;
 
 type CardsTabProps = {
@@ -27,24 +27,37 @@ export function CardsTab({ onHistoryChange }: CardsTabProps) {
   } = useCards();
 
   const [revealedCount, setRevealedCount] = useState(0);
+  const [isCycling, setIsCycling] = useState(false);
 
-  // Sync history up to parent
   useEffect(() => {
     onHistoryChange(history);
   }, [history, onHistoryChange]);
 
-  // Staggered flip animation — reveal cards one at a time during draw
+  // Two-phase animation: cycle through deck, then staggered flip reveal
   useEffect(() => {
     if (!isDrawing) return;
+
     setRevealedCount(0);
-    // Reveal each card with STAGGER_DELAY ms gap
-    drawnCards.forEach((_, i) => {
-      setTimeout(() => setRevealedCount(i + 1), i * STAGGER_DELAY);
-    });
-    // Call onDrawEnd after all cards have flipped + settle (200ms extra)
-    const total = drawnCards.length * STAGGER_DELAY + ANIMATION_DURATION + 200;
-    const timer = setTimeout(onDrawEnd, total);
-    return () => clearTimeout(timer);
+    setIsCycling(true);
+
+    // Phase 1: deck cycling (cards shuffle visually)
+    const cycleTimer = setTimeout(() => {
+      setIsCycling(false);
+
+      // Phase 2: staggered flip reveal
+      drawnCards.forEach((_, i) => {
+        setTimeout(() => setRevealedCount(i + 1), i * STAGGER_DELAY);
+      });
+    }, CYCLE_DURATION);
+
+    // End after all cards revealed + flip animation settles
+    const total = CYCLE_DURATION + drawnCards.length * STAGGER_DELAY + ANIMATION_DURATION + 200;
+    const endTimer = setTimeout(onDrawEnd, total);
+
+    return () => {
+      clearTimeout(cycleTimer);
+      clearTimeout(endTimer);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDrawing]);
 
@@ -55,6 +68,7 @@ export function CardsTab({ onHistoryChange }: CardsTabProps) {
           drawnCards={drawnCards}
           isDrawing={isDrawing}
           revealedCount={revealedCount}
+          isCycling={isCycling}
         />
       )}
       <CardControls

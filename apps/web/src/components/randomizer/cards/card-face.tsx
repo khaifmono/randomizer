@@ -5,17 +5,18 @@ type CardFaceProps = {
   card: Card | null;
   flipping: boolean;
   revealed: boolean;
+  cycling?: boolean;
 };
 
-export function CardFace({ card, flipping, revealed }: CardFaceProps) {
+export function CardFace({ card, flipping, revealed, cycling = false }: CardFaceProps) {
   const isRed = card?.suit === "♥" || card?.suit === "♦";
 
   return (
-    <div className="card-scene" style={{ width: 80, height: 112 }}>
+    <div className={cn("card-scene relative", cycling && "is-cycling")} style={{ width: 80, height: 112 }}>
       <div
         className={cn(
           "card-inner w-full h-full rounded-lg",
-          flipping ? "card-flipping" : (revealed ? "card-show-front" : "card-show-back"),
+          cycling ? "card-cycling" : flipping ? "card-flipping" : (revealed ? "card-show-front" : "card-show-back"),
         )}
       >
         {/* Back face */}

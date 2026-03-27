@@ -372,6 +372,57 @@ body {
   transform: rotateY(180deg);
 }
 
+/* Deck cycling — rapid card shuffle before reveal */
+@keyframes card-cycle {
+  0%    { transform: translateY(0) scale(1); opacity: 1; }
+  12%   { transform: translateY(-8px) scale(1.02); opacity: 0.7; }
+  25%   { transform: translateY(4px) scale(0.98); opacity: 1; }
+  37%   { transform: translateY(-6px) scale(1.01); opacity: 0.8; }
+  50%   { transform: translateY(3px) scale(0.99); opacity: 1; }
+  62%   { transform: translateY(-4px) scale(1.01); opacity: 0.85; }
+  75%   { transform: translateY(2px) scale(1); opacity: 1; }
+  87%   { transform: translateY(-1px) scale(1); opacity: 0.9; }
+  100%  { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.card-inner.card-cycling {
+  animation: card-cycle 0.6s ease-in-out;
+}
+
+/* Shadow cards appearing behind during cycle */
+.card-scene.is-cycling::before,
+.card-scene.is-cycling::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  border: 2px solid #1e3a8a;
+  z-index: -1;
+}
+
+.card-scene.is-cycling::before {
+  animation: card-shadow-1 0.6s ease-in-out;
+}
+
+.card-scene.is-cycling::after {
+  animation: card-shadow-2 0.6s ease-in-out;
+}
+
+@keyframes card-shadow-1 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  20% { transform: translate(-6px, 2px) rotate(-3deg); opacity: 0.5; }
+  50% { transform: translate(4px, -1px) rotate(2deg); opacity: 0.4; }
+  80% { transform: translate(-2px, 1px) rotate(-1deg); opacity: 0.3; }
+}
+
+@keyframes card-shadow-2 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  15% { transform: translate(5px, 3px) rotate(2deg); opacity: 0.4; }
+  45% { transform: translate(-3px, -2px) rotate(-2deg); opacity: 0.35; }
+  75% { transform: translate(2px, 1px) rotate(1deg); opacity: 0.2; }
+}
+
 @keyframes card-flip {
   0%   { transform: rotateY(0deg); }
   100% { transform: rotateY(180deg); }

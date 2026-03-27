@@ -5,17 +5,19 @@ type CardDisplayProps = {
   drawnCards: Card[];
   isDrawing: boolean;
   revealedCount: number;
+  isCycling: boolean;
 };
 
-export function CardDisplay({ drawnCards, isDrawing, revealedCount }: CardDisplayProps) {
+export function CardDisplay({ drawnCards, isDrawing, revealedCount, isCycling }: CardDisplayProps) {
   return (
     <div className="flex flex-wrap justify-center gap-3 min-h-[112px]">
       {drawnCards.map((card, i) => (
         <CardFace
           key={i}
           card={card}
-          flipping={isDrawing && i === revealedCount}
-          revealed={i < revealedCount}
+          cycling={isCycling && i >= revealedCount}
+          flipping={!isCycling && isDrawing && i === revealedCount}
+          revealed={!isCycling && i < revealedCount}
         />
       ))}
     </div>
