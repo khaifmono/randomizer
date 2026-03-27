@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@base-project/web/components/ui/card"
-// @ts-expect-error — scaffold component, accordion not installed
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@base-project/web/components/ui/accordion"
 import { Button } from "@base-project/web/components/ui/button"
 import { Input } from "@base-project/web/components/ui/input"
