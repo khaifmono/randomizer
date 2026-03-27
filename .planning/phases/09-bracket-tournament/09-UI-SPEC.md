@@ -57,15 +57,15 @@ Source: established pattern from `randomizer.tsx` tab bar and `card-display.tsx`
 | Role | Size | Weight | Line Height |
 |------|------|--------|-------------|
 | Body | 16px (text-base) | 400 (regular) | 1.5 |
-| Label | 14px (text-sm) | 600 (semibold) | 1.4 |
+| Label / muted counter | 14px (text-sm) | 400 (regular) | 1.4 |
 | Heading | 20px (text-xl) | 700 (bold) | 1.2 |
-| Display — VS badge | 28px (text-3xl) | 800 (extrabold) | 1.0 |
+| Display — VS badge | 24px (text-2xl) | 700 (bold) | 1.0 |
 
 Notes:
 
-- VS badge uses extrabold at 28px to deliver the dramatic "fighting game" feel specified in CONTEXT.md D-04. Weight 800 is consistent with `.number-reel-digit` precedent (font-weight: 800) in index.css.
-- Winner name on celebration screen: 20px bold (text-xl font-bold) matching existing result announcement patterns.
-- Entry names in match cards: 16px semibold — readable in a boxed card context.
+- VS badge uses bold at 24px (text-2xl) to deliver the dramatic "fighting game" feel specified in CONTEXT.md D-04.
+- Winner name on celebration screen: 24px bold (text-2xl font-bold) matching existing result announcement patterns.
+- Entry names in match cards: 16px regular — readable in a boxed card context.
 - Muted counters ("8 entrants", "Round 2 of 3"): 14px regular text-muted-foreground.
 
 Source: index.css existing type patterns + CONTEXT.md D-04 drama requirement.
@@ -182,14 +182,14 @@ overflow-x-auto (scrollbar-none on mobile)
 - Progressive reveal: column renders only when preceding round is fully resolved
 - Connector lines: CSS-only, right border + pseudo-element bridge (no SVG)
 - Active matchup (currently animating): border-2 border-bracket-accent on the match card
-- Resolved matchups: winner row has text-bracket-accent font-semibold; loser row has text-muted-foreground line-through
+- Resolved matchups: winner row has text-bracket-accent font-bold; loser row has text-muted-foreground line-through
 
 ### Phase: Complete — Winner Celebration
 
 ```
 ┌─────────────────────────────────────┐
 │         👑 [Crown icon 32px]        │
-│         [Winner Name — text-xl bold]│
+│         [Winner Name — text-2xl bold]│
 │      "[N rounds, N entrants]"       │
 │      [confetti particles burst]     │
 │      [New Tournament button]        │
@@ -212,16 +212,16 @@ Each `BracketMatch` card contains:
 ┌──────────────────────┐
 │ [Option A name]      │  ← bracket-option row, 44px min-height
 │──────────────────────│  ← divider (1px border-border)
-│ [VS badge] (overlay) │  ← absolute-positioned, center-aligned, text-xl font-extrabold
+│ [VS badge] (overlay) │  ← absolute-positioned, center-aligned, text-2xl font-bold
 │──────────────────────│
 │ [Option B name]      │  ← bracket-option row, 44px min-height
 └──────────────────────┘
 ```
 
 - Card: `Card` component, w-40 (160px), border-2
-- Option rows: `px-3 py-2 flex items-center min-h-[44px] text-sm font-medium`
+- Option rows: `px-3 py-2 flex items-center min-h-[44px] text-sm font-normal`
 - VS badge: `absolute inset-0 flex items-center justify-center pointer-events-none z-10`
-  - Badge text: "VS" — text-2xl (24px) font-extrabold text-foreground
+  - Badge text: "VS" — text-2xl (24px) font-bold text-foreground
   - VS badge hidden at rest; `.is-pulsing` class triggers pulse keyframe
 - Judge mode option rows: `cursor-pointer hover:bg-muted/50` — pointer feedback on hover, `pointer-events-none` during animation
 - Bye matchup card: option rows show "BYE" in text-muted-foreground italic, no VS badge, no animation, border-dashed border-border/40
@@ -239,7 +239,7 @@ Total duration: ~1200ms
 | 1. VS pulse | 0–400ms | VS badge fades/scales in (bracket-vs-pulse keyframe) |
 | 2. Shake | 0–600ms | Both option rows apply bracket-shake animation simultaneously |
 | 3. Winner flash | 600–1100ms | Winner row plays bracket-winner-flash (amber tint + slide right) |
-| 4. Resolve | 1100ms | Winner row: text-bracket-accent + font-semibold; Loser: muted + line-through |
+| 4. Resolve | 1100ms | Winner row: text-bracket-accent + font-bold; Loser: muted + line-through |
 
 CSS constants (in index.css, matching RESEARCH.md Pattern 3):
 ```
