@@ -145,5 +145,5 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 08-01-PLAN.md — useCards hook (TDD) with 52-card deck state machine, depletion, reshuffle, and CSS 3D card-flip animation classes
+- [x] 08-01-PLAN.md — useCards hook (TDD) with 52-card deck state machine, depletion, reshuffle, and CSS 3D card-flip animation classes
 - [ ] 08-02-PLAN.md — CardFace, CardDisplay, CardControls, CardsTab components, page wiring, staggered hand flip, human verification
