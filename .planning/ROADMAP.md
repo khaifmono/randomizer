@@ -139,10 +139,11 @@ Plans:
 
 ### Phase 8: Card Drawer — Draw from a standard 52-card deck with flip animation
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Users can draw single cards or hands from a depleting 52-card deck with a CSS 3D flip reveal animation, switch between single and hand (1-5 cards) draw modes, see a remaining count badge, and reshuffle to restore the deck
+**Requirements**: CARD-01, CARD-02, CARD-03, CARD-04, CARD-05, CARD-06, CARD-07, CARD-08
 **Depends on:** Phase 7
-**Plans:** 0 plans
+**Plans:** 2 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 8 to break down)
+- [ ] 08-01-PLAN.md — useCards hook (TDD) with 52-card deck state machine, depletion, reshuffle, and CSS 3D card-flip animation classes
+- [ ] 08-02-PLAN.md — CardFace, CardDisplay, CardControls, CardsTab components, page wiring, staggered hand flip, human verification
