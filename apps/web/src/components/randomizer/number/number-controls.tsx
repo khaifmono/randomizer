@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Hash, Loader2 } from "lucide-react";
+import { Sparkles, Loader2 } from "lucide-react";
 import { Button } from "@base-project/web/components/ui/button";
 import { cn } from "@base-project/web/lib/utils";
 
@@ -21,8 +21,6 @@ export function NumberControls({ min, max, rolling, onSetRange, onGenerate }: Nu
   const [localMin, setLocalMin] = useState(String(min));
   const [localMax, setLocalMax] = useState(String(max));
 
-  // Keep local inputs in sync when min/max change from outside (e.g., preset selection)
-  // We only sync when not actively editing — tracked by using the controlled value pattern
   const activePreset = PRESETS.find((p) => p.min === min && p.max === max);
 
   function handlePresetClick(preset: { min: number; max: number }) {
@@ -46,30 +44,30 @@ export function NumberControls({ min, max, rolling, onSetRange, onGenerate }: Nu
   }
 
   return (
-    <div className="flex flex-col items-center gap-4 w-full max-w-[260px]">
-      {/* Preset pills */}
+    <div className="flex flex-col items-center gap-4 w-full max-w-[300px]">
+      {/* Preset chips */}
       <div className="flex items-center gap-2">
         {PRESETS.map((preset) => (
-          <Button
+          <button
             key={preset.label}
-            variant="outline"
-            size="sm"
             className={cn(
-              "rounded-full px-3 text-xs font-medium",
-              activePreset?.label === preset.label && "bg-number-accent text-white border-number-accent hover:bg-number-accent/90 hover:text-white"
+              "px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide transition-all border-2",
+              activePreset?.label === preset.label
+                ? "bg-gradient-to-r from-yellow-500 to-amber-500 text-black border-yellow-400 shadow-lg shadow-yellow-500/20"
+                : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500 hover:text-zinc-200"
             )}
             onClick={() => handlePresetClick(preset)}
             disabled={rolling}
           >
             {preset.label}
-          </Button>
+          </button>
         ))}
       </div>
 
-      {/* Custom inputs */}
+      {/* Custom range inputs */}
       <div className="flex items-center gap-3">
         <div className="flex flex-col items-center gap-1">
-          <label className="text-xs text-muted-foreground">Min</label>
+          <label className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Min</label>
           <input
             type="number"
             value={localMin}
@@ -77,12 +75,12 @@ export function NumberControls({ min, max, rolling, onSetRange, onGenerate }: Nu
             onBlur={commitRange}
             onKeyDown={handleKeyDown}
             disabled={rolling}
-            className="w-20 px-2 py-1 text-center border rounded-md bg-background text-foreground text-sm disabled:opacity-50"
+            className="w-20 px-2 py-1.5 text-center border-2 border-zinc-700 rounded-lg bg-zinc-900 text-white text-sm font-bold disabled:opacity-50 focus:border-yellow-500 focus:outline-none transition-colors"
           />
         </div>
-        <span className="text-muted-foreground mt-4">to</span>
+        <span className="text-zinc-500 mt-4 font-bold">to</span>
         <div className="flex flex-col items-center gap-1">
-          <label className="text-xs text-muted-foreground">Max</label>
+          <label className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Max</label>
           <input
             type="number"
             value={localMax}
@@ -90,26 +88,32 @@ export function NumberControls({ min, max, rolling, onSetRange, onGenerate }: Nu
             onBlur={commitRange}
             onKeyDown={handleKeyDown}
             disabled={rolling}
-            className="w-20 px-2 py-1 text-center border rounded-md bg-background text-foreground text-sm disabled:opacity-50"
+            className="w-20 px-2 py-1.5 text-center border-2 border-zinc-700 rounded-lg bg-zinc-900 text-white text-sm font-bold disabled:opacity-50 focus:border-yellow-500 focus:outline-none transition-colors"
           />
         </div>
       </div>
 
-      {/* Generate button */}
+      {/* Pull the lever button */}
       <Button
         onClick={onGenerate}
         disabled={rolling}
-        className="w-full bg-number-accent text-white hover:bg-number-accent/90 font-semibold"
+        size="lg"
+        className={cn(
+          "w-full font-black text-base uppercase tracking-wider h-12",
+          rolling
+            ? "bg-zinc-700 text-zinc-400"
+            : "bg-gradient-to-r from-yellow-500 via-amber-500 to-yellow-500 text-black hover:from-yellow-400 hover:via-amber-400 hover:to-yellow-400 shadow-lg shadow-yellow-500/30 active:scale-95 transition-transform"
+        )}
       >
         {rolling ? (
           <>
-            <Loader2 className="h-4 w-4 animate-spin" />
-            Rolling...
+            <Loader2 className="h-5 w-5 animate-spin" />
+            Spinning...
           </>
         ) : (
           <>
-            <Hash className="h-4 w-4" />
-            Generate
+            <Sparkles className="h-5 w-5" />
+            Pull the Lever!
           </>
         )}
       </Button>

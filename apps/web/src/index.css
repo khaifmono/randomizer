@@ -248,16 +248,43 @@
 .coin-disc.coin-show-heads { transform: rotateX(0deg); }
 .coin-disc.coin-show-tails { transform: rotateX(180deg); }
 
-/* Number generator — slot-machine reels per D-01, D-02, D-03 */
+/* Number generator — casino slot-machine reels */
 
 .number-reel {
-  height: 60px;
+  height: 80px;
   overflow: hidden;
   position: relative;
-  width: 48px;
-  border: 2px solid var(--border);
-  border-radius: 8px;
-  background: var(--card);
+  width: 64px;
+  border: 3px solid #333;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+  box-shadow:
+    inset 0 2px 8px rgba(0,0,0,0.6),
+    inset 0 -2px 8px rgba(0,0,0,0.6),
+    0 0 12px rgba(var(--color-number-accent) / 0.3);
+}
+
+/* Highlight line across the middle of the reel window */
+.number-reel::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,215,0,0.6), transparent);
+  z-index: 2;
+  transform: translateY(-1px);
+}
+
+.number-reel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 7px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.4) 100%);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .number-reel-strip {
@@ -268,20 +295,22 @@
 }
 
 .number-reel-digit {
-  height: 60px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 2.5rem;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
-  color: var(--foreground);
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255,215,0,0.5), 0 2px 4px rgba(0,0,0,0.5);
+  font-family: "Georgia", "Times New Roman", serif;
 }
 
 @keyframes number-reel-scroll {
   0%   { transform: translateY(0); }
-  80%  { transform: translateY(calc(var(--reel-target) - 60px)); }
-  92%  { transform: translateY(calc(var(--reel-target) + 10px)); }
+  80%  { transform: translateY(calc(var(--reel-target) - 80px)); }
+  92%  { transform: translateY(calc(var(--reel-target) + 12px)); }
   100% { transform: translateY(var(--reel-target)); }
 }
 

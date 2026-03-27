@@ -7,7 +7,7 @@ type NumberReelProps = {
 
 const REPEAT_COUNT = 3;
 const DIGITS_PER_CYCLE = 10;
-const DIGIT_HEIGHT = 60;
+const DIGIT_HEIGHT = 80;
 
 export function NumberReel({ targetDigit, rolling, durationMs, stopped }: NumberReelProps) {
   const allDigits: number[] = [];

@@ -27,9 +27,9 @@ describe("NumberTab", () => {
     mockUseNumber.mockReturnValue(defaultNumberState);
   });
 
-  it("renders Generate button", () => {
+  it("renders Pull the Lever button", () => {
     render(<NumberTab onHistoryChange={vi.fn()} />);
-    expect(screen.getByRole("button", { name: /generate/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /pull the lever/i })).toBeInTheDocument();
   });
 
   it("renders preset pills (1-10, 1-100, 1-1000)", () => {
