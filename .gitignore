@@ -134,3 +134,4 @@ dist
 .gitconfig
 apps/web/node_modules
 node_modules
+.claude/worktrees/
