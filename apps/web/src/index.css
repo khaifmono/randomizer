@@ -386,7 +386,7 @@ body {
 }
 
 .card-inner.card-cycling {
-  animation: card-cycle 0.6s ease-in-out;
+  animation: card-cycle 0.4s ease-in-out;
 }
 
 /* Shadow cards appearing behind during cycle */
@@ -402,11 +402,11 @@ body {
 }
 
 .card-scene.is-cycling::before {
-  animation: card-shadow-1 0.6s ease-in-out;
+  animation: card-shadow-1 0.4s ease-in-out;
 }
 
 .card-scene.is-cycling::after {
-  animation: card-shadow-2 0.6s ease-in-out;
+  animation: card-shadow-2 0.4s ease-in-out;
 }
 
 @keyframes card-shadow-1 {
@@ -430,7 +430,7 @@ body {
 
 /* Matches ANIMATION_DURATION in use-cards.ts */
 .card-inner.card-flipping {
-  animation: card-flip 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: card-flip 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .card-inner.card-show-back { transform: rotateY(0deg); }
