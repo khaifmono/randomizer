@@ -343,3 +343,44 @@ body {
   animation: confetti-fall 1.2s ease-in forwards;
   pointer-events: none;
 }
+
+/* Card drawer */
+
+.card-scene {
+  perspective: 1000px;
+}
+
+.card-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.1s;
+  will-change: transform;
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.card-face-back {
+  transform: rotateY(0deg);
+}
+
+.card-face-front {
+  transform: rotateY(180deg);
+}
+
+@keyframes card-flip {
+  0%   { transform: rotateY(0deg); }
+  100% { transform: rotateY(180deg); }
+}
+
+/* Matches ANIMATION_DURATION in use-cards.ts */
+.card-inner.card-flipping {
+  animation: card-flip 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.card-inner.card-show-back { transform: rotateY(0deg); }
+.card-inner.card-show-front { transform: rotateY(180deg); }
