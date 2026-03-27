@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: "Completed 08-01-PLAN.md"
-last_updated: "2026-03-27T02:58:00.000Z"
+status: Ready for next plan
+stopped_at: "Completed 08-02-PLAN.md — checkpoint:human-verify pending"
+last_updated: "2026-03-27T03:05:22.923Z"
 last_activity: 2026-03-27
 progress:
   total_phases: 8
-  completed_phases: 7
+  completed_phases: 8
   total_plans: 17
-  completed_plans: 16
+  completed_plans: 17
   percent: 100
 ---
 
@@ -59,6 +59,7 @@ Progress: [██████████] 100%
 | Phase 06 P02 | 15 | 2 tasks | 6 files |
 | Phase 07 P02 | 8min | 2 tasks | 7 files |
 | Phase 08 P01 | 2min | 3 tasks | 3 files |
+| Phase 08 P02 | 3min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -92,6 +93,8 @@ Recent decisions affecting current work:
 - [Phase 08-01]: ANIMATION_DURATION=800ms — cards flip faster than coins (1200ms)
 - [Phase 08-01]: rotateY (not rotateX) for card flip — playing cards flip side-to-side
 - [Phase 08-01]: deckRef mirrors useState so onDrawEnd can deplete synchronously without stale closure
+- [Phase 08-02]: activeHistory uses object lookup instead of ternary chain — fixes implicit fallback to teamsHistory when tab is 'cards'
+- [Phase 08-02]: STAGGER_DELAY=200ms — each card in hand mode flips 200ms after previous, total animation = cards*200 + 800 + 200ms
 
 ### Pending Todos
 
@@ -103,6 +106,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-27T02:58:00.000Z
-Stopped at: Completed 08-01-PLAN.md
+Last session: 2026-03-27T03:05:22.920Z
+Stopped at: Completed 08-02-PLAN.md — checkpoint:human-verify pending
 Resume file: None
