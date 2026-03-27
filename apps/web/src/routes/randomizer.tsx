@@ -50,12 +50,12 @@ export function RandomizerPage() {
   return (
     <div className="min-h-screen bg-background relative">
       {/* Header */}
-      <header className="flex items-center justify-between px-6 py-3 border-b border-border/40">
-        <Link to="/" className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm">
-          <ChevronLeft className="h-4 w-4" />
+      <header className="flex items-center justify-between px-6 py-4 border-b border-border/40">
+        <Link to="/" className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+          <ChevronLeft className="h-5 w-5" />
           Home
         </Link>
-        <h1 className="text-lg font-bold tracking-tight">
+        <h1 className="text-xl font-bold tracking-tight">
           <span className="bg-gradient-to-r from-blue-500 via-emerald-500 to-amber-500 bg-clip-text text-transparent">Randomizer</span>
           {" "}Toolkit
         </h1>
@@ -77,51 +77,51 @@ export function RandomizerPage() {
         {/* Tool area — takes all available space */}
         <div className="flex-1 min-w-0 overflow-y-auto">
           <Tabs defaultValue={initialTab} onValueChange={setActiveTab}>
-            <div className="flex justify-center py-4 sticky top-0 bg-background/80 backdrop-blur-sm z-10 border-b border-border/20">
-              <TabsList variant="line">
+            <div className="flex justify-center py-5 sticky top-0 bg-background/80 backdrop-blur-sm z-10 border-b border-border/20">
+              <TabsList variant="line" className="gap-1">
                 <TabsTrigger
                   value="wheel"
                   className={cn(
-                    "gap-1.5",
+                    "gap-2 text-base font-semibold px-5 py-2.5",
                     "data-[state=active]:border-wheel-accent"
                   )}
                 >
-                  <RotateCcw className="h-4 w-4" />
+                  <RotateCcw className="h-5 w-5" />
                   Wheel
                 </TabsTrigger>
                 <TabsTrigger
                   value="dice"
                   className={cn(
-                    "gap-1.5",
+                    "gap-2 text-base font-semibold px-5 py-2.5",
                     "data-[state=active]:border-dice-accent"
                   )}
                 >
-                  <Dices className="h-4 w-4" />
+                  <Dices className="h-5 w-5" />
                   Dice
                 </TabsTrigger>
                 <TabsTrigger
                   value="coin"
                   className={cn(
-                    "gap-1.5",
+                    "gap-2 text-base font-semibold px-5 py-2.5",
                     "data-[state=active]:border-coin-accent"
                   )}
                 >
-                  <Coins className="h-4 w-4" />
+                  <Coins className="h-5 w-5" />
                   Coin
                 </TabsTrigger>
                 <TabsTrigger
                   value="number"
-                  className={cn("gap-1.5", "data-[state=active]:border-number-accent")}
+                  className={cn("gap-2 text-base font-semibold px-5 py-2.5", "data-[state=active]:border-number-accent")}
                 >
-                  <Hash className="h-4 w-4" />
+                  <Hash className="h-5 w-5" />
                   Number
                 </TabsTrigger>
-                <TabsTrigger value="teams" disabled className="gap-1.5 opacity-40">
-                  <Users className="h-4 w-4" />
+                <TabsTrigger value="teams" disabled className="gap-2 text-base font-semibold px-5 py-2.5 opacity-40">
+                  <Users className="h-5 w-5" />
                   Teams
                 </TabsTrigger>
-                <TabsTrigger value="cards" disabled className="gap-1.5 opacity-40">
-                  <RectangleHorizontal className="h-4 w-4" />
+                <TabsTrigger value="cards" disabled className="gap-2 text-base font-semibold px-5 py-2.5 opacity-40">
+                  <RectangleHorizontal className="h-5 w-5" />
                   Cards
                 </TabsTrigger>
               </TabsList>
