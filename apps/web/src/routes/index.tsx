@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@base-project/web/components/ui/button";
 import { Card, CardContent } from "@base-project/web/components/ui/card";
-import { RotateCcw, Dices, Coins, Zap, Hash, Users, RectangleHorizontal, Lock } from "lucide-react";
+import { RotateCcw, Dices, Coins, Zap, Hash, Users, RectangleHorizontal } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
@@ -79,15 +79,23 @@ function LandingPage() {
             glowColor="shadow-purple-500/25"
             tab="number"
           />
-          <ComingSoonCard
+          <ToolCard
             icon={<Users className="h-8 w-8" />}
             title="Team Shuffler"
-            description="Enter names and randomly split into teams or pick one person."
+            description="Enter names, pick one or split into teams with a shuffle animation."
+            gradientFrom="from-violet-500"
+            gradientTo="to-violet-600"
+            glowColor="shadow-violet-500/25"
+            tab="teams"
           />
-          <ComingSoonCard
+          <ToolCard
             icon={<RectangleHorizontal className="h-8 w-8" />}
             title="Card Drawer"
-            description="Draw from a 52-card deck with a satisfying flip animation."
+            description="Draw from a 52-card deck. Watch cards cycle through then flip to reveal."
+            gradientFrom="from-rose-500"
+            gradientTo="to-rose-600"
+            glowColor="shadow-rose-500/25"
+            tab="cards"
           />
         </div>
 
@@ -144,30 +152,3 @@ function ToolCard({
   );
 }
 
-function ComingSoonCard({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) {
-  return (
-    <Card className="bg-white/[0.03] border-white/5 h-full opacity-60">
-      <CardContent className="pt-6 pb-6 flex flex-col items-center text-center gap-4">
-        <div className="h-16 w-16 rounded-2xl bg-white/5 flex items-center justify-center text-white/30">
-          {icon}
-        </div>
-        <div className="space-y-2">
-          <h3 className="text-lg font-bold text-white/40">{title}</h3>
-          <p className="text-sm text-white/25 leading-relaxed">{description}</p>
-        </div>
-        <div className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-widest text-white/20">
-          <Lock className="h-3 w-3" />
-          Coming soon
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
