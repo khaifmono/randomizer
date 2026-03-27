@@ -8,7 +8,7 @@ type DiceDisplayProps = {
 
 export function DiceDisplay({ count, results, rolling }: DiceDisplayProps) {
   return (
-    <div className="flex flex-wrap justify-center gap-10">
+    <div className="flex flex-wrap justify-center gap-16">
       {Array.from({ length: count }, (_, i) => (
         <DieCube key={i} value={results[i] || 1} rolling={rolling} />
       ))}
