@@ -46,9 +46,8 @@ Exceptions:
 - Match card minimum width: 160px (fixed, flex-shrink-0) — prevents column layout jank during progressive reveal
 - Match card connector line height: 2px — CSS border, not a spacing token
 - Touch targets for Judge mode option rows: minimum 44px height — accessibility requirement for tappable pick targets
-- Tab trigger padding follows the tab bar pattern: px-3 md:px-5 py-2 md:py-2.5
 
-Source: established pattern from `randomizer.tsx` tab bar and `card-display.tsx` gap-4 pattern.
+Source: established pattern from `randomizer.tsx` tab bar and `card-display.tsx` gap-4 pattern. Tab trigger padding is an existing codebase pattern (`randomizer.tsx`) — not declared as a new value in this spec.
 
 ---
 
