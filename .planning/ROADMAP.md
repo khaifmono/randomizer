@@ -108,7 +108,7 @@ Plans:
   4. Each generation result is appended to the history log in the Number tab
 **Plans**: 2 plans
 Plans:
-- [ ] 06-01-PLAN.md — useNumber hook with TDD tests, CSS slot-machine reel animation, number accent token
+- [x] 06-01-PLAN.md — useNumber hook with TDD tests, CSS slot-machine reel animation, number accent token
 - [ ] 06-02-PLAN.md — NumberReel, NumberDisplay, NumberControls, NumberTab components, page wiring, and human verification
 **UI hint**: yes
 
@@ -124,14 +124,14 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 3. Dice Roller | 2/2 | Complete   | 2026-03-26 |
 | 4. Coin Flipper | 2/2 | Complete   | 2026-03-26 |
 | 5. Polish & Differentiators | 1/2 | In Progress|  |
-| 6. Number Generator | 0/2 | Not Started |  |
+| 6. Number Generator | 1/2 | In Progress|  |
 
 ### Phase 7: Team Shuffler — Enter names, randomly split into N teams or pick one person
 
 **Goal:** Users can enter a list of names and either pick one randomly or split them into N balanced teams, with a shuffle animation and history tracking
 **Requirements**: TEAM-01, TEAM-02, TEAM-03, TEAM-04
 **Depends on:** Phase 6
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] 07-01-PLAN.md — useTeams hook with TDD tests: name list, mode toggle (pick-one/split), Fisher-Yates shuffle, history entries
