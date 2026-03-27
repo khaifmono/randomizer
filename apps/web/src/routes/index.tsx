@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@base-project/web/components/ui/button";
 import { Card, CardContent } from "@base-project/web/components/ui/card";
-import { RotateCcw, Dices, Coins, Zap, Hash, Users, RectangleHorizontal } from "lucide-react";
+import { RotateCcw, Dices, Coins, Zap, Hash, Users, RectangleHorizontal, Eye } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
@@ -113,7 +113,21 @@ function LandingPage() {
         <p className="text-sm text-white/30">
           Built with React & Tailwind. All randomization happens in your browser.
         </p>
+        <VisitorCounter />
       </footer>
+    </div>
+  );
+}
+
+function VisitorCounter() {
+  return (
+    <div className="mt-3 flex items-center justify-center gap-1.5 text-xs text-white/20">
+      <Eye className="h-3 w-3" />
+      <img
+        src="https://visitor-badge.laobi.icu/badge?page_id=randomizer-toolkit.vercel.app&right_color=%23374151&left_color=%23374151&left_text=visitors"
+        alt="visitor count"
+        className="h-[18px] opacity-30 rounded-sm"
+      />
     </div>
   );
 }
