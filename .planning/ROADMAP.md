@@ -109,3 +109,33 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 3. Dice Roller | 2/2 | Complete   | 2026-03-26 |
 | 4. Coin Flipper | 2/2 | Complete   | 2026-03-26 |
 | 5. Polish & Differentiators | 1/2 | In Progress|  |
+
+### Phase 6: Number Generator — Random number picker with slot-machine rolling animation, min/max range selector
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 5
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 6 to break down)
+
+### Phase 7: Team Shuffler — Enter names, randomly split into N teams or pick one person
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 6
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 7 to break down)
+
+### Phase 8: Card Drawer — Draw from a standard 52-card deck with flip animation
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 7
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 8 to break down)
