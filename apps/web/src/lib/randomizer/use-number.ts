@@ -33,7 +33,10 @@ function useNumber() {
     isRollingRef.current = true;
     // Pre-determine result before animation starts (same pattern as dice/coin)
     const value = Math.floor(Math.random() * (max - min + 1)) + min;
-    const digitArray = String(value).split("").map(Number);
+    // Pad to match max value's digit count so reel count is consistent (e.g. 1-100 always shows 3 reels)
+    const maxDigitCount = String(max).length;
+    const padded = String(value).padStart(maxDigitCount, "0");
+    const digitArray = padded.split("").map(Number);
     pendingResultRef.current = value;
     setResult(value);
     setDigits(digitArray);

@@ -130,10 +130,11 @@ describe("useNumber", () => {
     });
     mockRandom.mockRestore();
     expect(result.current.result).toBe(42);
-    expect(result.current.digits).toEqual([4, 2]);
+    // 42 padded to 3 digits (max=100 has 3 digits) -> [0, 4, 2]
+    expect(result.current.digits).toEqual([0, 4, 2]);
   });
 
-  it("digits array for single digit number is [7]", () => {
+  it("digits array for 7 in range 1-10 is [0, 7] (padded to 2 digits)", () => {
     const { result } = renderHook(() => useNumber());
     act(() => {
       result.current.setRange(1, 10);
@@ -145,10 +146,10 @@ describe("useNumber", () => {
     });
     mockRandom.mockRestore();
     expect(result.current.result).toBe(7);
-    expect(result.current.digits).toEqual([7]);
+    expect(result.current.digits).toEqual([0, 7]);
   });
 
-  it("digits array for 100 is [1, 0, 0]", () => {
+  it("digits array for 100 in range 1-1000 is [0, 1, 0, 0] (padded to 4 digits)", () => {
     const { result } = renderHook(() => useNumber());
     act(() => {
       result.current.setRange(1, 1000);
@@ -160,7 +161,7 @@ describe("useNumber", () => {
     });
     mockRandom.mockRestore();
     expect(result.current.result).toBe(100);
-    expect(result.current.digits).toEqual([1, 0, 0]);
+    expect(result.current.digits).toEqual([0, 1, 0, 0]);
   });
 
   // Test 10: onRollEnd creates history entry with label "42 (1-100)" format, clears rolling after 200ms settle delay
