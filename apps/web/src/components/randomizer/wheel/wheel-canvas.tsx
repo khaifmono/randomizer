@@ -194,15 +194,15 @@ export function WheelCanvas({ items, spinning, winnerIndex, winner, onSpin, onSp
 
   return (
     <div className="relative w-full">
-      {/* Pointer on the right side */}
+      {/* Pointer at 12 o'clock — triangle pointing down */}
       <svg
-        className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1 pointer-events-none z-10 drop-shadow-md"
-        width="32"
-        height="40"
-        viewBox="0 0 32 40"
+        className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1 pointer-events-none z-10 drop-shadow-lg"
+        width="36"
+        height="32"
+        viewBox="0 0 36 32"
         aria-hidden="true"
       >
-        <polygon points="0,0 32,20 0,40" fill="#fdd835" stroke="#e6c200" strokeWidth="2" />
+        <polygon points="18,32 0,0 36,0" fill="#fdd835" stroke="#e6c200" strokeWidth="2" />
       </svg>
 
       <canvas
