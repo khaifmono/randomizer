@@ -58,23 +58,13 @@ describe("calculateStopAngle", () => {
 });
 
 describe("SEGMENT_COLORS", () => {
-  it("is a 10-element array", () => {
-    expect(SEGMENT_COLORS).toHaveLength(10);
+  it("is a 16-element array", () => {
+    expect(SEGMENT_COLORS).toHaveLength(16);
   });
 
-  it("contains exactly the specified hex color strings", () => {
-    expect(SEGMENT_COLORS).toEqual([
-      "#e53935",
-      "#1e88e5",
-      "#43a047",
-      "#fdd835",
-      "#e53935",
-      "#1e88e5",
-      "#43a047",
-      "#fdd835",
-      "#e53935",
-      "#1e88e5",
-    ]);
+  it("has all unique colors", () => {
+    const unique = new Set(SEGMENT_COLORS);
+    expect(unique.size).toBe(16);
   });
 });
 
@@ -87,11 +77,11 @@ describe("getSegmentColor", () => {
     expect(getSegmentColor(9)).toBe(SEGMENT_COLORS[9]);
   });
 
-  it("cycles: index 10 returns SEGMENT_COLORS[0]", () => {
-    expect(getSegmentColor(10)).toBe(SEGMENT_COLORS[0]);
+  it("cycles: index 16 returns SEGMENT_COLORS[0]", () => {
+    expect(getSegmentColor(16)).toBe(SEGMENT_COLORS[0]);
   });
 
-  it("cycles: index 11 returns SEGMENT_COLORS[1]", () => {
-    expect(getSegmentColor(11)).toBe(SEGMENT_COLORS[1]);
+  it("cycles: index 17 returns SEGMENT_COLORS[1]", () => {
+    expect(getSegmentColor(17)).toBe(SEGMENT_COLORS[1]);
   });
 });
