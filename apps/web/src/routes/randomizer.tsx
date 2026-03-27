@@ -48,10 +48,41 @@ export function RandomizerPage() {
     else if (activeTab === "teams") setTeamsHistory([]);
   }
 
+  const bgAccentMap: Record<string, string> = {
+    wheel: "from-blue-50 via-background to-indigo-50/50",
+    dice: "from-emerald-50 via-background to-teal-50/50",
+    coin: "from-amber-50 via-background to-yellow-50/50",
+    number: "from-purple-50 via-background to-fuchsia-50/50",
+    teams: "from-violet-50 via-background to-purple-50/50",
+    cards: "from-rose-50 via-background to-pink-50/50",
+  };
+
+  const dotAccentMap: Record<string, string> = {
+    wheel: "text-blue-200/40",
+    dice: "text-emerald-200/40",
+    coin: "text-amber-200/40",
+    number: "text-purple-200/40",
+    teams: "text-violet-200/40",
+    cards: "text-rose-200/40",
+  };
+
   return (
-    <div className="min-h-screen bg-background relative">
+    <div className={cn("min-h-screen relative transition-colors duration-500 bg-gradient-to-br", bgAccentMap[activeTab] || bgAccentMap.wheel)}>
+      {/* Subtle dot pattern overlay */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <svg className={cn("absolute -top-24 -right-24 w-96 h-96 transition-colors duration-500", dotAccentMap[activeTab])} viewBox="0 0 200 200" fill="currentColor">
+          <circle cx="100" cy="100" r="80" opacity="0.3" />
+          <circle cx="100" cy="100" r="60" opacity="0.2" />
+          <circle cx="100" cy="100" r="40" opacity="0.15" />
+        </svg>
+        <svg className={cn("absolute -bottom-32 -left-32 w-80 h-80 transition-colors duration-500", dotAccentMap[activeTab])} viewBox="0 0 200 200" fill="currentColor">
+          <circle cx="100" cy="100" r="90" opacity="0.2" />
+          <circle cx="100" cy="100" r="50" opacity="0.15" />
+        </svg>
+      </div>
+
       {/* Header */}
-      <header className="flex items-center justify-between px-6 py-4 border-b border-border/40">
+      <header className="relative flex items-center justify-between px-6 py-4 border-b border-border/40 bg-background/60 backdrop-blur-sm">
         <Link to="/" className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
           <ChevronLeft className="h-5 w-5" />
           Home
@@ -78,7 +109,7 @@ export function RandomizerPage() {
         {/* Tool area — takes all available space */}
         <div className="flex-1 min-w-0 overflow-y-auto">
           <Tabs defaultValue={initialTab} onValueChange={setActiveTab}>
-            <div className="flex justify-center py-5 sticky top-0 bg-background/80 backdrop-blur-sm z-10 border-b border-border/20">
+            <div className="flex justify-center py-5 sticky top-0 bg-background/60 backdrop-blur-md z-10 border-b border-border/20">
               <TabsList variant="line" className="gap-1">
                 <TabsTrigger
                   value="wheel"
@@ -161,7 +192,7 @@ export function RandomizerPage() {
           {/* History sidebar */}
           <div
             className={cn(
-              "w-full md:w-72 shrink-0 border-l border-border/40 overflow-y-auto p-4",
+              "w-full md:w-72 shrink-0 border-l border-border/40 overflow-y-auto p-4 bg-background/40 backdrop-blur-sm",
               historyOpen ? "block" : "hidden md:block"
             )}
           >
