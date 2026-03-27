@@ -5,10 +5,9 @@ type NumberReelProps = {
   stopped: boolean;
 };
 
-// Build an array of digits: 0-9 repeated 3 times (30 items), then the target digit
-// This creates the illusion of scrolling through many digits before landing
 const REPEAT_COUNT = 3;
 const DIGITS_PER_CYCLE = 10;
+const DIGIT_HEIGHT = 60;
 
 export function NumberReel({ targetDigit, rolling, durationMs, stopped }: NumberReelProps) {
   const allDigits: number[] = [];
@@ -17,28 +16,38 @@ export function NumberReel({ targetDigit, rolling, durationMs, stopped }: Number
       allDigits.push(d);
     }
   }
-  // Add the target digit at the end (index 30)
   allDigits.push(targetDigit);
 
-  // --reel-target scrolls past 30 digits (3 cycles of 0-9) then lands on target
-  const reelTarget = `-${(REPEAT_COUNT * DIGITS_PER_CYCLE + targetDigit) * 60}px`;
+  const targetIndex = REPEAT_COUNT * DIGITS_PER_CYCLE;
+  const reelTarget = `-${targetIndex * DIGIT_HEIGHT}px`;
+
+  // Idle: show target digit directly (no animation)
+  const idleOffset = `-${targetDigit * DIGIT_HEIGHT}px`;
 
   let stripClass = "number-reel-strip";
+  let stripStyle: React.CSSProperties;
+
   if (rolling && !stopped) {
     stripClass += " reel-spinning";
+    stripStyle = {
+      "--reel-target": reelTarget,
+      "--reel-duration": `${durationMs}ms`,
+    } as React.CSSProperties;
   } else if (stopped) {
     stripClass += " reel-stopped";
+    stripStyle = {
+      "--reel-target": reelTarget,
+    } as React.CSSProperties;
+  } else {
+    // Idle — show current target digit without animation
+    stripStyle = {
+      transform: `translateY(${idleOffset})`,
+    };
   }
 
   return (
     <div className="number-reel">
-      <div
-        className={stripClass}
-        style={{
-          "--reel-target": reelTarget,
-          "--reel-duration": `${durationMs}ms`,
-        } as React.CSSProperties}
-      >
+      <div className={stripClass} style={stripStyle}>
         {allDigits.map((digit, i) => (
           <div key={i} className="number-reel-digit">
             {digit}

@@ -19,35 +19,30 @@ export function NumberDisplay({
   min,
   max,
 }: NumberDisplayProps) {
-  // Show reel animation while rolling or while digits exist
-  if (digits.length > 0 && (rolling || result === null)) {
-    return (
-      <div className="flex flex-col items-center gap-4">
-        <div className="flex flex-row gap-2 justify-center">
-          {digits.map((digit, i) => (
-            <NumberReel
-              key={i}
-              targetDigit={digit}
-              rolling={rolling}
-              durationMs={reelDurations[i] ?? 1000}
-              stopped={stoppedReels[i] ?? false}
-            />
-          ))}
-        </div>
-      </div>
-    );
-  }
+  if (digits.length === 0) return null;
 
-  // After animation completes: show large result with range context
-  if (result !== null && !rolling && digits.length > 0) {
-    return (
-      <div className="flex flex-col items-center gap-2">
-        <p className="text-5xl font-bold text-number-accent">{result}</p>
-        <p className="text-sm text-muted-foreground">from {min} to {max}</p>
+  return (
+    <div className="flex flex-col items-center gap-4">
+      {/* Reels — always visible when digits exist */}
+      <div className="flex flex-row gap-2 justify-center">
+        {digits.map((digit, i) => (
+          <NumberReel
+            key={i}
+            targetDigit={digit}
+            rolling={rolling}
+            durationMs={reelDurations[i] ?? 1000}
+            stopped={stoppedReels[i] ?? false}
+          />
+        ))}
       </div>
-    );
-  }
 
-  // Initial state: nothing to show yet
-  return null;
+      {/* Range context — always show */}
+      <p className="text-sm text-muted-foreground">from {min} to {max}</p>
+
+      {/* Result text after animation */}
+      {result !== null && !rolling && (
+        <p className="text-4xl font-bold text-number-accent">{result}</p>
+      )}
+    </div>
+  );
 }
