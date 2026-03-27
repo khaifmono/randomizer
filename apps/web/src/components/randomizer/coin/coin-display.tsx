@@ -8,7 +8,7 @@ type CoinDisplayProps = {
 
 export function CoinDisplay({ count, results, flipping }: CoinDisplayProps) {
   return (
-    <div className="flex flex-wrap justify-center gap-6">
+    <div className="flex flex-wrap justify-center gap-8">
       {Array.from({ length: count }, (_, i) => (
         <CoinFace key={i} value={results[i] || "heads"} flipping={flipping} />
       ))}

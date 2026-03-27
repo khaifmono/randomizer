@@ -140,16 +140,16 @@ body {
 /* Dice roller */
 
 .dice-scene {
-  perspective: 800px;
-  width: 90px;
-  height: 240px;
+  perspective: 1000px;
+  width: 120px;
+  height: 300px;
 }
 
 .dice-cube {
-  width: 90px;
-  height: 90px;
+  width: 120px;
+  height: 120px;
   position: relative;
-  top: 150px;
+  top: 180px;
   transform-style: preserve-3d;
   transition: transform 0.1s;
   will-change: transform;
@@ -157,8 +157,8 @@ body {
 
 .dice-face {
   position: absolute;
-  width: 90px;
-  height: 90px;
+  width: 120px;
+  height: 120px;
   backface-visibility: hidden;
   will-change: transform;
   display: grid;
@@ -167,16 +167,16 @@ body {
   padding: 8px;
 }
 
-.dice-face-1 { transform: rotateY(0deg) translateZ(45px); }
-.dice-face-2 { transform: rotateY(180deg) translateZ(45px); }
-.dice-face-3 { transform: rotateY(-90deg) translateZ(45px); }
-.dice-face-4 { transform: rotateY(90deg) translateZ(45px); }
-.dice-face-5 { transform: rotateX(90deg) translateZ(45px); }
-.dice-face-6 { transform: rotateX(-90deg) translateZ(45px); }
+.dice-face-1 { transform: rotateY(0deg) translateZ(60px); }
+.dice-face-2 { transform: rotateY(180deg) translateZ(60px); }
+.dice-face-3 { transform: rotateY(-90deg) translateZ(60px); }
+.dice-face-4 { transform: rotateY(90deg) translateZ(60px); }
+.dice-face-5 { transform: rotateX(90deg) translateZ(60px); }
+.dice-face-6 { transform: rotateX(-90deg) translateZ(60px); }
 
 @keyframes dice-roll {
   0%   { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
-  50%  { transform: translateY(-140px) rotateX(540deg) rotateY(360deg); }
+  50%  { transform: translateY(-170px) rotateX(540deg) rotateY(360deg); }
   100% { transform: translateY(0) rotateX(720deg) rotateY(720deg); }
 }
 
@@ -194,16 +194,16 @@ body {
 /* Coin flipper */
 
 .coin-scene {
-  perspective: 800px;
-  width: 80px;
-  height: 260px;
+  perspective: 1000px;
+  width: 110px;
+  height: 300px;
 }
 
 .coin-disc {
-  width: 80px;
-  height: 80px;
+  width: 110px;
+  height: 110px;
   position: relative;
-  top: 180px;
+  top: 190px;
   transform-style: preserve-3d;
   transition: transform 0.1s;
   will-change: transform;
@@ -211,15 +211,15 @@ body {
 
 .coin-face {
   position: absolute;
-  width: 80px;
-  height: 80px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   backface-visibility: hidden;
   will-change: transform;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
+  font-size: 1.75rem;
   font-weight: 700;
 }
 
@@ -241,7 +241,7 @@ body {
 
 @keyframes coin-toss {
   0%   { transform: translateY(0) rotateX(0deg); }
-  50%  { transform: translateY(-140px) rotateX(900deg); }
+  50%  { transform: translateY(-170px) rotateX(900deg); }
   100% { transform: translateY(0) rotateX(1440deg); }
 }
 

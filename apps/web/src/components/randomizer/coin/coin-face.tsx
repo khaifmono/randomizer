@@ -7,13 +7,13 @@ type CoinFaceProps = {
 
 function HeadsIcon() {
   return (
-    <span className="text-2xl font-black tracking-tight leading-none">50</span>
+    <span className="text-4xl font-black tracking-tight leading-none">50</span>
   );
 }
 
 function TailsIcon() {
   return (
-    <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 64 64" className="w-16 h-16" fill="none" xmlns="http://www.w3.org/2000/svg">
       {/* Eagle / bird spread wings — fills the entire face */}
       {/* Body */}
       <ellipse cx="32" cy="34" rx="6" ry="10" fill="currentColor" opacity="0.85" />
