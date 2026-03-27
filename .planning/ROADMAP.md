@@ -147,3 +147,14 @@ Plans:
 Plans:
 - [x] 08-01-PLAN.md — useCards hook (TDD) with 52-card deck state machine, depletion, reshuffle, and CSS 3D card-flip animation classes
 - [x] 08-02-PLAN.md — CardFace, CardDisplay, CardControls, CardsTab components, page wiring, staggered hand flip, human verification
+
+### Phase 9: Bracket Tournament — Random single-elimination bracket with animated matchups
+
+**Goal:** Users can enter options, watch them battle head-to-head in a random single-elimination bracket with animated matchups and a final winner reveal
+**Requirements**: BRKT-01, BRKT-02, BRKT-03, BRKT-04, BRKT-05, BRKT-06
+**Depends on:** Phase 8
+**Plans:** 2 plans
+
+Plans:
+- [ ] 09-01-PLAN.md — useBracket hook (TDD) with bracket generation algorithm, bye handling, state machine (entry/playing/complete), Random/Judge modes, and CSS VS animation keyframes
+- [ ] 09-02-PLAN.md — BracketEntry, BracketMatch, BracketDisplay, BracketWinner, BracketTab components, page wiring, tutorial, and human verification
