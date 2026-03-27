@@ -4,6 +4,6 @@ type HistoryEntry = {
   timestamp: number;
 };
 
-type TabId = "wheel" | "dice" | "coin";
+type TabId = "wheel" | "dice" | "coin" | "number";
 
 export type { HistoryEntry, TabId };
