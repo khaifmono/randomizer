@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { RotateCcw, Undo2 } from "lucide-react";
+import { playThud, playDing } from "@base-project/web/lib/randomizer/sounds";
 import { useBracket } from "@base-project/web/lib/randomizer/use-bracket";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 import { Button } from "@base-project/web/components/ui/button";
@@ -73,8 +74,8 @@ export function BracketTab({ onHistoryChange }: BracketTabProps) {
               rounds={bracketState.rounds}
               animatingMatchupId={isPlaying ? bracketState.animatingMatchupId : null}
               mode={mode}
-              onTrigger={triggerMatchup}
-              onResolve={resolveMatchup}
+              onTrigger={(id) => { triggerMatchup(id); playThud(); }}
+              onResolve={(id, wid) => { resolveMatchup(id, wid); playDing(); }}
               onAnimationEnd={onAnimationEnd}
             />
 

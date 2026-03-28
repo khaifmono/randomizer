@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { Crown } from "lucide-react";
 import { Button } from "@base-project/web/components/ui/button";
+import { playFanfare } from "@base-project/web/lib/randomizer/sounds";
 
 const CONFETTI_COLORS = ["#ffd700", "#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4"];
 
@@ -10,6 +12,10 @@ type BracketWinnerProps = {
 };
 
 export function BracketWinner({ winnerId, entries, onReset }: BracketWinnerProps) {
+  useEffect(() => {
+    playFanfare();
+  }, []);
+
   const winnerName = entries[winnerId - 1] ?? entries[0] ?? "Champion";
 
   const particles = Array.from({ length: 20 }, (_, i) => ({

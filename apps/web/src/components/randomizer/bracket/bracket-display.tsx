@@ -34,13 +34,8 @@ export function BracketDisplay({
   const totalRounds = rounds.length;
   const firstRoundCount = rounds[0]?.length ?? 1;
 
-  // Build revealed rounds array preserving original indices for row-span math
-  const revealedRounds = rounds
-    .map((round, index) => ({ round, originalIndex: index }))
-    .filter(({ originalIndex }) =>
-      originalIndex === 0
-      || rounds[originalIndex - 1].every((m) => m.winnerId !== null),
-    );
+  // Show all rounds — individual matchups are visible when both entries are filled
+  const revealedRounds = rounds.map((round, index) => ({ round, originalIndex: index }));
 
   // Shared grid template rows string — all columns use the same row grid
   const gridRows = `repeat(${firstRoundCount}, 130px)`;
@@ -79,6 +74,11 @@ export function BracketDisplay({
                   const isOddMatchup = matchupIndex % 2 === 1;
                   const isNotLastMatchup = matchupIndex < round.length - 1;
                   const showSeparator = roundIndex === 0 && isOddMatchup && isNotLastMatchup;
+                  // Later rounds: only show matchup when both feeder winners have advanced
+                  const hasEntries = matchup.topEntry !== null && matchup.bottomEntry !== null;
+                  const isFirstRound = roundIndex === 0;
+                  const showMatchup = isFirstRound || hasEntries || matchup.isBye;
+
                   return (
                     <div
                       key={matchup.id}
@@ -88,14 +88,22 @@ export function BracketDisplay({
                         showSeparator && "border-b border-dashed border-border/60",
                       )}
                     >
-                      <BracketMatch
-                        matchup={matchup}
-                        isAnimating={matchup.id === animatingMatchupId}
-                        mode={mode}
-                        onTrigger={onTrigger}
-                        onResolve={onResolve}
-                        onAnimationEnd={onAnimationEnd}
-                      />
+                      {showMatchup ? (
+                        <BracketMatch
+                          matchup={matchup}
+                          isAnimating={matchup.id === animatingMatchupId}
+                          mode={mode}
+                          onTrigger={onTrigger}
+                          onResolve={onResolve}
+                          onAnimationEnd={onAnimationEnd}
+                        />
+                      ) : (
+                        <div className="w-40 flex flex-col items-center gap-1 opacity-20">
+                          <div className="w-full rounded-lg border-2 border-dashed border-border/40 min-h-[44px]" />
+                          <span className="text-xs text-muted-foreground">VS</span>
+                          <div className="w-full rounded-lg border-2 border-dashed border-border/40 min-h-[44px]" />
+                        </div>
+                      )}
                     </div>
                   );
                 })}

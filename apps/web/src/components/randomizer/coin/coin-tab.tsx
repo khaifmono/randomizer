@@ -6,6 +6,7 @@ import { CoinControls } from "./coin-controls";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 import { TutorialButton } from "@base-project/web/components/randomizer/tutorial-modal";
 import { coinTutorial } from "@base-project/web/components/randomizer/tutorials";
+import { playWhoosh, playDing } from "@base-project/web/lib/randomizer/sounds";
 
 type CoinTabProps = {
   onHistoryChange: (entries: HistoryEntry[]) => void;
@@ -25,7 +26,7 @@ export function CoinTab({ onHistoryChange, registerClearSession }: CoinTabProps)
 
   useEffect(() => {
     if (!flipping) return;
-    const timer = setTimeout(onFlipEnd, ANIMATION_DURATION);
+    const timer = setTimeout(() => { onFlipEnd(); playDing(); }, ANIMATION_DURATION);
     return () => clearTimeout(timer);
   }, [flipping, onFlipEnd]);
 
@@ -53,7 +54,7 @@ export function CoinTab({ onHistoryChange, registerClearSession }: CoinTabProps)
       )}
 
       <CoinDisplay count={count} results={results} flipping={flipping} />
-      <CoinControls count={count} flipping={flipping} onSetCount={setCount} onFlip={startFlip} />
+      <CoinControls count={count} flipping={flipping} onSetCount={setCount} onFlip={() => { startFlip(); playWhoosh(); }} />
 
       {/* Result */}
       {tally !== null && !flipping && (

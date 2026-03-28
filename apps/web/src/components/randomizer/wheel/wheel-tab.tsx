@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { RotateCcw } from "lucide-react";
+import { playWhoosh, playDing, playFanfare } from "@base-project/web/lib/randomizer/sounds";
 import { useWheel } from "@base-project/web/lib/randomizer/use-wheel";
 import { WheelCanvas } from "./wheel-canvas";
 import { WheelItemList } from "./wheel-item-list";
@@ -49,6 +50,24 @@ export function WheelTab({ onHistoryChange }: WheelTabProps) {
   }, [history, onHistoryChange]);
 
   const showCelebration = liveItems.length === 0 && hasRemovedItems;
+  const prevCelebrationRef = useRef(false);
+
+  useEffect(() => {
+    if (showCelebration && !prevCelebrationRef.current) {
+      playFanfare();
+    }
+    prevCelebrationRef.current = showCelebration;
+  }, [showCelebration]);
+
+  function handleSpin() {
+    startSpin();
+    playWhoosh();
+  }
+
+  function handleSpinEnd() {
+    onSpinEnd();
+    playDing();
+  }
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 w-full max-w-6xl mx-auto">
@@ -85,12 +104,12 @@ export function WheelTab({ onHistoryChange }: WheelTabProps) {
                 spinning={spinning}
                 winnerIndex={winnerIndex}
                 winner={winner}
-                onSpin={startSpin}
-                onSpinEnd={onSpinEnd}
+                onSpin={handleSpin}
+                onSpinEnd={handleSpinEnd}
               />
             </div>
             <WheelControls
-              onSpin={startSpin}
+              onSpin={handleSpin}
               onReset={reset}
               spinning={spinning}
               hasItems={liveItems.length > 0}

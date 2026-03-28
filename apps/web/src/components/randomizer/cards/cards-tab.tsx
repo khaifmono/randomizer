@@ -6,6 +6,7 @@ import { CardControls } from "./card-controls";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 import { TutorialButton } from "@base-project/web/components/randomizer/tutorial-modal";
 import { cardsTutorial } from "@base-project/web/components/randomizer/tutorials";
+import { playWhoosh, playDing } from "@base-project/web/lib/randomizer/sounds";
 
 const CYCLE_DURATION = 400;
 const STAGGER_DELAY = 150;
@@ -50,7 +51,7 @@ export function CardsTab({ onHistoryChange }: CardsTabProps) {
     }, CYCLE_DURATION);
 
     const lastCardStart = CYCLE_DURATION + (drawnCards.length - 1) * STAGGER_DELAY;
-    const endTimer = setTimeout(onDrawEnd, lastCardStart + 100);
+    const endTimer = setTimeout(() => { onDrawEnd(); playDing(); }, lastCardStart + 100);
 
     return () => {
       clearTimeout(cycleTimer);
@@ -85,7 +86,7 @@ export function CardsTab({ onHistoryChange }: CardsTabProps) {
         handSize={handSize}
         isDrawing={isDrawing}
         remainingCount={remainingCount}
-        onDraw={drawCards}
+        onDraw={() => { drawCards(); playWhoosh(); }}
         onReshuffle={reshuffle}
         onSetMode={setMode}
         onSetHandSize={setHandSize}

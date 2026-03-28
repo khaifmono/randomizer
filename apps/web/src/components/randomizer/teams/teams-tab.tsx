@@ -7,6 +7,7 @@ import { TeamsDisplay } from "./teams-display";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 import { TutorialButton } from "@base-project/web/components/randomizer/tutorial-modal";
 import { teamsTutorial } from "@base-project/web/components/randomizer/tutorials";
+import { playWhoosh, playDing } from "@base-project/web/lib/randomizer/sounds";
 
 type TeamsTabProps = {
   onHistoryChange: (entries: HistoryEntry[]) => void;
@@ -41,7 +42,7 @@ export function TeamsTab({ onHistoryChange }: TeamsTabProps) {
 
   useEffect(() => {
     if (!shuffling) return;
-    const timer = setTimeout(onShuffleEnd, ANIMATION_DURATION);
+    const timer = setTimeout(() => { onShuffleEnd(); playDing(); }, ANIMATION_DURATION);
     return () => clearTimeout(timer);
   }, [shuffling, onShuffleEnd]);
 
@@ -70,7 +71,7 @@ export function TeamsTab({ onHistoryChange }: TeamsTabProps) {
         nameCount={names.length}
         onSetMode={setMode}
         onSetTeamCount={setTeamCount}
-        onShuffle={startShuffle}
+        onShuffle={() => { startShuffle(); playWhoosh(); }}
       />
       <TeamsDisplay result={result} shuffling={shuffling} />
     </div>

@@ -13,6 +13,8 @@ import { NumberTab } from "@base-project/web/components/randomizer/number/number
 import { TeamsTab } from "@base-project/web/components/randomizer/teams/teams-tab";
 import { CardsTab } from "@base-project/web/components/randomizer/cards/cards-tab";
 import { BracketTab } from "@base-project/web/components/randomizer/bracket/bracket-tab";
+import { SoundToggle } from "@base-project/web/components/randomizer/sound-toggle";
+import { playClick } from "@base-project/web/lib/randomizer/sounds";
 
 export const Route = createFileRoute("/randomizer")({
   component: RandomizerPage,
@@ -128,10 +130,13 @@ export function RandomizerPage() {
       <div className="relative flex flex-col md:flex-row h-[calc(100vh-57px)]">
         {/* Tool area */}
         <div className="flex-1 min-w-0 overflow-y-auto">
-          <Tabs defaultValue={initialTab} onValueChange={setActiveTab}>
+          <Tabs defaultValue={initialTab} onValueChange={(v) => { setActiveTab(v); playClick(); }}>
             {/* Tab bar — horizontally scrollable on mobile, icon-only on small screens */}
             <div className="sticky top-0 bg-background/60 backdrop-blur-md z-10 border-b border-border/20">
-              <div className="overflow-x-auto scrollbar-none">
+              <div className="overflow-x-auto scrollbar-none relative">
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 z-20">
+                  <SoundToggle />
+                </div>
                 <TabsList variant="line" className="gap-0 w-max min-w-full justify-center px-2 py-3 md:py-5">
                   {tabs.map(({ value, icon: Icon, label, accent }) => (
                     <TabsTrigger

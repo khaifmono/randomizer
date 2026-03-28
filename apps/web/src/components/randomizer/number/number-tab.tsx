@@ -6,6 +6,7 @@ import { NumberControls } from "./number-controls";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 import { TutorialButton } from "@base-project/web/components/randomizer/tutorial-modal";
 import { numberTutorial } from "@base-project/web/components/randomizer/tutorials";
+import { playWhoosh, playDing } from "@base-project/web/lib/randomizer/sounds";
 
 type NumberTabProps = {
   onHistoryChange: (entries: HistoryEntry[]) => void;
@@ -36,7 +37,7 @@ export function NumberTab({ onHistoryChange }: NumberTabProps) {
     });
 
     const totalDuration = BASE_REEL_DURATION_MS + (digits.length - 1) * REEL_STAGGER_MS;
-    const endTimer = setTimeout(onRollEnd, totalDuration + 100);
+    const endTimer = setTimeout(() => { onRollEnd(); playDing(); }, totalDuration + 100);
 
     return () => {
       timers.forEach(clearTimeout);
@@ -71,7 +72,7 @@ export function NumberTab({ onHistoryChange }: NumberTabProps) {
         max={max}
         rolling={rolling}
         onSetRange={setRange}
-        onGenerate={startRoll}
+        onGenerate={() => { startRoll(); playWhoosh(); }}
       />
     </div>
   );

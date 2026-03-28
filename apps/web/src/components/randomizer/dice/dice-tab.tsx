@@ -6,6 +6,7 @@ import { DiceControls } from "./dice-controls";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 import { TutorialButton } from "@base-project/web/components/randomizer/tutorial-modal";
 import { diceTutorial } from "@base-project/web/components/randomizer/tutorials";
+import { playWhoosh, playDing } from "@base-project/web/lib/randomizer/sounds";
 
 type DiceTabProps = {
   onHistoryChange: (entries: HistoryEntry[]) => void;
@@ -20,7 +21,7 @@ export function DiceTab({ onHistoryChange }: DiceTabProps) {
 
   useEffect(() => {
     if (!rolling) return;
-    const timer = setTimeout(onRollEnd, ANIMATION_DURATION);
+    const timer = setTimeout(() => { onRollEnd(); playDing(); }, ANIMATION_DURATION);
     return () => clearTimeout(timer);
   }, [rolling, onRollEnd]);
 
@@ -41,7 +42,7 @@ export function DiceTab({ onHistoryChange }: DiceTabProps) {
       <DiceDisplay count={count} results={results} rolling={rolling} />
 
       {/* Controls */}
-      <DiceControls count={count} rolling={rolling} onSetCount={setCount} onRoll={startRoll} />
+      <DiceControls count={count} rolling={rolling} onSetCount={setCount} onRoll={() => { startRoll(); playWhoosh(); }} />
 
       {/* Sum result */}
       {sum !== null && !rolling && (
