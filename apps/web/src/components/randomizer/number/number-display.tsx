@@ -26,7 +26,7 @@ export function NumberDisplay({
       {/* Slot machine frame */}
       <div className="relative px-10 py-8 rounded-3xl bg-gradient-to-b from-zinc-800 to-zinc-900 border-3 border-zinc-700 shadow-2xl">
         {/* Top chrome bar */}
-        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-black text-sm font-black uppercase tracking-widest px-6 py-1 rounded-full shadow-lg">
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-orange-600 via-orange-400 to-orange-600 text-black text-sm font-black uppercase tracking-widest px-6 py-1 rounded-full shadow-lg">
           Lucky Number
         </div>
 
@@ -50,8 +50,8 @@ export function NumberDisplay({
               key={i}
               className="w-3 h-3 rounded-full"
               style={{
-                backgroundColor: rolling ? "#ffd700" : "#555",
-                boxShadow: rolling ? "0 0 8px #ffd700" : "none",
+                backgroundColor: rolling ? "#f97316" : "#555",
+                boxShadow: rolling ? "0 0 8px #f97316" : "none",
                 animation: rolling ? `pulse 0.5s ease-in-out infinite ${i * 0.1}s` : "none",
               }}
             />
@@ -67,7 +67,7 @@ export function NumberDisplay({
       {/* Result */}
       {result !== null && !rolling && (
         <div className="flex flex-col items-center gap-1 animate-in fade-in zoom-in-95 duration-300">
-          <p className="text-7xl font-black text-number-accent" style={{ textShadow: "0 0 30px rgba(168,85,247,0.4)" }}>
+          <p className="text-7xl font-black text-number-accent" style={{ textShadow: "0 0 30px rgba(249,115,22,0.4)" }}>
             {result}
           </p>
         </div>

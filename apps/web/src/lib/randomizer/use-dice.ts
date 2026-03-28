@@ -1,21 +1,28 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import type { HistoryEntry } from "./types";
+import { readStorage, writeStorage } from "./local-storage";
 
 // Matches the CSS @keyframes dice-roll duration in index.css
 const ANIMATION_DURATION = 1200;
 
+const DICE_STORAGE_KEY = "dice-state";
+type StoredDiceState = { count: number; history: HistoryEntry[] };
+
 function useDice() {
-  const [count, setCountState] = useState(2);
+  const stored = readStorage<StoredDiceState | null>(DICE_STORAGE_KEY, null);
+  const [count, setCountState] = useState(stored?.count ?? 2);
   const [rolling, setRolling] = useState(false);
   const [results, setResults] = useState<number[]>([]);
   const [sum, setSum] = useState<number | null>(null);
-  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [history, setHistory] = useState<HistoryEntry[]>(stored?.history ?? []);
 
-  // Synchronous guard — prevents double-trigger during animation
   const isRollingRef = useRef(false);
-  // Pre-determined values stable during animation
   const pendingResultsRef = useRef<number[]>([]);
-  const nextIdRef = useRef(1);
+  const nextIdRef = useRef(stored?.history?.length ? Math.max(...stored.history.map((h) => h.id)) + 1 : 1);
+
+  useEffect(() => {
+    writeStorage<StoredDiceState>(DICE_STORAGE_KEY, { count, history });
+  }, [count, history]);
 
   const setCount = useCallback((n: number) => {
     // No-op when rolling or out of 1-6 range

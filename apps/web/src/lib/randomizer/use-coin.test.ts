@@ -4,10 +4,12 @@ import { useCoin } from "./use-coin";
 
 describe("useCoin", () => {
   beforeEach(() => {
+    localStorage.clear();
     vi.useFakeTimers();
   });
 
   afterEach(() => {
+    localStorage.clear();
     vi.useRealTimers();
   });
 

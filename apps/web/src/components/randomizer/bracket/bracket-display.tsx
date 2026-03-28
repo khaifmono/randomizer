@@ -1,21 +1,31 @@
+import { Crown } from "lucide-react";
 import { Badge } from "@base-project/web/components/ui/badge";
+import { cn } from "@base-project/web/lib/utils";
 import { BracketMatch } from "./bracket-match";
 import type { Matchup } from "@base-project/web/lib/randomizer/use-bracket";
 
+function getRoundLabel(roundIndex: number, totalRounds: number): string {
+  const roundsFromEnd = totalRounds - 1 - roundIndex;
+  if (roundsFromEnd === 0) return "Final";
+  if (roundsFromEnd === 1) return "Semi Final";
+  if (roundsFromEnd === 2) return "Quarter Final";
+  // For earlier rounds, use "Round of N" where N = number of matchups * 2 (entrants in that round)
+  const matchupsInRound = Math.pow(2, totalRounds - 1 - roundIndex);
+  return `Round of ${matchupsInRound * 2}`;
+}
+
 type BracketDisplayProps = {
   rounds: Matchup[][];
-  activeMatchupId: string | null;
-  animating: boolean;
+  animatingMatchupId: string | null;
   mode: "random" | "judge";
-  onTrigger: () => void;
+  onTrigger: (matchupId: string) => void;
   onResolve: (matchupId: string, winnerId: number) => void;
   onAnimationEnd: (matchupId: string) => void;
 };
 
 export function BracketDisplay({
   rounds,
-  activeMatchupId,
-  animating,
+  animatingMatchupId,
   mode,
   onTrigger,
   onResolve,
@@ -33,13 +43,13 @@ export function BracketDisplay({
     );
 
   // Shared grid template rows string — all columns use the same row grid
-  const gridRows = `repeat(${firstRoundCount}, minmax(90px, 1fr))`;
+  const gridRows = `repeat(${firstRoundCount}, 130px)`;
 
   // Badge height offset so connector columns align with matchup grids (skip badge row)
   const badgeOffset = "calc(1.25rem + 0.5rem)";
 
   return (
-    <div className="flex flex-row gap-0 overflow-x-auto scrollbar-none p-4">
+    <div className="flex flex-row gap-0 p-4 w-max">
       {revealedRounds.map(({ round, originalIndex: roundIndex }, revealedPos) => {
         const rowSpan = Math.pow(2, roundIndex);
 
@@ -49,10 +59,8 @@ export function BracketDisplay({
             <div key={`round-${roundIndex}`} className="flex flex-col flex-shrink-0">
               {/* Round header badge */}
               <div className="flex justify-center mb-2">
-                <Badge variant="outline" className="text-xs text-muted-foreground">
-                  {roundIndex === totalRounds - 1
-                    ? "Final"
-                    : `Round ${roundIndex + 1} of ${totalRounds}`}
+                <Badge variant="outline" className="text-xs text-muted-foreground whitespace-nowrap">
+                  {getRoundLabel(roundIndex, totalRounds)}
                 </Badge>
               </div>
 
@@ -61,21 +69,28 @@ export function BracketDisplay({
                 style={{
                   display: "grid",
                   gridTemplateRows: gridRows,
+                  rowGap: "20px",
                   width: "10rem",
                 }}
               >
                 {round.map((matchup, matchupIndex) => {
                   const rowStart = matchupIndex * rowSpan + 1;
+                  // Add dashed separator between matchup pairs in early rounds
+                  const isOddMatchup = matchupIndex % 2 === 1;
+                  const isNotLastMatchup = matchupIndex < round.length - 1;
+                  const showSeparator = roundIndex === 0 && isOddMatchup && isNotLastMatchup;
                   return (
                     <div
                       key={matchup.id}
                       style={{ gridRow: `${rowStart} / span ${rowSpan}` }}
-                      className="flex items-center"
+                      className={cn(
+                        "flex items-center",
+                        showSeparator && "border-b border-dashed border-border/60",
+                      )}
                     >
                       <BracketMatch
                         matchup={matchup}
-                        isActive={matchup.id === activeMatchupId}
-                        animating={animating}
+                        isAnimating={matchup.id === animatingMatchupId}
                         mode={mode}
                         onTrigger={onTrigger}
                         onResolve={onResolve}
@@ -100,6 +115,7 @@ export function BracketDisplay({
                   style={{
                     display: "grid",
                     gridTemplateRows: gridRows,
+                    rowGap: "20px",
                     width: "2rem",
                     marginTop: badgeOffset,
                   }}
@@ -127,6 +143,70 @@ export function BracketDisplay({
           </>
         );
       })}
+
+      {/* Champion column — shown when final matchup has a winner */}
+      {(() => {
+        const finalRound = rounds[rounds.length - 1];
+        const finalMatchup = finalRound?.[0];
+        if (!finalMatchup?.winnerId) return null;
+        const winner =
+          finalMatchup.topEntry?.id === finalMatchup.winnerId
+            ? finalMatchup.topEntry
+            : finalMatchup.bottomEntry;
+        if (!winner) return null;
+
+        return (
+          <>
+            {/* Connector to champion */}
+            <div
+              className="flex-shrink-0"
+              style={{
+                display: "grid",
+                gridTemplateRows: gridRows,
+                rowGap: "20px",
+                width: "2rem",
+                marginTop: badgeOffset,
+              }}
+            >
+              <div
+                style={{ gridRow: `1 / span ${firstRoundCount}` }}
+                className="flex items-center"
+              >
+                <div className="relative w-full h-full">
+                  <div className="absolute top-1/2 left-0 w-full h-[2px] bg-bracket-accent" style={{ transform: "translateY(-1px)" }} />
+                </div>
+              </div>
+            </div>
+
+            {/* Champion card */}
+            <div className="flex flex-col flex-shrink-0">
+              <div className="flex justify-center mb-2">
+                <Badge variant="outline" className="text-xs text-bracket-accent border-bracket-accent">
+                  Champion
+                </Badge>
+              </div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateRows: gridRows,
+                  rowGap: "20px",
+                  width: "10rem",
+                }}
+              >
+                <div
+                  style={{ gridRow: `1 / span ${firstRoundCount}` }}
+                  className="flex items-center"
+                >
+                  <div className="w-full rounded-lg border-2 border-bracket-accent bg-bracket-accent text-white px-3 py-3 flex items-center gap-2 font-bold text-sm shadow-lg overflow-hidden">
+                    <Crown className="h-4 w-4 flex-shrink-0" />
+                    <span className="truncate">{winner.name}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        );
+      })()}
     </div>
   );
 }

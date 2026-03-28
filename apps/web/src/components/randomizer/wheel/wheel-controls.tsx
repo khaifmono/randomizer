@@ -1,4 +1,4 @@
-import { Loader2 } from "lucide-react";
+import { Loader2, RotateCcw } from "lucide-react";
 import { Button } from "@base-project/web/components/ui/button";
 
 type WheelControlsProps = {
@@ -21,12 +21,13 @@ export function WheelControls({
       <Button
         onClick={onSpin}
         disabled={spinning || !hasItems}
-        className="w-full max-w-[200px] h-11 bg-wheel-accent hover:bg-wheel-accent/90 text-white font-semibold"
+        size="lg"
+        className="w-full max-w-[220px] bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white font-bold text-base shadow-lg shadow-blue-500/25 active:scale-[0.98] transition-transform"
         title={!hasItems ? "Add items to spin" : undefined}
       >
         {spinning ? (
           <>
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <Loader2 className="h-5 w-5 animate-spin" />
             Spinning...
           </>
         ) : (
@@ -36,8 +37,9 @@ export function WheelControls({
       {hasRemovedItems && (
         <button
           onClick={onReset}
-          className="text-sm text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
+          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground underline-offset-2 hover:underline transition-colors"
         >
+          <RotateCcw className="h-3.5 w-3.5" />
           Reset wheel
         </button>
       )}

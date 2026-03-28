@@ -12,9 +12,12 @@ const defaultBracketState = {
   setEntries: vi.fn(),
   setMode: vi.fn(),
   startTournament: vi.fn(),
+  triggerMatchup: vi.fn(),
   resolveMatchup: vi.fn(),
   onAnimationEnd: vi.fn(),
   resetBracket: vi.fn(),
+  undoLastResolve: vi.fn(),
+  canUndo: false,
 };
 
 const mockUseBracket = vi.hoisted(() => vi.fn(() => defaultBracketState));
@@ -22,6 +25,8 @@ const mockUseBracket = vi.hoisted(() => vi.fn(() => defaultBracketState));
 vi.mock("@base-project/web/lib/randomizer/use-bracket", () => ({
   useBracket: mockUseBracket,
   ANIMATION_DURATION: 1200,
+  isMatchupReady: (m: { winnerId: unknown; topEntry: unknown; bottomEntry: unknown; isBye: boolean }) =>
+    !m.isBye && m.winnerId === null && m.topEntry !== null && m.bottomEntry !== null,
 }));
 
 describe("BracketTab", () => {
@@ -48,8 +53,8 @@ describe("BracketTab", () => {
 
   it("renders mode toggle buttons (Random / Judge)", () => {
     render(<BracketTab onHistoryChange={vi.fn()} />);
-    expect(screen.getByRole("button", { name: /^random$/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /^judge$/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /random/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /judge/i })).toBeInTheDocument();
   });
 
   it("calls onHistoryChange when history updates", () => {
@@ -74,8 +79,7 @@ describe("BracketTab", () => {
           },
         ],
       ],
-      activeMatchupId: "r0-m0",
-      animating: false,
+      animatingMatchupId: null,
     };
     mockUseBracket.mockReturnValue({
       ...defaultBracketState,
@@ -84,13 +88,14 @@ describe("BracketTab", () => {
     render(<BracketTab onHistoryChange={vi.fn()} />);
     expect(screen.getByText("Alice")).toBeInTheDocument();
     expect(screen.getByText("Bob")).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /start tournament/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /^start tournament$/i })).not.toBeInTheDocument();
   });
 
   it("shows winner name when phase=complete", () => {
     const completeState: BracketState = {
       phase: "complete",
       winnerId: 1,
+      rounds: [[{ id: "r0-m0", topEntry: { id: 1, name: "Alice", isBye: false }, bottomEntry: { id: 2, name: "Bob", isBye: false }, winnerId: 1, isBye: false }]],
     };
     mockUseBracket.mockReturnValue({
       ...defaultBracketState,
@@ -98,7 +103,7 @@ describe("BracketTab", () => {
       bracketState: completeState,
     });
     render(<BracketTab onHistoryChange={vi.fn()} />);
-    expect(screen.getByText("Alice")).toBeInTheDocument();
+    expect(screen.getByText("Winner!")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /new tournament/i })).toBeInTheDocument();
   });
 });

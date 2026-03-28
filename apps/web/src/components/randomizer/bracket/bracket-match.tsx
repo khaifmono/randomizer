@@ -1,32 +1,31 @@
 import { useEffect, useRef, useState } from "react";
-import { Card } from "@base-project/web/components/ui/card";
 import { cn } from "@base-project/web/lib/utils";
 import type { Matchup } from "@base-project/web/lib/randomizer/use-bracket";
+import { isMatchupReady } from "@base-project/web/lib/randomizer/use-bracket";
 
 type BracketMatchProps = {
   matchup: Matchup;
-  isActive: boolean;
-  animating: boolean;
+  isAnimating: boolean;
   mode: "random" | "judge";
+  onTrigger: (matchupId: string) => void;
   onResolve: (matchupId: string, winnerId: number) => void;
   onAnimationEnd: (matchupId: string) => void;
 };
 
 export function BracketMatch({
   matchup,
-  isActive,
-  animating,
+  isAnimating,
   mode,
+  onTrigger,
   onResolve,
   onAnimationEnd,
 }: BracketMatchProps) {
   const [showWinnerFlash, setShowWinnerFlash] = useState(false);
   const [vsVisible, setVsVisible] = useState(false);
-  // Guard to prevent double-firing animation end
   const animationFiredRef = useRef(false);
 
   useEffect(() => {
-    if (!isActive || !animating) {
+    if (!isAnimating) {
       setShowWinnerFlash(false);
       setVsVisible(false);
       animationFiredRef.current = false;
@@ -36,12 +35,10 @@ export function BracketMatch({
     animationFiredRef.current = false;
     setVsVisible(true);
 
-    // After shake phase (~600ms), show winner flash
     const flashTimer = setTimeout(() => {
       setShowWinnerFlash(true);
     }, 600);
 
-    // After full animation, call onAnimationEnd
     const endTimer = setTimeout(() => {
       if (!animationFiredRef.current) {
         animationFiredRef.current = true;
@@ -54,91 +51,101 @@ export function BracketMatch({
       clearTimeout(endTimer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isActive, animating]);
+  }, [isAnimating]);
 
-  const isAnimationPhase = isActive && animating;
-  const isResolved = matchup.winnerId !== null && !isAnimationPhase && !showWinnerFlash;
+  const ready = isMatchupReady(matchup);
+  const isResolved = matchup.winnerId !== null && !isAnimating && !showWinnerFlash;
 
-  // Judge mode: clickable after animation completes and no winner set yet
-  const isJudgeClickable = mode === "judge" && isActive && !animating && matchup.winnerId === null;
+  // Judge mode: option boxes are directly clickable when matchup is ready
+  const isJudgeClickable = mode === "judge" && ready && !isAnimating;
 
-  function handleOptionClick(entryId: number) {
-    if (isJudgeClickable) {
-      onResolve(matchup.id, entryId);
+  // Random mode: click the card to trigger animation
+  const canTriggerRandom = mode === "random" && ready && !isAnimating;
+
+  function handleCardClick() {
+    if (canTriggerRandom) {
+      onTrigger(matchup.id);
     }
   }
 
-  if (matchup.isBye) {
-    return (
-      <Card className="w-40 border-2 border-dashed border-border/40">
-        <div className="px-3 py-2 flex items-center min-h-[44px] text-sm text-muted-foreground italic">
-          {matchup.topEntry?.name ?? "BYE"}
-        </div>
-        <div className="border-t border-border" />
-        <div className="px-3 py-2 flex items-center min-h-[44px] text-sm text-muted-foreground italic">
-          {matchup.bottomEntry?.name ?? "BYE"}
-        </div>
-      </Card>
-    );
+  function handleOptionClick(entryId: number, e: React.MouseEvent) {
+    if (isJudgeClickable) {
+      e.stopPropagation();
+      onResolve(matchup.id, entryId);
+    }
   }
 
   const topIsWinner = matchup.topEntry !== null && matchup.winnerId === matchup.topEntry.id;
   const bottomIsWinner = matchup.bottomEntry !== null && matchup.winnerId === matchup.bottomEntry.id;
 
-  return (
-    <Card
-      className={cn(
-        "w-40 border-2 relative",
-        isActive ? "border-bracket-accent" : "border-border",
-      )}
-    >
-      {/* VS badge overlay — shown during animation */}
-      {vsVisible && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-          <span
-            className={cn(
-              "text-2xl font-bold text-foreground bracket-vs-badge",
-              isAnimationPhase && "is-pulsing",
-            )}
-          >
-            VS
-          </span>
+  if (matchup.isBye) {
+    const realEntry = matchup.topEntry?.isBye ? matchup.bottomEntry : matchup.topEntry;
+    return (
+      <div className="flex flex-col items-center gap-1 w-40">
+        <div className="w-full rounded-lg border-2 border-dashed border-border/40 px-3 py-2 min-h-[44px] flex items-center text-sm text-muted-foreground italic overflow-hidden">
+          <span className="truncate">{realEntry?.name ?? "BYE"}</span>
         </div>
+        <span className="text-xs text-muted-foreground italic">BYE</span>
+        <div className="w-full rounded-lg border-2 border-dashed border-border/40 px-3 py-2 min-h-[44px] flex items-center text-sm text-muted-foreground italic">
+          BYE
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={cn(
+        "flex flex-col items-center gap-1 w-40",
+        (canTriggerRandom || isJudgeClickable) && "cursor-pointer",
       )}
-
-      {/* Top option */}
+      onClick={handleCardClick}
+    >
+      {/* Top option box */}
       <div
         className={cn(
-          "bracket-option px-3 py-2 flex items-center min-h-[44px] text-sm",
-          isAnimationPhase && "is-shaking",
+          "bracket-option w-full rounded-lg border-2 px-3 py-2 min-h-[44px] flex items-center text-sm transition-colors overflow-hidden",
+          isAnimating ? "border-red-500" : (ready || isJudgeClickable) ? "border-bracket-accent" : "border-border",
+          isAnimating && "is-shaking",
           showWinnerFlash && topIsWinner && "is-winner-flash",
-          isResolved && topIsWinner && "text-bracket-accent font-bold",
-          isResolved && !topIsWinner && matchup.bottomEntry && "text-muted-foreground line-through",
-          isJudgeClickable && "cursor-pointer hover:bg-muted/50",
-          isAnimationPhase && "pointer-events-none",
+          isResolved && topIsWinner && "bg-bracket-accent text-white font-bold border-bracket-accent",
+          isResolved && !topIsWinner && matchup.bottomEntry && "text-muted-foreground line-through border-border/40",
+          isJudgeClickable && "cursor-pointer hover:bg-bracket-accent hover:text-white",
+          isAnimating && "pointer-events-none",
         )}
-        onClick={() => matchup.topEntry && handleOptionClick(matchup.topEntry.id)}
+        onClick={(e) => matchup.topEntry && handleOptionClick(matchup.topEntry.id, e)}
       >
-        {matchup.topEntry?.name ?? ""}
+        <span className="truncate">{matchup.topEntry?.name ?? ""}</span>
       </div>
 
-      <div className="border-t border-border" />
+      {/* VS label between boxes */}
+      <span
+        className={cn(
+          "text-xs font-bold text-muted-foreground select-none",
+          isAnimating && "text-red-500 text-sm font-black",
+          vsVisible && !isAnimating && "text-foreground text-sm bracket-vs-badge",
+          isAnimating && vsVisible && "is-pulsing text-base",
+        )}
+      >
+        VS
+      </span>
 
-      {/* Bottom option */}
+      {/* Bottom option box */}
       <div
         className={cn(
-          "bracket-option px-3 py-2 flex items-center min-h-[44px] text-sm",
-          isAnimationPhase && "is-shaking",
+          "bracket-option w-full rounded-lg border-2 px-3 py-2 min-h-[44px] flex items-center text-sm transition-colors overflow-hidden",
+          isAnimating ? "border-red-500" : (ready || isJudgeClickable) ? "border-bracket-accent" : "border-border",
+          isAnimating && "is-shaking",
           showWinnerFlash && bottomIsWinner && "is-winner-flash",
-          isResolved && bottomIsWinner && "text-bracket-accent font-bold",
-          isResolved && !bottomIsWinner && matchup.topEntry && "text-muted-foreground line-through",
-          isJudgeClickable && "cursor-pointer hover:bg-muted/50",
-          isAnimationPhase && "pointer-events-none",
+          isResolved && bottomIsWinner && "bg-bracket-accent text-white font-bold border-bracket-accent",
+          isResolved && !bottomIsWinner && matchup.topEntry && "text-muted-foreground line-through border-border/40",
+          isJudgeClickable && "cursor-pointer hover:bg-bracket-accent hover:text-white",
+          isAnimating && "pointer-events-none",
         )}
-        onClick={() => matchup.bottomEntry && handleOptionClick(matchup.bottomEntry.id)}
+        onClick={(e) => matchup.bottomEntry && handleOptionClick(matchup.bottomEntry.id, e)}
       >
-        {matchup.bottomEntry?.name ?? ""}
+        <span className="truncate">{matchup.bottomEntry?.name ?? ""}</span>
       </div>
-    </Card>
+    </div>
   );
 }

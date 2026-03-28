@@ -4,10 +4,12 @@ import { useCards, ANIMATION_DURATION } from "./use-cards";
 
 describe("useCards", () => {
   beforeEach(() => {
+    localStorage.clear();
     vi.useFakeTimers();
   });
 
   afterEach(() => {
+    localStorage.clear();
     vi.useRealTimers();
   });
 

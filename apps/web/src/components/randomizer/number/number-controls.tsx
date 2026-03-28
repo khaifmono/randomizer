@@ -53,7 +53,7 @@ export function NumberControls({ min, max, rolling, onSetRange, onGenerate }: Nu
             className={cn(
               "px-5 py-2 rounded-full text-sm font-bold uppercase tracking-wide transition-all border-2",
               activePreset?.label === preset.label
-                ? "bg-gradient-to-r from-yellow-500 to-amber-500 text-black border-yellow-400 shadow-lg shadow-yellow-500/20"
+                ? "bg-gradient-to-r from-orange-500 to-amber-500 text-black border-orange-400 shadow-lg shadow-orange-500/20"
                 : "bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-zinc-500 hover:text-zinc-200"
             )}
             onClick={() => handlePresetClick(preset)}
@@ -75,7 +75,7 @@ export function NumberControls({ min, max, rolling, onSetRange, onGenerate }: Nu
             onBlur={commitRange}
             onKeyDown={handleKeyDown}
             disabled={rolling}
-            className="w-24 px-3 py-2.5 text-center border-2 border-zinc-700 rounded-lg bg-zinc-900 text-white text-base font-bold disabled:opacity-50 focus:border-yellow-500 focus:outline-none transition-colors"
+            className="w-24 px-3 py-2.5 text-center border-2 border-zinc-700 rounded-lg bg-zinc-900 text-white text-base font-bold disabled:opacity-50 focus:border-orange-500 focus:outline-none transition-colors"
           />
         </div>
         <span className="text-zinc-500 mt-4 font-bold">to</span>
@@ -88,7 +88,7 @@ export function NumberControls({ min, max, rolling, onSetRange, onGenerate }: Nu
             onBlur={commitRange}
             onKeyDown={handleKeyDown}
             disabled={rolling}
-            className="w-24 px-3 py-2.5 text-center border-2 border-zinc-700 rounded-lg bg-zinc-900 text-white text-base font-bold disabled:opacity-50 focus:border-yellow-500 focus:outline-none transition-colors"
+            className="w-24 px-3 py-2.5 text-center border-2 border-zinc-700 rounded-lg bg-zinc-900 text-white text-base font-bold disabled:opacity-50 focus:border-orange-500 focus:outline-none transition-colors"
           />
         </div>
       </div>
@@ -102,7 +102,7 @@ export function NumberControls({ min, max, rolling, onSetRange, onGenerate }: Nu
           "w-full font-black text-lg uppercase tracking-wider h-14",
           rolling
             ? "bg-zinc-700 text-zinc-400"
-            : "bg-gradient-to-r from-yellow-500 via-amber-500 to-yellow-500 text-black hover:from-yellow-400 hover:via-amber-400 hover:to-yellow-400 shadow-lg shadow-yellow-500/30 active:scale-95 transition-transform"
+            : "bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 text-black hover:from-orange-400 hover:via-amber-400 hover:to-orange-400 shadow-lg shadow-orange-500/30 active:scale-95 transition-transform"
         )}
       >
         {rolling ? (

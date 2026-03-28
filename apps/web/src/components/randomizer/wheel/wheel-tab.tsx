@@ -14,7 +14,6 @@ type WheelTabProps = {
   onHistoryChange: (entries: HistoryEntry[]) => void;
 };
 
-// Static confetti particles — defined outside component to avoid re-creation
 const CONFETTI_PARTICLES = [
   { id: 1, style: { left: "10%", animationDelay: "0s", animationDuration: "1.1s", backgroundColor: "oklch(0.55 0.18 240)" } },
   { id: 2, style: { left: "20%", animationDelay: "0.1s", animationDuration: "1.3s", backgroundColor: "oklch(0.65 0.20 340)" } },
@@ -45,7 +44,6 @@ export function WheelTab({ onHistoryChange }: WheelTabProps) {
     hasRemovedItems,
   } = useWheel();
 
-  // Sync history up to RandomizerPage for the shared history panel
   useEffect(() => {
     onHistoryChange(history);
   }, [history, onHistoryChange]);
@@ -54,12 +52,11 @@ export function WheelTab({ onHistoryChange }: WheelTabProps) {
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 w-full max-w-6xl mx-auto">
-      {/* Wheel area — takes all available space */}
+      {/* Wheel area */}
       <div className="flex-1 flex flex-col items-center gap-3 min-w-0">
         <TutorialButton toolName="Spinning Wheel" accentColor="#3b82f6" steps={wheelTutorial} />
-        {/* Item count badge */}
         {liveItems.length > 0 && (
-          <Badge className="bg-wheel-accent text-white border-0 text-sm px-3 py-1">
+          <Badge className="bg-wheel-accent/10 text-wheel-accent border-wheel-accent/20 text-sm px-3 py-1 font-medium">
             {liveItems.length} {liveItems.length === 1 ? "item" : "items"} remaining
           </Badge>
         )}
@@ -71,7 +68,11 @@ export function WheelTab({ onHistoryChange }: WheelTabProps) {
             ))}
             <p className="text-3xl font-black animate-in fade-in zoom-in-95 duration-300">All done!</p>
             <p className="text-muted-foreground">All items have been drawn.</p>
-            <Button onClick={reset} size="lg" className="mt-4 gap-2">
+            <Button
+              onClick={reset}
+              size="lg"
+              className="mt-4 gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white font-bold shadow-lg shadow-blue-500/25 active:scale-[0.98] transition-transform"
+            >
               <RotateCcw className="h-5 w-5" />
               Reset Wheel
             </Button>
@@ -100,7 +101,7 @@ export function WheelTab({ onHistoryChange }: WheelTabProps) {
       </div>
 
       {/* Item list sidebar */}
-      <div className="w-full lg:w-64 shrink-0">
+      <div className="w-full lg:w-72 shrink-0">
         <WheelItemList
           items={liveItems}
           onAddItem={addItem}

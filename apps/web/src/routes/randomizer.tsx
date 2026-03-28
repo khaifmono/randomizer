@@ -62,20 +62,20 @@ export function RandomizerPage() {
     wheel: "from-blue-50 via-background to-indigo-50/50",
     dice: "from-emerald-50 via-background to-teal-50/50",
     coin: "from-amber-50 via-background to-yellow-50/50",
-    number: "from-purple-50 via-background to-fuchsia-50/50",
+    number: "from-orange-50 via-background to-amber-50/50",
     teams: "from-violet-50 via-background to-purple-50/50",
-    cards: "from-rose-50 via-background to-pink-50/50",
-    bracket: "from-yellow-50 via-background to-amber-50/50",
+    cards: "from-rose-50 via-background to-red-50/50",
+    bracket: "from-cyan-50 via-background to-sky-50/50",
   };
 
   const dotAccentMap: Record<string, string> = {
     wheel: "text-blue-200/40",
     dice: "text-emerald-200/40",
     coin: "text-amber-200/40",
-    number: "text-purple-200/40",
+    number: "text-orange-200/40",
     teams: "text-violet-200/40",
-    cards: "text-rose-200/40",
-    bracket: "text-yellow-200/40",
+    cards: "text-red-200/40",
+    bracket: "text-cyan-200/40",
   };
 
   const tabs = [
@@ -84,7 +84,7 @@ export function RandomizerPage() {
     { value: "coin", icon: Coins, label: "Coin", accent: "data-[state=active]:border-coin-accent data-[state=active]:text-coin-accent" },
     { value: "number", icon: Hash, label: "Number", accent: "data-[state=active]:border-number-accent data-[state=active]:text-number-accent" },
     { value: "teams", icon: Users, label: "Teams", accent: "data-[state=active]:border-teams-accent data-[state=active]:text-teams-accent" },
-    { value: "cards", icon: RectangleHorizontal, label: "Cards", accent: "data-[state=active]:border-rose-500 data-[state=active]:text-rose-500" },
+    { value: "cards", icon: RectangleHorizontal, label: "Cards", accent: "data-[state=active]:border-cards-accent data-[state=active]:text-cards-accent" },
     { value: "bracket", icon: Trophy, label: "Bracket", accent: "data-[state=active]:border-bracket-accent data-[state=active]:text-bracket-accent" },
   ];
 

@@ -336,51 +336,84 @@ export const teamsTutorial = [
 export const bracketTutorial = [
   {
     title: "Enter your options",
-    description: "Type one option per line in the text area, or use the Add button to add them one at a time. You need at least 2 options to start.",
+    description: "Type one option per line in the text area, or add them one at a time. Choose Random mode (auto-pick winners) or Judge mode (you pick). Supports 2-16 options.",
     illustration: (
       <IllustrationBox label="Bulk paste or add one at a time">
         <svg viewBox="0 0 200 120" className="w-full h-full" fill="none">
-          <rect x="10" y="10" width="180" height="55" rx="6" stroke="#eab308" strokeWidth="2" fill="#fefce8" />
-          <text x="20" y="28" fontSize="10" fill="#713f12" fontFamily="sans-serif">Pizza</text>
-          <text x="20" y="42" fontSize="10" fill="#713f12" fontFamily="sans-serif">Sushi</text>
-          <text x="20" y="56" fontSize="10" fill="#713f12" fontFamily="sans-serif">Tacos</text>
+          <rect x="10" y="10" width="180" height="55" rx="6" stroke="#06b6d4" strokeWidth="2" fill="#ecfeff" />
+          <text x="20" y="28" fontSize="10" fill="#164e63" fontFamily="sans-serif">Pizza</text>
+          <text x="20" y="42" fontSize="10" fill="#164e63" fontFamily="sans-serif">Sushi</text>
+          <text x="20" y="56" fontSize="10" fill="#164e63" fontFamily="sans-serif">Tacos</text>
           <rect x="10" y="73" width="130" height="26" rx="6" fill="white" stroke="#d4d4d8" strokeWidth="1.5" />
           <text x="20" y="90" fontSize="10" fill="#a1a1aa" fontFamily="sans-serif">Add an option...</text>
-          <rect x="148" y="73" width="42" height="26" rx="6" fill="#eab308" />
+          <rect x="148" y="73" width="42" height="26" rx="6" fill="#06b6d4" />
           <text x="169" y="90" textAnchor="middle" fontSize="10" fill="white" fontWeight="bold" fontFamily="sans-serif">Add</text>
-          <text x="100" y="112" textAnchor="middle" fontSize="9" fill="#92400e" fontFamily="sans-serif">3 options entered</text>
+          <text x="100" y="112" textAnchor="middle" fontSize="9" fill="#0e7490" fontFamily="sans-serif">3 options entered</text>
         </svg>
       </IllustrationBox>
     ),
   },
   {
-    title: "Watch them battle",
-    description: "Options face off one-on-one. In Random mode, click a match to auto-pick the winner. In Judge mode, click your preferred option after the VS animation plays.",
+    title: "Random mode",
+    description: "Click any matchup to trigger a VS animation with shaking and flashing. The winner is automatically picked by the browser. Resolve matchups in any order — no need to go left to right.",
     illustration: (
-      <IllustrationBox label="VS animation: shake → flash → winner">
+      <IllustrationBox label="Click matchup → VS animation → auto winner">
         <svg viewBox="0 0 200 120" className="w-full h-full" fill="none">
-          {/* Left match card */}
-          <rect x="15" y="20" width="70" height="80" rx="6" fill="white" stroke="#eab308" strokeWidth="2" />
-          <text x="50" y="47" textAnchor="middle" fontSize="9" fill="#334155" fontFamily="sans-serif">Pizza</text>
-          <line x1="15" y1="60" x2="85" y2="60" stroke="#e2e8f0" strokeWidth="1" />
-          <text x="50" y="80" textAnchor="middle" fontSize="9" fill="#334155" fontFamily="sans-serif">Sushi</text>
-          {/* VS badge */}
-          <rect x="82" y="48" width="36" height="24" rx="4" fill="#1a1a1a" opacity="0.85" />
-          <text x="100" y="64" textAnchor="middle" fontSize="12" fill="white" fontWeight="bold" fontFamily="sans-serif">VS</text>
-          {/* Right match card */}
-          <rect x="115" y="20" width="70" height="80" rx="6" fill="white" stroke="#d4d4d8" strokeWidth="2" />
-          <text x="150" y="47" textAnchor="middle" fontSize="9" fill="#eab308" fontWeight="bold" fontFamily="sans-serif">Tacos</text>
-          <line x1="115" y1="60" x2="185" y2="60" stroke="#e2e8f0" strokeWidth="1" />
-          <text x="150" y="80" textAnchor="middle" fontSize="9" fill="#a1a1aa" fontFamily="sans-serif" textDecoration="line-through">Burgers</text>
+          {/* Top option box — shaking (red border) */}
+          <rect x="15" y="8" width="70" height="28" rx="6" fill="white" stroke="#ef4444" strokeWidth="2" />
+          <text x="50" y="26" textAnchor="middle" fontSize="10" fill="#334155" fontFamily="sans-serif">Pizza</text>
+          {/* VS text in red */}
+          <text x="50" y="48" textAnchor="middle" fontSize="10" fill="#ef4444" fontWeight="bold" fontFamily="sans-serif">VS</text>
+          {/* Bottom option box — shaking (red border) */}
+          <rect x="15" y="53" width="70" height="28" rx="6" fill="white" stroke="#ef4444" strokeWidth="2" />
+          <text x="50" y="71" textAnchor="middle" fontSize="10" fill="#334155" fontFamily="sans-serif">Sushi</text>
+          {/* Arrow */}
+          <line x1="95" y1="45" x2="112" y2="45" stroke="#06b6d4" strokeWidth="2" />
+          <polygon points="112,40 120,45 112,50" fill="#06b6d4" />
+          {/* Result — winner highlighted */}
+          <rect x="122" y="10" width="68" height="28" rx="6" fill="#06b6d4" stroke="#06b6d4" strokeWidth="2" />
+          <text x="156" y="28" textAnchor="middle" fontSize="10" fill="white" fontWeight="bold" fontFamily="sans-serif">Sushi</text>
+          {/* Loser struck through */}
+          <rect x="122" y="53" width="68" height="28" rx="6" fill="white" stroke="#d4d4d8" strokeWidth="1.5" />
+          <text x="156" y="71" textAnchor="middle" fontSize="10" fill="#a1a1aa" fontFamily="sans-serif" textDecoration="line-through">Pizza</text>
+          <text x="100" y="105" textAnchor="middle" fontSize="8" fill="#6b7280" fontFamily="sans-serif">Winner auto-picked with animation</text>
+        </svg>
+      </IllustrationBox>
+    ),
+  },
+  {
+    title: "Judge mode",
+    description: "You decide who wins! Click directly on the player you want to advance — no animation needed. Hover shows cyan highlight on each option. Use the Undo button if you make a mistake.",
+    illustration: (
+      <IllustrationBox label="Click a player → they advance">
+        <svg viewBox="0 0 200 120" className="w-full h-full" fill="none">
+          {/* Top option box — hover state */}
+          <rect x="20" y="8" width="70" height="28" rx="6" fill="white" stroke="#06b6d4" strokeWidth="2" />
+          <text x="55" y="26" textAnchor="middle" fontSize="10" fill="#334155" fontFamily="sans-serif">Pizza</text>
+          {/* VS text */}
+          <text x="55" y="48" textAnchor="middle" fontSize="9" fill="#6b7280" fontWeight="bold" fontFamily="sans-serif">VS</text>
+          {/* Bottom option — being clicked (cyan bg) */}
+          <rect x="20" y="53" width="70" height="28" rx="6" fill="#06b6d4" stroke="#06b6d4" strokeWidth="2" />
+          <text x="55" y="71" textAnchor="middle" fontSize="10" fill="white" fontWeight="bold" fontFamily="sans-serif">Sushi</text>
+          {/* Click cursor icon */}
+          <text x="95" y="72" fontSize="14" fontFamily="sans-serif">{"👆"}</text>
+          {/* Arrow to next round */}
+          <line x1="100" y1="67" x2="118" y2="50" stroke="#06b6d4" strokeWidth="2" />
+          <polygon points="116,45 123,50 116,53" fill="#06b6d4" />
+          {/* Next round */}
+          <rect x="125" y="35" width="60" height="28" rx="6" fill="#06b6d4" stroke="#06b6d4" strokeWidth="2" />
+          <text x="155" y="53" textAnchor="middle" fontSize="10" fill="white" fontWeight="bold" fontFamily="sans-serif">Sushi</text>
+          {/* Undo hint */}
+          <text x="100" y="105" textAnchor="middle" fontSize="8" fill="#6b7280" fontFamily="sans-serif">Undo button available to revert picks</text>
         </svg>
       </IllustrationBox>
     ),
   },
   {
     title: "Champion crowned!",
-    description: "The last option standing is your winner! A crown appears with a confetti burst. Click 'New Tournament' to start over with the same or new options.",
+    description: "The bracket shows all rounds: Round of 16, Quarter Final, Semi Final, Final, and Champion. The winner gets a crown and confetti. Full bracket stays visible behind the celebration.",
     illustration: (
-      <IllustrationBox label="Crown + confetti = champion">
+      <IllustrationBox label="Full bracket + crown + confetti">
         <svg viewBox="0 0 200 120" className="w-full h-full" fill="none">
           {/* Confetti dots */}
           <circle cx="40" cy="20" r="4" fill="#ffd700" />
@@ -390,10 +423,10 @@ export const bracketTutorial = [
           <circle cx="55" cy="35" r="3" fill="#96ceb4" />
           <circle cx="145" cy="32" r="3" fill="#ffd700" />
           {/* Crown icon */}
-          <polygon points="100,38 88,52 100,48 112,52" fill="#eab308" stroke="#ca8a04" strokeWidth="1" />
-          <circle cx="88" cy="52" r="3" fill="#eab308" />
-          <circle cx="100" cy="48" r="3" fill="#eab308" />
-          <circle cx="112" cy="52" r="3" fill="#eab308" />
+          <polygon points="100,38 88,52 100,48 112,52" fill="#06b6d4" stroke="#0891b2" strokeWidth="1" />
+          <circle cx="88" cy="52" r="3" fill="#06b6d4" />
+          <circle cx="100" cy="48" r="3" fill="#06b6d4" />
+          <circle cx="112" cy="52" r="3" fill="#06b6d4" />
           {/* Winner text */}
           <text x="100" y="73" textAnchor="middle" fontSize="9" fill="#6b7280" fontFamily="sans-serif">Winner!</text>
           <text x="100" y="89" textAnchor="middle" fontSize="14" fill="#1a1a1a" fontWeight="bold" fontFamily="sans-serif">Pizza</text>

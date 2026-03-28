@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@base-project/web/components/ui/card";
-import { Label } from "@base-project/web/components/ui/label";
 import { Textarea } from "@base-project/web/components/ui/textarea";
+import { Users } from "lucide-react";
 
 type TeamsNameEntryProps = {
   rawText: string;
@@ -16,19 +16,30 @@ export function TeamsNameEntry({ rawText, onChange, disabled }: TeamsNameEntryPr
   const n = names.length;
 
   return (
-    <Card className="w-full">
-      <CardContent className="p-4 space-y-3">
-        <Label className="text-sm font-semibold">Names</Label>
+    <Card className="w-full border-2 border-border/60">
+      <CardContent className="p-5 space-y-4">
+        <div className="flex items-center gap-2">
+          <Users className="h-4 w-4 text-teams-accent" />
+          <span className="text-sm font-semibold">Participants</span>
+          {n > 0 && (
+            <span className="ml-auto text-xs font-medium bg-teams-accent/10 text-teams-accent px-2 py-0.5 rounded-full" data-testid="names-count">
+              {n} name{n !== 1 ? "s" : ""}
+            </span>
+          )}
+        </div>
         <Textarea
-          placeholder="One name per line..."
-          rows={6}
+          placeholder={"One name per line...\nAlice\nBob\nCharlie\nDana"}
+          rows={5}
           value={rawText}
           onChange={(e) => onChange(e.target.value)}
           disabled={disabled}
+          className="resize-none"
         />
-        <span className="text-xs text-muted-foreground" data-testid="names-count">
-          {n} name{n !== 1 ? "s" : ""}
-        </span>
+        {n === 0 && (
+          <span className="text-xs text-muted-foreground" data-testid="names-count">
+            0 names
+          </span>
+        )}
       </CardContent>
     </Card>
   );

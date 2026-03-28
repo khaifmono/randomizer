@@ -34,15 +34,16 @@ describe("CoinTab", () => {
     expect(screen.getByRole("button", { name: /flip/i })).toBeInTheDocument();
   });
 
-  it("renders stepper Minus and Plus buttons", () => {
+  it("renders coin count selector buttons", () => {
     render(<CoinTab onHistoryChange={vi.fn()} />);
-    expect(screen.getByRole("button", { name: /decrease coin count/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /increase coin count/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "1" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "10" })).toBeInTheDocument();
   });
 
   it("displays tally when tally is set and not flipping", () => {
     render(<CoinTab onHistoryChange={vi.fn()} />);
-    expect(screen.getByText("1 Heads, 0 Tails")).toBeInTheDocument();
+    expect(screen.getByText("Heads")).toBeInTheDocument();
+    expect(screen.getByText("Tails")).toBeInTheDocument();
   });
 
   it("does not display tally when flipping is true", () => {
@@ -69,7 +70,8 @@ describe("CoinTab", () => {
     mockUseCoin.mockReturnValue({ ...defaultCoinState, sessionHeads: 5, sessionTails: 3 });
     render(<CoinTab onHistoryChange={vi.fn()} />);
     expect(screen.getByTestId("session-tally")).toBeInTheDocument();
-    expect(screen.getByText(/5H 3T across 8 flips/)).toBeInTheDocument();
+    expect(screen.getByText("5H")).toBeInTheDocument();
+    expect(screen.getByText("3T")).toBeInTheDocument();
   });
 
   it("hides session tally when no flips have occurred", () => {

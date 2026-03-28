@@ -4,10 +4,12 @@ import { useNumber } from "./use-number";
 
 describe("useNumber", () => {
   beforeEach(() => {
+    localStorage.clear();
     vi.useFakeTimers();
   });
 
   afterEach(() => {
+    localStorage.clear();
     vi.useRealTimers();
   });
 

@@ -1,23 +1,29 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import type { HistoryEntry } from "./types";
+import { readStorage, writeStorage } from "./local-storage";
 
-// Matches the CSS @keyframes coin-flip duration in index.css
 const ANIMATION_DURATION = 1200;
 
+const COIN_STORAGE_KEY = "coin-state";
+type StoredCoinState = { count: number; history: HistoryEntry[]; sessionHeads: number; sessionTails: number };
+
 function useCoin() {
-  const [count, setCountState] = useState(1);
+  const stored = readStorage<StoredCoinState | null>(COIN_STORAGE_KEY, null);
+  const [count, setCountState] = useState(stored?.count ?? 1);
   const [flipping, setFlipping] = useState(false);
   const [results, setResults] = useState<("heads" | "tails")[]>([]);
   const [tally, setTally] = useState<{ heads: number; tails: number } | null>(null);
-  const [history, setHistory] = useState<HistoryEntry[]>([]);
-  const [sessionHeads, setSessionHeads] = useState(0);
-  const [sessionTails, setSessionTails] = useState(0);
+  const [history, setHistory] = useState<HistoryEntry[]>(stored?.history ?? []);
+  const [sessionHeads, setSessionHeads] = useState(stored?.sessionHeads ?? 0);
+  const [sessionTails, setSessionTails] = useState(stored?.sessionTails ?? 0);
 
-  // Synchronous guard — prevents double-trigger during animation
   const isFlippingRef = useRef(false);
-  // Pre-determined values stable during animation
   const pendingResultsRef = useRef<("heads" | "tails")[]>([]);
-  const nextIdRef = useRef(1);
+  const nextIdRef = useRef(stored?.history?.length ? Math.max(...stored.history.map((h) => h.id)) + 1 : 1);
+
+  useEffect(() => {
+    writeStorage<StoredCoinState>(COIN_STORAGE_KEY, { count, history, sessionHeads, sessionTails });
+  }, [count, history, sessionHeads, sessionTails]);
 
   const setCount = useCallback((n: number) => {
     // No-op when flipping or out of 1-10 range

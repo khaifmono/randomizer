@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Users } from "lucide-react";
 import { useTeams, ANIMATION_DURATION } from "@base-project/web/lib/randomizer/use-teams";
 import { TeamsNameEntry } from "./teams-name-entry";
 import { TeamsControls } from "./teams-controls";
@@ -26,23 +27,18 @@ export function TeamsTab({ onHistoryChange }: TeamsTabProps) {
     onShuffleEnd,
   } = useTeams();
 
-  // rawText is local UI state — the textarea value
-  // names in hook are the parsed array; we keep rawText here, parse on change
   const [rawText, setRawText] = useState("");
 
-  // Sync history up to RandomizerPage for the shared history panel
   useEffect(() => {
     onHistoryChange(history);
   }, [history, onHistoryChange]);
 
-  // Parse rawText into names array and sync to hook
   function handleTextChange(text: string) {
     setRawText(text);
     const parsed = text.split("\n").map((s) => s.trim()).filter(Boolean);
     setNames(parsed);
   }
 
-  // Trigger onShuffleEnd after the CSS animation window closes
   useEffect(() => {
     if (!shuffling) return;
     const timer = setTimeout(onShuffleEnd, ANIMATION_DURATION);
@@ -52,6 +48,16 @@ export function TeamsTab({ onHistoryChange }: TeamsTabProps) {
   return (
     <div className="flex flex-col items-center gap-6 w-full max-w-lg">
       <TutorialButton toolName="Team Shuffler" accentColor="#8b5cf6" steps={teamsTutorial} />
+
+      {/* Header */}
+      <div className="flex flex-col items-center gap-2">
+        <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-violet-500/25">
+          <Users className="h-6 w-6" />
+        </div>
+        <h2 className="text-lg font-bold">Team Shuffler</h2>
+        <p className="text-sm text-muted-foreground text-center">Enter names and randomly pick one or split into teams</p>
+      </div>
+
       <TeamsNameEntry
         rawText={rawText}
         onChange={handleTextChange}

@@ -4,10 +4,12 @@ import { useTeams } from "./use-teams";
 
 describe("useTeams", () => {
   beforeEach(() => {
+    localStorage.clear();
     vi.useFakeTimers();
   });
 
   afterEach(() => {
+    localStorage.clear();
     vi.useRealTimers();
   });
 

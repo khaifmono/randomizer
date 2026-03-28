@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Dices } from "lucide-react";
 import { useDice, ANIMATION_DURATION } from "@base-project/web/lib/randomizer/use-dice";
 import { DiceDisplay } from "./dice-display";
 import { DiceControls } from "./dice-controls";
@@ -13,13 +14,10 @@ type DiceTabProps = {
 export function DiceTab({ onHistoryChange }: DiceTabProps) {
   const { count, rolling, results, sum, history, setCount, startRoll, onRollEnd } = useDice();
 
-  // Sync history up to RandomizerPage for the shared history panel
   useEffect(() => {
     onHistoryChange(history);
   }, [history, onHistoryChange]);
 
-  // Trigger onRollEnd after the CSS animation completes
-  // Single setTimeout avoids coordinating N animationend events (one per die)
   useEffect(() => {
     if (!rolling) return;
     const timer = setTimeout(onRollEnd, ANIMATION_DURATION);
@@ -27,12 +25,32 @@ export function DiceTab({ onHistoryChange }: DiceTabProps) {
   }, [rolling, onRollEnd]);
 
   return (
-    <div className="flex flex-col items-center gap-6">
+    <div className="flex flex-col items-center gap-6 w-full max-w-lg">
       <TutorialButton toolName="Dice Roller" accentColor="#10b981" steps={diceTutorial} />
+
+      {/* Header */}
+      <div className="flex flex-col items-center gap-2">
+        <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-lg shadow-emerald-500/25">
+          <Dices className="h-6 w-6" />
+        </div>
+        <h2 className="text-lg font-bold">Dice Roller</h2>
+        <p className="text-sm text-muted-foreground text-center">Roll 1-6 dice with 3D tumbling animation</p>
+      </div>
+
+      {/* Dice display */}
       <DiceDisplay count={count} results={results} rolling={rolling} />
+
+      {/* Controls */}
       <DiceControls count={count} rolling={rolling} onSetCount={setCount} onRoll={startRoll} />
+
+      {/* Sum result */}
       {sum !== null && !rolling && (
-        <p className="text-2xl font-bold">Total: {sum}</p>
+        <div className="flex flex-col items-center gap-1 animate-in fade-in zoom-in-95 duration-300">
+          <span className="text-sm text-muted-foreground font-medium">Total</span>
+          <span className="text-4xl font-black text-dice-accent" style={{ textShadow: "0 0 20px rgba(16,185,129,0.3)" }}>
+            {sum}
+          </span>
+        </div>
       )}
     </div>
   );

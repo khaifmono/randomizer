@@ -1,17 +1,23 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { readStorage, writeStorage } from "./local-storage";
 import type { HistoryEntry } from "./types";
 
 const STORAGE_KEY = "wheel-items";
+const WHEEL_HISTORY_KEY = "wheel-history";
 const DEFAULT_ITEMS = ["Option 1", "Option 2", "Option 3", "Option 4"];
 
 function useWheel() {
+  const storedHistory = readStorage<HistoryEntry[]>(WHEEL_HISTORY_KEY, []);
   const [items, setItemsState] = useState<string[]>(() =>
     readStorage(STORAGE_KEY, DEFAULT_ITEMS),
   );
   const [spinning, setSpinning] = useState(false);
   const [winner, setWinner] = useState<string | null>(null);
-  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [history, setHistory] = useState<HistoryEntry[]>(storedHistory);
+
+  useEffect(() => {
+    writeStorage(WHEEL_HISTORY_KEY, history);
+  }, [history]);
 
   // Ref mirrors items state so callbacks can read the latest value without going stale
   const itemsRef = useRef<string[]>(items);
@@ -20,7 +26,7 @@ function useWheel() {
   const itemsSnapshotRef = useRef<string[]>([]);
   const isSpinningRef = useRef(false);
   const winnerIndexRef = useRef<number | null>(null);
-  const nextIdRef = useRef(1);
+  const nextIdRef = useRef(storedHistory.length ? Math.max(...storedHistory.map((h) => h.id)) + 1 : 1);
 
   // Internal — always write both state and storage
   const applyItems = useCallback((next: string[]) => {

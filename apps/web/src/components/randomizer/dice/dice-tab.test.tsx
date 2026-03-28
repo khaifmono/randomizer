@@ -32,15 +32,17 @@ describe("DiceTab", () => {
     expect(screen.getByRole("button", { name: /roll/i })).toBeInTheDocument();
   });
 
-  it("renders stepper Minus and Plus buttons", () => {
+  it("renders dice count selector buttons (1-6)", () => {
     render(<DiceTab onHistoryChange={vi.fn()} />);
-    expect(screen.getByRole("button", { name: /decrease dice count/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /increase dice count/i })).toBeInTheDocument();
+    for (let i = 1; i <= 6; i++) {
+      expect(screen.getByRole("button", { name: String(i) })).toBeInTheDocument();
+    }
   });
 
   it("displays Total when sum is set and not rolling", () => {
     render(<DiceTab onHistoryChange={vi.fn()} />);
-    expect(screen.getByText("Total: 8")).toBeInTheDocument();
+    expect(screen.getByText("Total")).toBeInTheDocument();
+    expect(screen.getByText("8")).toBeInTheDocument();
   });
 
   it("does not display Total when rolling is true", () => {

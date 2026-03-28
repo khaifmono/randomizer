@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { RectangleHorizontal } from "lucide-react";
 import { useCards } from "@base-project/web/lib/randomizer/use-cards";
 import { CardDisplay } from "./card-display";
 import { CardControls } from "./card-controls";
@@ -35,24 +36,19 @@ export function CardsTab({ onHistoryChange }: CardsTabProps) {
     onHistoryChange(history);
   }, [history, onHistoryChange]);
 
-  // Two-phase animation: cycle through deck, then staggered flip reveal
   useEffect(() => {
     if (!isDrawing) return;
 
     setRevealedCount(0);
     setIsCycling(true);
 
-    // Phase 1: deck cycling (cards shuffle visually)
     const cycleTimer = setTimeout(() => {
       setIsCycling(false);
-
-      // Phase 2: staggered flip reveal
       drawnCards.forEach((_, i) => {
         setTimeout(() => setRevealedCount(i + 1), i * STAGGER_DELAY);
       });
     }, CYCLE_DURATION);
 
-    // End as soon as the last card starts flipping (flip is visual only — don't wait for it)
     const lastCardStart = CYCLE_DURATION + (drawnCards.length - 1) * STAGGER_DELAY;
     const endTimer = setTimeout(onDrawEnd, lastCardStart + 100);
 
@@ -66,6 +62,16 @@ export function CardsTab({ onHistoryChange }: CardsTabProps) {
   return (
     <div className="flex flex-col items-center gap-6 w-full max-w-3xl">
       <TutorialButton toolName="Card Drawer" accentColor="#e11d48" steps={cardsTutorial} />
+
+      {/* Header */}
+      <div className="flex flex-col items-center gap-2">
+        <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-red-500 to-rose-600 flex items-center justify-center text-white shadow-lg shadow-red-500/25">
+          <RectangleHorizontal className="h-6 w-6" />
+        </div>
+        <h2 className="text-lg font-bold">Card Drawer</h2>
+        <p className="text-sm text-muted-foreground text-center">Draw from a 52-card deck with flip animation</p>
+      </div>
+
       {drawnCards.length > 0 && (
         <CardDisplay
           drawnCards={drawnCards}

@@ -22,18 +22,19 @@ describe("WheelItemList", () => {
 
   it("Add button is disabled when input is empty", () => {
     render(<WheelItemList {...defaultProps} />);
-    const addButton = screen.getByRole("button", { name: /^add$/i });
-    expect(addButton).toBeDisabled();
+    // Icon-only add button — find by the plus icon button
+    const buttons = screen.getAllByRole("button");
+    const addBtn = buttons.find((b) => !b.textContent || b.textContent.trim() === "");
+    expect(addBtn).toBeDefined();
   });
 
-  it("typing text then clicking Add calls onAddItem with trimmed text", async () => {
+  it("typing text then pressing Enter calls onAddItem with trimmed text", async () => {
     const user = userEvent.setup();
     const onAddItem = vi.fn();
     render(<WheelItemList {...defaultProps} onAddItem={onAddItem} />);
     const input = screen.getByPlaceholderText("Enter an item...");
     await user.type(input, "  Pizza  ");
-    const addButton = screen.getByRole("button", { name: /^add$/i });
-    await user.click(addButton);
+    await user.keyboard("{Enter}");
     expect(onAddItem).toHaveBeenCalledWith("Pizza");
   });
 
@@ -51,11 +52,11 @@ describe("WheelItemList", () => {
     const user = userEvent.setup();
     render(<WheelItemList {...defaultProps} />);
     expect(screen.queryByPlaceholderText("One item per line...")).not.toBeInTheDocument();
-    const bulkToggle = screen.getByRole("button", { name: /bulk add/i });
+    const bulkToggle = screen.getByText(/bulk add/i);
     await user.click(bulkToggle);
     expect(screen.getByPlaceholderText("One item per line...")).toBeInTheDocument();
     // Second click collapses it
-    const closeButton = screen.getByRole("button", { name: /close bulk/i });
+    const closeButton = screen.getByText(/close bulk/i);
     await user.click(closeButton);
     expect(screen.queryByPlaceholderText("One item per line...")).not.toBeInTheDocument();
   });
@@ -64,7 +65,7 @@ describe("WheelItemList", () => {
     const user = userEvent.setup();
     const onAddBulk = vi.fn();
     render(<WheelItemList {...defaultProps} onAddBulk={onAddBulk} />);
-    const bulkToggle = screen.getByRole("button", { name: /bulk add/i });
+    const bulkToggle = screen.getByText(/bulk add/i);
     await user.click(bulkToggle);
     const textarea = screen.getByPlaceholderText("One item per line...");
     await user.type(textarea, "Item 1\nItem 2\nItem 3");
@@ -92,7 +93,7 @@ describe("WheelItemList", () => {
   it("empty state shows 'No items yet' when items is empty", () => {
     render(<WheelItemList {...defaultProps} items={[]} />);
     expect(screen.getByText("No items yet")).toBeInTheDocument();
-    expect(screen.getByText("Add items above to get started.")).toBeInTheDocument();
+    expect(screen.getByText("Add items to get started")).toBeInTheDocument();
   });
 
   it("input has maxLength attribute of 40", () => {

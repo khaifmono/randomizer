@@ -10,9 +10,6 @@ type BracketWinnerProps = {
 };
 
 export function BracketWinner({ winnerId, entries, onReset }: BracketWinnerProps) {
-  // Winner name is at index winnerId - 1 (ids are 1-based)
-  // But entries array is the original string list — resolve by position
-  // The winnerId maps to the BracketEntry.id which is 1-based index into original entries
   const winnerName = entries[winnerId - 1] ?? entries[0] ?? "Champion";
 
   const particles = Array.from({ length: 20 }, (_, i) => ({
@@ -22,9 +19,9 @@ export function BracketWinner({ winnerId, entries, onReset }: BracketWinnerProps
   }));
 
   return (
-    <div className="flex flex-col items-center gap-4 py-8 relative">
-      {/* Confetti particles */}
-      <div className="absolute inset-x-0 top-0 h-32 pointer-events-none overflow-hidden">
+    <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+      {/* Confetti particles — full width overlay */}
+      <div className="absolute inset-x-0 top-0 h-full overflow-hidden">
         {particles.map((p, i) => (
           <div
             key={i}
@@ -38,20 +35,21 @@ export function BracketWinner({ winnerId, entries, onReset }: BracketWinnerProps
         ))}
       </div>
 
-      {/* Winner display */}
-      <Crown className="h-8 w-8 text-bracket-accent" />
-      <div className="flex flex-col items-center gap-1">
-        <p className="text-sm text-muted-foreground">Winner!</p>
-        <p className="text-2xl font-bold text-center">{winnerName}</p>
+      {/* Winner card — centered over the bracket */}
+      <div className="pointer-events-auto flex flex-col items-center gap-3 bg-background/90 backdrop-blur-sm rounded-2xl px-8 py-6 shadow-2xl border border-bracket-accent/30">
+        <Crown className="h-8 w-8 text-bracket-accent" />
+        <div className="flex flex-col items-center gap-1">
+          <p className="text-sm text-muted-foreground">Winner!</p>
+          <p className="text-2xl font-bold text-center">{winnerName}</p>
+        </div>
+        <Button
+          variant="outline"
+          className="max-w-[240px] w-full mt-1"
+          onClick={onReset}
+        >
+          New Tournament
+        </Button>
       </div>
-
-      <Button
-        variant="outline"
-        className="max-w-[240px] w-full mt-2"
-        onClick={onReset}
-      >
-        New Tournament
-      </Button>
     </div>
   );
 }

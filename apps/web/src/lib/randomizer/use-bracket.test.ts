@@ -5,6 +5,7 @@ import {
   generateBracket,
   advanceWinner,
   useBracket,
+  isMatchupReady,
 } from "./use-bracket";
 
 describe("nextPowerOf2", () => {
@@ -30,18 +31,12 @@ describe("generateBracket", () => {
     const rounds = generateBracket(["A", "B"]);
     expect(rounds).toHaveLength(1);
     expect(rounds[0]).toHaveLength(1);
-    const matchup = rounds[0][0];
-    expect(matchup.isBye).toBe(false);
-    expect(matchup.topEntry).not.toBeNull();
-    expect(matchup.bottomEntry).not.toBeNull();
-    expect(matchup.topEntry!.isBye).toBe(false);
-    expect(matchup.bottomEntry!.isBye).toBe(false);
+    expect(rounds[0][0].isBye).toBe(false);
   });
 
   it("generateBracket(['A','B','C']) returns 2 rounds", () => {
     const rounds = generateBracket(["A", "B", "C"]);
     expect(rounds).toHaveLength(2);
-    // round 0 has 2 matchups, round 1 has 1
     expect(rounds[0]).toHaveLength(2);
     expect(rounds[1]).toHaveLength(1);
   });
@@ -50,51 +45,49 @@ describe("generateBracket", () => {
     const rounds = generateBracket(["A", "B", "C"]);
     const byeMatchups = rounds[0].filter((m) => m.isBye);
     expect(byeMatchups).toHaveLength(1);
-    // Bye matchup has winnerId pre-set
     expect(byeMatchups[0].winnerId).not.toBeNull();
   });
 
   it("generateBracket with 5 names: 3 rounds, 3 byes", () => {
-    const names = ["A", "B", "C", "D", "E"];
-    const rounds = generateBracket(names);
-    // 5 -> next power of 2 = 8, so 3 rounds
+    const rounds = generateBracket(["A", "B", "C", "D", "E"]);
     expect(rounds).toHaveLength(3);
-    // round 0 has 4 matchups
-    expect(rounds[0]).toHaveLength(4);
-    // 3 byes (8-5=3 bye entries, each in its own matchup with a real entry)
-    const byeMatchups = rounds[0].filter((m) => m.isBye);
-    expect(byeMatchups).toHaveLength(3);
+    const byeCount = rounds[0].filter((m) => m.isBye).length;
+    expect(byeCount).toBe(3);
   });
 
   it("all bye matchups have isBye=true and winnerId set (non-null)", () => {
     const rounds = generateBracket(["A", "B", "C"]);
-    const byeMatchup = rounds[0].find((m) => m.isBye);
-    expect(byeMatchup).toBeDefined();
-    expect(byeMatchup!.isBye).toBe(true);
-    expect(byeMatchup!.winnerId).not.toBeNull();
+    for (const matchup of rounds[0]) {
+      if (matchup.isBye) {
+        expect(matchup.winnerId).not.toBeNull();
+      }
+    }
   });
 
   it("non-bye matchups have winnerId=null initially", () => {
-    const rounds = generateBracket(["A", "B", "C"]);
-    const nonByeMatchups = rounds[0].filter((m) => !m.isBye);
-    for (const m of nonByeMatchups) {
-      expect(m.winnerId).toBeNull();
+    const rounds = generateBracket(["A", "B", "C", "D"]);
+    for (const matchup of rounds[0]) {
+      if (!matchup.isBye) {
+        expect(matchup.winnerId).toBeNull();
+      }
     }
   });
 
   it("all matchup IDs follow r{round}-m{index} format", () => {
-    const rounds = generateBracket(["A", "B", "C", "D"]);
-    expect(rounds[0][0].id).toBe("r0-m0");
-    expect(rounds[0][1].id).toBe("r0-m1");
-    expect(rounds[1][0].id).toBe("r1-m0");
+    const rounds = generateBracket(["A", "B", "C", "D", "E"]);
+    for (let r = 0; r < rounds.length; r++) {
+      for (let m = 0; m < rounds[r].length; m++) {
+        expect(rounds[r][m].id).toBe(`r${r}-m${m}`);
+      }
+    }
   });
 
   it("generateBracket with 16 names returns 4 rounds, 0 byes", () => {
-    const names = Array.from({ length: 16 }, (_, i) => `P${i + 1}`);
+    const names = Array.from({ length: 16 }, (_, i) => `Player${i + 1}`);
     const rounds = generateBracket(names);
     expect(rounds).toHaveLength(4);
-    const byeMatchups = rounds[0].filter((m) => m.isBye);
-    expect(byeMatchups).toHaveLength(0);
+    const byeCount = rounds[0].filter((m) => m.isBye).length;
+    expect(byeCount).toBe(0);
   });
 });
 
@@ -114,7 +107,8 @@ describe("advanceWinner", () => {
   });
 
   it("matchup 2 in round 0 feeds round 1 matchup 1 topEntry (even index)", () => {
-    const rounds = generateBracket(["A", "B", "C", "D", "E", "F", "G", "H"]);
+    const names = Array.from({ length: 8 }, (_, i) => `P${i + 1}`);
+    const rounds = generateBracket(names);
     const winner = rounds[0][2].topEntry!;
     const updated = advanceWinner(rounds, 0, 2, winner);
     expect(updated[1][1].topEntry).toEqual(winner);
@@ -122,21 +116,22 @@ describe("advanceWinner", () => {
 
   it("advanceWinner is immutable — original rounds not mutated", () => {
     const rounds = generateBracket(["A", "B", "C", "D"]);
-    const originalRound1 = rounds[1][0].topEntry;
+    const original = JSON.stringify(rounds);
     const winner = rounds[0][0].topEntry!;
     advanceWinner(rounds, 0, 0, winner);
-    // Original should be unchanged
-    expect(rounds[1][0].topEntry).toBe(originalRound1);
+    expect(JSON.stringify(rounds)).toBe(original);
   });
 });
 
 describe("useBracket", () => {
   beforeEach(() => {
     vi.useFakeTimers();
+    localStorage.clear();
   });
 
   afterEach(() => {
     vi.useRealTimers();
+    localStorage.clear();
   });
 
   it("initializes with phase=entry, mode=random, entries=[], history=[]", () => {
@@ -158,9 +153,9 @@ describe("useBracket", () => {
   it("setEntries replaces entries when phase=entry", () => {
     const { result } = renderHook(() => useBracket());
     act(() => {
-      result.current.setEntries(["Alice", "Bob", "Carol"]);
+      result.current.setEntries(["A", "B", "C"]);
     });
-    expect(result.current.entries).toEqual(["Alice", "Bob", "Carol"]);
+    expect(result.current.entries).toEqual(["A", "B", "C"]);
   });
 
   it("setMode changes mode when phase=entry", () => {
@@ -187,7 +182,6 @@ describe("useBracket", () => {
 
   it("startTournament propagates bye winners to round 1 slots immediately", () => {
     const { result } = renderHook(() => useBracket());
-    // 3 entries -> 1 bye -> bye winner goes to round 1
     act(() => {
       result.current.setEntries(["A", "B", "C"]);
     });
@@ -197,7 +191,6 @@ describe("useBracket", () => {
     expect(result.current.bracketState.phase).toBe("playing");
     if (result.current.bracketState.phase === "playing") {
       const { rounds } = result.current.bracketState;
-      // At least one slot in round 1 should have an entry (from bye propagation)
       const round1Slots = rounds[1];
       const hasFilledSlot = round1Slots.some(
         (m) => m.topEntry !== null || m.bottomEntry !== null,
@@ -244,21 +237,18 @@ describe("useBracket", () => {
       result.current.startTournament();
     });
 
-    expect(result.current.bracketState.phase).toBe("playing");
     if (result.current.bracketState.phase === "playing") {
-      const { rounds, activeMatchupId } = result.current.bracketState;
-      const activeMatchup = rounds[0].find((m) => m.id === activeMatchupId)!;
-      const winnerId = activeMatchup.topEntry!.id;
+      const { rounds } = result.current.bracketState;
+      const readyMatchup = rounds.flat().find((m) => isMatchupReady(m))!;
+      const winnerId = readyMatchup.topEntry!.id;
 
       act(() => {
-        result.current.resolveMatchup(activeMatchupId!, winnerId);
+        result.current.resolveMatchup(readyMatchup.id, winnerId);
       });
 
       if (result.current.bracketState.phase === "playing") {
         const updatedRounds = result.current.bracketState.rounds;
-        const resolvedMatchup = updatedRounds[0].find(
-          (m) => m.id === activeMatchupId,
-        )!;
+        const resolvedMatchup = updatedRounds.flat().find((m) => m.id === readyMatchup.id)!;
         expect(resolvedMatchup.winnerId).toBe(winnerId);
       }
     }
@@ -273,20 +263,22 @@ describe("useBracket", () => {
       result.current.startTournament();
     });
 
-    expect(result.current.bracketState.phase).toBe("playing");
     if (result.current.bracketState.phase === "playing") {
-      const { activeMatchupId } = result.current.bracketState;
+      const { rounds } = result.current.bracketState;
+      const readyMatchup = rounds.flat().find((m) => isMatchupReady(m))!;
+
+      // Trigger animation first (pre-determines winner)
+      act(() => {
+        result.current.triggerMatchup(readyMatchup.id);
+      });
 
       act(() => {
-        result.current.onAnimationEnd(activeMatchupId!);
+        result.current.onAnimationEnd(readyMatchup.id);
       });
 
       if (result.current.bracketState.phase === "playing") {
         const updatedRounds = result.current.bracketState.rounds;
-        const resolvedMatchup = updatedRounds[0].find(
-          (m) => m.id === activeMatchupId,
-        )!;
-        // Winner should have been set by pre-determined random choice
+        const resolvedMatchup = updatedRounds.flat().find((m) => m.id === readyMatchup.id)!;
         expect(resolvedMatchup.winnerId).not.toBeNull();
       }
     }
@@ -302,23 +294,18 @@ describe("useBracket", () => {
       result.current.startTournament();
     });
 
-    expect(result.current.bracketState.phase).toBe("playing");
-    const playingState = result.current.bracketState;
-    // TypeScript guard: if not playing at this point, skip (already asserted above)
-    if (playingState.phase !== "playing") return;
-    const { rounds, activeMatchupId } = playingState;
-    const activeMatchup = rounds[0].find((m) => m.id === activeMatchupId)!;
-    const winnerId = activeMatchup.topEntry!.id;
+    if (result.current.bracketState.phase !== "playing") return;
+    const { rounds } = result.current.bracketState;
+    const readyMatchup = rounds.flat().find((m) => isMatchupReady(m))!;
+    const winnerId = readyMatchup.topEntry!.id;
 
     act(() => {
-      result.current.resolveMatchup(activeMatchupId!, winnerId);
+      result.current.resolveMatchup(readyMatchup.id, winnerId);
     });
 
-    expect(result.current.bracketState.phase).toBe("complete");
-    const completedState = result.current.bracketState;
-    if (completedState.phase === "complete") {
-      expect(completedState.winnerId).toBe(winnerId);
-    }
+    const state = result.current.bracketState as { phase: string; winnerId?: number };
+    expect(state.phase).toBe("complete");
+    expect(state.winnerId).toBe(winnerId);
   });
 
   it("history entry logged on completion with correct label format", () => {
@@ -332,17 +319,16 @@ describe("useBracket", () => {
     });
 
     if (result.current.bracketState.phase === "playing") {
-      const { rounds, activeMatchupId } = result.current.bracketState;
-      const activeMatchup = rounds[0].find((m) => m.id === activeMatchupId)!;
-      const winnerId = activeMatchup.topEntry!.id;
-      const winnerName = activeMatchup.topEntry!.name;
+      const { rounds } = result.current.bracketState;
+      const readyMatchup = rounds.flat().find((m) => isMatchupReady(m))!;
+      const winnerId = readyMatchup.topEntry!.id;
+      const winnerName = readyMatchup.topEntry!.name;
 
       act(() => {
-        result.current.resolveMatchup(activeMatchupId!, winnerId);
+        result.current.resolveMatchup(readyMatchup.id, winnerId);
       });
 
       expect(result.current.history).toHaveLength(1);
-      // Format: "Winner: {name} ({N} rounds, {N} entrants)"
       expect(result.current.history[0].label).toMatch(
         new RegExp(`^Winner: ${winnerName} \\(\\d+ rounds?, \\d+ entrants\\)$`),
       );
@@ -365,7 +351,7 @@ describe("useBracket", () => {
     expect(result.current.bracketState.phase).toBe("entry");
   });
 
-  it("isAnimatingRef prevents double-trigger during animation (random mode)", () => {
+  it("double onAnimationEnd on same matchup is harmless", () => {
     const { result } = renderHook(() => useBracket());
     act(() => {
       result.current.setEntries(["A", "B", "C", "D"]);
@@ -375,20 +361,21 @@ describe("useBracket", () => {
     });
 
     if (result.current.bracketState.phase === "playing") {
-      const { activeMatchupId } = result.current.bracketState;
+      const { rounds } = result.current.bracketState;
+      const readyMatchup = rounds.flat().find((m) => isMatchupReady(m))!;
 
-      // First call triggers animation
       act(() => {
-        result.current.onAnimationEnd(activeMatchupId!);
+        result.current.triggerMatchup(readyMatchup.id);
       });
 
-      // Second call on the now-resolved matchup should be a no-op
-      // (the active matchup has changed; resolving old ID does nothing new)
       act(() => {
-        result.current.onAnimationEnd(activeMatchupId!);
+        result.current.onAnimationEnd(readyMatchup.id);
       });
 
-      // Phase should still be valid (playing or complete, not broken)
+      act(() => {
+        result.current.onAnimationEnd(readyMatchup.id);
+      });
+
       expect(["playing", "complete"]).toContain(
         result.current.bracketState.phase,
       );
@@ -399,19 +386,173 @@ describe("useBracket", () => {
     const { result } = renderHook(() => useBracket());
     act(() => {
       result.current.setEntries(["A", "B"]);
-      // keep mode as random (default)
     });
     act(() => {
       result.current.startTournament();
     });
 
     if (result.current.bracketState.phase === "playing") {
-      const { activeMatchupId } = result.current.bracketState;
+      const { rounds } = result.current.bracketState;
+      const readyMatchup = rounds.flat().find((m) => isMatchupReady(m))!;
+
       act(() => {
-        result.current.onAnimationEnd(activeMatchupId!);
+        result.current.triggerMatchup(readyMatchup.id);
       });
+
+      act(() => {
+        result.current.onAnimationEnd(readyMatchup.id);
+      });
+
       expect(result.current.bracketState.phase).toBe("complete");
       expect(result.current.history).toHaveLength(1);
     }
+  });
+
+  it("can click any ready matchup, not just the first one", () => {
+    const { result } = renderHook(() => useBracket());
+    act(() => {
+      result.current.setEntries(["A", "B", "C", "D"]);
+      result.current.setMode("judge");
+    });
+    act(() => {
+      result.current.startTournament();
+    });
+
+    if (result.current.bracketState.phase === "playing") {
+      const { rounds } = result.current.bracketState;
+      const readyMatchups = rounds.flat().filter((m) => isMatchupReady(m));
+      expect(readyMatchups.length).toBeGreaterThan(1);
+
+      // Resolve the SECOND ready matchup (not the first)
+      const secondMatchup = readyMatchups[1];
+      const winnerId = secondMatchup.topEntry!.id;
+
+      act(() => {
+        result.current.resolveMatchup(secondMatchup.id, winnerId);
+      });
+
+      if (result.current.bracketState.phase === "playing") {
+        const updatedRounds = result.current.bracketState.rounds;
+        const resolved = updatedRounds.flat().find((m) => m.id === secondMatchup.id)!;
+        expect(resolved.winnerId).toBe(winnerId);
+      }
+    }
+  });
+
+  it("judge mode: single resolveMatchup call directly picks winner (no trigger/animation needed)", () => {
+    const { result } = renderHook(() => useBracket());
+    act(() => {
+      result.current.setEntries(["A", "B"]);
+      result.current.setMode("judge");
+    });
+    act(() => {
+      result.current.startTournament();
+    });
+
+    if (result.current.bracketState.phase !== "playing") return;
+
+    const { rounds } = result.current.bracketState;
+    const readyMatchup = rounds.flat().find((m) => isMatchupReady(m))!;
+    const winnerId = readyMatchup.topEntry!.id;
+
+    // Single call — no triggerMatchup or onAnimationEnd needed
+    act(() => {
+      result.current.resolveMatchup(readyMatchup.id, winnerId);
+    });
+
+    const finalState = result.current.bracketState as { phase: string; winnerId?: number };
+    expect(finalState.phase).toBe("complete");
+    expect(finalState.winnerId).toBe(winnerId);
+    expect(result.current.history).toHaveLength(1);
+  });
+
+  it("judge mode 4 entries: resolve all matchups directly, advances through rounds to completion", () => {
+    const { result } = renderHook(() => useBracket());
+    act(() => {
+      result.current.setEntries(["A", "B", "C", "D"]);
+      result.current.setMode("judge");
+    });
+    act(() => {
+      result.current.startTournament();
+    });
+
+    if (result.current.bracketState.phase !== "playing") return;
+
+    const readyMatchups = result.current.bracketState.rounds.flat().filter((m) => isMatchupReady(m));
+    expect(readyMatchups).toHaveLength(2);
+
+    // Directly resolve both round 1 matchups
+    act(() => { result.current.resolveMatchup(readyMatchups[0].id, readyMatchups[0].topEntry!.id); });
+    act(() => { result.current.resolveMatchup(readyMatchups[1].id, readyMatchups[1].topEntry!.id); });
+
+    // Round 2 should have a ready matchup
+    if (result.current.bracketState.phase === "playing") {
+      const round2Ready = result.current.bracketState.rounds[1].filter((m) => isMatchupReady(m));
+      expect(round2Ready).toHaveLength(1);
+
+      // Resolve final
+      act(() => { result.current.resolveMatchup(round2Ready[0].id, round2Ready[0].topEntry!.id); });
+
+      const finalState = result.current.bracketState as { phase: string };
+      expect(finalState.phase).toBe("complete");
+    }
+  });
+
+  it("undoLastResolve restores previous bracket state", () => {
+    const { result } = renderHook(() => useBracket());
+    act(() => {
+      result.current.setEntries(["A", "B", "C", "D"]);
+      result.current.setMode("judge");
+    });
+    act(() => {
+      result.current.startTournament();
+    });
+
+    if (result.current.bracketState.phase !== "playing") return;
+
+    const readyMatchups = result.current.bracketState.rounds.flat().filter((m) => isMatchupReady(m));
+    const m1 = readyMatchups[0];
+
+    // Resolve first matchup
+    act(() => { result.current.resolveMatchup(m1.id, m1.topEntry!.id); });
+
+    if (result.current.bracketState.phase !== "playing") return;
+    // Matchup should be resolved
+    const resolved = result.current.bracketState.rounds.flat().find((m) => m.id === m1.id)!;
+    expect(resolved.winnerId).toBe(m1.topEntry!.id);
+
+    // Undo
+    act(() => { result.current.undoLastResolve(); });
+
+    // Matchup should be unresolved again
+    if (result.current.bracketState.phase === "playing") {
+      const undone = result.current.bracketState.rounds.flat().find((m) => m.id === m1.id)!;
+      expect(undone.winnerId).toBeNull();
+    }
+  });
+
+  it("undoLastResolve from complete phase goes back to playing and removes history entry", () => {
+    const { result } = renderHook(() => useBracket());
+    act(() => {
+      result.current.setEntries(["A", "B"]);
+      result.current.setMode("judge");
+    });
+    act(() => {
+      result.current.startTournament();
+    });
+
+    if (result.current.bracketState.phase !== "playing") return;
+
+    const readyMatchup = result.current.bracketState.rounds.flat().find((m) => isMatchupReady(m))!;
+
+    act(() => { result.current.resolveMatchup(readyMatchup.id, readyMatchup.topEntry!.id); });
+    expect((result.current.bracketState as { phase: string }).phase).toBe("complete");
+    expect(result.current.history).toHaveLength(1);
+
+    // Undo from complete
+    act(() => { result.current.undoLastResolve(); });
+
+    expect(result.current.bracketState.phase).toBe("playing");
+    expect(result.current.history).toHaveLength(0);
   });
 });

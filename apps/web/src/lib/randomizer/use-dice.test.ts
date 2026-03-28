@@ -4,10 +4,12 @@ import { useDice } from "./use-dice";
 
 describe("useDice", () => {
   beforeEach(() => {
+    localStorage.clear();
     vi.useFakeTimers();
   });
 
   afterEach(() => {
+    localStorage.clear();
     vi.useRealTimers();
   });
 

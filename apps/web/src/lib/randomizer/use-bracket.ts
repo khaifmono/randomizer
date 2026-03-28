@@ -1,5 +1,6 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import type { HistoryEntry } from "./types";
+import { readStorage, writeStorage } from "./local-storage";
 
 export const ANIMATION_DURATION = 1200;
 
@@ -15,8 +16,8 @@ export type Matchup = {
 
 export type BracketState =
   | { phase: "entry" }
-  | { phase: "playing"; rounds: Matchup[][]; activeMatchupId: string | null; animating: boolean }
-  | { phase: "complete"; winnerId: number };
+  | { phase: "playing"; rounds: Matchup[][]; animatingMatchupId: string | null }
+  | { phase: "complete"; winnerId: number; rounds: Matchup[][] };
 
 // Returns the smallest power of 2 >= n (clamped to 2-16)
 export function nextPowerOf2(n: number): number {
@@ -36,13 +37,11 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 export function generateBracket(names: string[]): Matchup[][] {
-  // Clamp to 16 entries
   const clamped = names.slice(0, 16);
   const size = nextPowerOf2(Math.max(clamped.length, 2));
   const numRounds = Math.log2(size);
   const byeCount = size - clamped.length;
 
-  // Build real entries and shuffle them
   let idCounter = 1;
   const realEntries: BracketEntry[] = clamped.map((name) => ({
     id: idCounter++,
@@ -51,19 +50,15 @@ export function generateBracket(names: string[]): Matchup[][] {
   }));
   shuffle(realEntries);
 
-  // Build BYE entries
   const byeEntries: BracketEntry[] = Array.from({ length: byeCount }, () => ({
     id: idCounter++,
     name: "BYE",
     isBye: true,
   }));
 
-  // Interleave BYEs with real entries so each BYE faces a real entry (never BYE vs BYE)
-  // Strategy: place BYEs at evenly-spaced positions among all slots
   const slotCount = size;
   const slots: (BracketEntry | null)[] = Array(slotCount).fill(null);
 
-  // Place BYEs at evenly-spaced positions
   const byeStep = slotCount / Math.max(byeCount, 1);
   let byeIdx = 0;
   const byePositions: number[] = [];
@@ -74,7 +69,6 @@ export function generateBracket(names: string[]): Matchup[][] {
     slots[pos] = byeEntries[byeIdx++];
   }
 
-  // Fill remaining slots with real entries
   let realIdx = 0;
   for (let i = 0; i < slotCount; i++) {
     if (slots[i] === null) {
@@ -84,13 +78,11 @@ export function generateBracket(names: string[]): Matchup[][] {
 
   const entries = slots as BracketEntry[];
 
-  // Build round 0 matchups
   const round0: Matchup[] = [];
   for (let i = 0; i < size / 2; i++) {
     const top = entries[i * 2];
     const bottom = entries[i * 2 + 1];
     const isBye = top.isBye || bottom.isBye;
-    // Pre-determine winner for bye matchups
     let winnerId: number | null = null;
     if (isBye) {
       winnerId = top.isBye ? bottom.id : top.id;
@@ -104,7 +96,6 @@ export function generateBracket(names: string[]): Matchup[][] {
     });
   }
 
-  // Build empty subsequent rounds
   const rounds: Matchup[][] = [round0];
   for (let r = 1; r < numRounds; r++) {
     const prevSize = rounds[r - 1].length;
@@ -124,7 +115,6 @@ export function generateBracket(names: string[]): Matchup[][] {
   return rounds;
 }
 
-// Immutable update — advances winner from matchup[roundIndex][matchupIndex] to next round
 export function advanceWinner(
   rounds: Matchup[][],
   roundIndex: number,
@@ -148,20 +138,14 @@ export function advanceWinner(
   });
 }
 
-function findNextActiveMatchup(rounds: Matchup[][]): string | null {
-  for (const round of rounds) {
-    for (const matchup of round) {
-      if (
-        !matchup.isBye &&
-        matchup.winnerId === null &&
-        matchup.topEntry !== null &&
-        matchup.bottomEntry !== null
-      ) {
-        return matchup.id;
-      }
-    }
-  }
-  return null;
+// A matchup is ready to play if it has both entries, no winner, and isn't a bye
+export function isMatchupReady(matchup: Matchup): boolean {
+  return (
+    !matchup.isBye &&
+    matchup.winnerId === null &&
+    matchup.topEntry !== null &&
+    matchup.bottomEntry !== null
+  );
 }
 
 function findWinnerEntry(rounds: Matchup[][], winnerId: number): BracketEntry | null {
@@ -182,21 +166,37 @@ function pickRandomWinner(matchup: Matchup): BracketEntry | null {
   return candidates[Math.floor(Math.random() * candidates.length)];
 }
 
-function useBracket() {
-  const [entries, setEntriesState] = useState<string[]>([]);
-  const [mode, setModeState] = useState<"random" | "judge">("random");
-  const [bracketState, setBracketState] = useState<BracketState>({ phase: "entry" });
-  const [history, setHistory] = useState<HistoryEntry[]>([]);
+function isTournamentComplete(rounds: Matchup[][]): boolean {
+  const lastRound = rounds[rounds.length - 1];
+  return lastRound[0].winnerId !== null;
+}
 
-  // Synchronous guard — prevents double-trigger during animation
-  const isAnimatingRef = useRef(false);
-  // Pre-determined winner for random mode, stable across animation
-  const pendingWinnerRef = useRef<BracketEntry | null>(null);
-  // Mirrors rounds state for synchronous reads in callbacks
+const STORAGE_KEY = "bracket-state";
+
+type StoredBracketState = {
+  entries: string[];
+  mode: "random" | "judge";
+  bracketState: BracketState;
+  history: HistoryEntry[];
+};
+
+function useBracket() {
+  const stored = readStorage<StoredBracketState | null>(STORAGE_KEY, null);
+  const [entries, setEntriesState] = useState<string[]>(stored?.entries ?? []);
+  const [mode, setModeState] = useState<"random" | "judge">(stored?.mode ?? "random");
+  const [bracketState, setBracketState] = useState<BracketState>(stored?.bracketState ?? { phase: "entry" });
+  const [history, setHistory] = useState<HistoryEntry[]>(stored?.history ?? []);
+
+  const pendingWinnersRef = useRef<Map<string, BracketEntry>>(new Map());
   const roundsRef = useRef<Matchup[][]>([]);
-  const nextIdRef = useRef(1);
-  // Track entrant count for history label
+  const nextIdRef = useRef(stored?.history?.length ? Math.max(...stored.history.map((h) => h.id)) + 1 : 1);
   const entrantCountRef = useRef(0);
+  // Undo stack — stores previous bracket states before each resolve
+  const undoStackRef = useRef<Matchup[][][]>([]);
+
+  useEffect(() => {
+    writeStorage<StoredBracketState>(STORAGE_KEY, { entries, mode, bracketState, history });
+  }, [entries, mode, bracketState, history]);
 
   const addEntry = useCallback((name: string) => {
     if (bracketState.phase !== "entry") return;
@@ -214,8 +214,6 @@ function useBracket() {
   }, [bracketState.phase]);
 
   const startTournament = useCallback(() => {
-    if (isAnimatingRef.current) return;
-    // Read entries from state directly (no stale closure issue since setEntriesState is committed)
     setEntriesState((currentEntries) => {
       if (currentEntries.length < 2) return currentEntries;
 
@@ -236,40 +234,49 @@ function useBracket() {
       }
 
       roundsRef.current = rounds;
-
-      const activeMatchupId = findNextActiveMatchup(rounds);
-
-      // Pre-determine winner for random mode
-      if (activeMatchupId) {
-        setModeState((currentMode) => {
-          if (currentMode === "random") {
-            const activeMatchup = rounds
-              .flat()
-              .find((m) => m.id === activeMatchupId);
-            if (activeMatchup) {
-              pendingWinnerRef.current = pickRandomWinner(activeMatchup);
-            }
-          }
-          return currentMode;
-        });
-      }
+      pendingWinnersRef.current = new Map();
 
       setBracketState({
         phase: "playing",
         rounds,
-        activeMatchupId,
-        animating: false,
+        animatingMatchupId: null,
       });
 
       return currentEntries;
     });
   }, []);
 
-  const resolveMatchup = useCallback((matchupId: string, winnerId: number) => {
-    if (isAnimatingRef.current) return;
-
+  // Trigger animation on a specific matchup
+  const triggerMatchup = useCallback((matchupId: string) => {
     setBracketState((prev) => {
       if (prev.phase !== "playing") return prev;
+      if (prev.animatingMatchupId !== null) return prev; // already animating something
+
+      // Find the matchup and verify it's ready
+      const matchup = prev.rounds.flat().find((m) => m.id === matchupId);
+      if (!matchup || !isMatchupReady(matchup)) return prev;
+
+      // Pre-determine winner for random mode
+      setModeState((currentMode) => {
+        if (currentMode === "random") {
+          const winner = pickRandomWinner(matchup);
+          if (winner) {
+            pendingWinnersRef.current.set(matchupId, winner);
+          }
+        }
+        return currentMode;
+      });
+
+      return { ...prev, animatingMatchupId: matchupId };
+    });
+  }, []);
+
+  const resolveMatchup = useCallback((matchupId: string, winnerId: number) => {
+    setBracketState((prev) => {
+      if (prev.phase !== "playing") return prev;
+
+      // Save current state to undo stack
+      undoStackRef.current = [...undoStackRef.current, prev.rounds];
 
       let rounds = prev.rounds.map((round) =>
         round.map((m) =>
@@ -277,7 +284,6 @@ function useBracket() {
         ),
       );
 
-      // Find the round/matchup index to advance winner
       let roundIndex = -1;
       let matchupIndex = -1;
       let winnerEntry: BracketEntry | null = null;
@@ -306,13 +312,9 @@ function useBracket() {
 
       roundsRef.current = rounds;
 
-      const nextActiveId = findNextActiveMatchup(rounds);
-
-      if (nextActiveId === null) {
-        // Tournament complete
+      if (isTournamentComplete(rounds)) {
         const lastRound = rounds[rounds.length - 1];
-        const finalMatchup = lastRound[0];
-        const finalWinnerId = finalMatchup.winnerId!;
+        const finalWinnerId = lastRound[0].winnerId!;
         const finalWinnerEntry = findWinnerEntry(rounds, finalWinnerId);
         const winnerName = finalWinnerEntry?.name ?? "Unknown";
 
@@ -324,26 +326,37 @@ function useBracket() {
         };
         setHistory((h) => [entry, ...h]);
 
-        return { phase: "complete", winnerId: finalWinnerId };
+        return { phase: "complete", winnerId: finalWinnerId, rounds };
       }
 
       return {
         phase: "playing",
         rounds,
-        activeMatchupId: nextActiveId,
-        animating: false,
+        animatingMatchupId: null,
       };
     });
   }, []);
 
   const onAnimationEnd = useCallback((matchupId: string) => {
-    const winner = pendingWinnerRef.current;
-    if (!winner) return;
-    pendingWinnerRef.current = null;
+    const winner = pendingWinnersRef.current.get(matchupId);
+    pendingWinnersRef.current.delete(matchupId);
+
+    // Judge mode: no pre-determined winner — just clear animation so user can pick
+    if (!winner) {
+      setBracketState((prev) => {
+        if (prev.phase !== "playing") return prev;
+        if (prev.animatingMatchupId !== matchupId) return prev;
+        return { ...prev, animatingMatchupId: null };
+      });
+      return;
+    }
 
     setBracketState((prev) => {
       if (prev.phase !== "playing") return prev;
-      if (prev.activeMatchupId !== matchupId) return prev;
+      if (prev.animatingMatchupId !== matchupId) return prev;
+
+      // Save current state to undo stack
+      undoStackRef.current = [...undoStackRef.current, prev.rounds];
 
       let rounds = prev.rounds.map((round) =>
         round.map((m) =>
@@ -351,7 +364,6 @@ function useBracket() {
         ),
       );
 
-      // Find round/matchup index to advance
       let roundIndex = -1;
       let matchupIndex = -1;
 
@@ -372,13 +384,9 @@ function useBracket() {
 
       roundsRef.current = rounds;
 
-      const nextActiveId = findNextActiveMatchup(rounds);
-
-      if (nextActiveId === null) {
-        // Tournament complete
+      if (isTournamentComplete(rounds)) {
         const lastRound = rounds[rounds.length - 1];
-        const finalMatchup = lastRound[0];
-        const finalWinnerId = finalMatchup.winnerId!;
+        const finalWinnerId = lastRound[0].winnerId!;
         const finalWinnerEntry = findWinnerEntry(rounds, finalWinnerId);
         const winnerName = finalWinnerEntry?.name ?? "Unknown";
 
@@ -390,48 +398,60 @@ function useBracket() {
         };
         setHistory((h) => [entry, ...h]);
 
-        return { phase: "complete", winnerId: finalWinnerId };
+        return { phase: "complete", winnerId: finalWinnerId, rounds };
       }
-
-      // Pre-determine next winner for random mode
-      setModeState((currentMode) => {
-        if (currentMode === "random") {
-          const nextMatchup = rounds.flat().find((m) => m.id === nextActiveId);
-          if (nextMatchup) {
-            pendingWinnerRef.current = pickRandomWinner(nextMatchup);
-          }
-        }
-        return currentMode;
-      });
 
       return {
         phase: "playing",
         rounds,
-        activeMatchupId: nextActiveId,
-        animating: false,
+        animatingMatchupId: null,
       };
     });
   }, []);
 
   const resetBracket = useCallback(() => {
-    isAnimatingRef.current = false;
-    pendingWinnerRef.current = null;
+    pendingWinnersRef.current = new Map();
     roundsRef.current = [];
     setBracketState({ phase: "entry" });
+    undoStackRef.current = [];
   }, []);
+
+  const undoLastResolve = useCallback(() => {
+    const stack = undoStackRef.current;
+    if (stack.length === 0) return;
+    const previousRounds = stack[stack.length - 1];
+    undoStackRef.current = stack.slice(0, -1);
+
+    // If undoing from complete phase, remove the history entry that was just added
+    setBracketState((prev) => {
+      if (prev.phase === "complete") {
+        setHistory((h) => h.slice(1));
+      }
+      return {
+        phase: "playing",
+        rounds: previousRounds,
+        animatingMatchupId: null,
+      };
+    });
+  }, []);
+
+  const canUndo = bracketState.phase !== "entry" && undoStackRef.current.length > 0;
 
   return {
     entries,
     mode,
     bracketState,
     history,
+    canUndo,
     addEntry,
     setEntries,
     setMode,
     startTournament,
+    triggerMatchup,
     resolveMatchup,
     onAnimationEnd,
     resetBracket,
+    undoLastResolve,
   };
 }
 

@@ -1,8 +1,11 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import type { HistoryEntry } from "./types";
+import { readStorage, writeStorage } from "./local-storage";
 
-// Shuffle scramble is snappier than dice/coin
 const ANIMATION_DURATION = 800;
+
+const TEAMS_STORAGE_KEY = "teams-state";
+type StoredTeamsState = { names: string[]; mode: "pick-one" | "split"; teamCount: number; history: HistoryEntry[] };
 
 type ShuffleResult = {
   mode: "pick-one" | "split";
@@ -11,22 +14,24 @@ type ShuffleResult = {
 };
 
 function useTeams() {
-  const [names, setNamesState] = useState<string[]>([]);
-  const [mode, setModeState] = useState<"pick-one" | "split">("split");
-  const [teamCount, setTeamCountState] = useState(2);
+  const stored = readStorage<StoredTeamsState | null>(TEAMS_STORAGE_KEY, null);
+  const [names, setNamesState] = useState<string[]>(stored?.names ?? []);
+  const [mode, setModeState] = useState<"pick-one" | "split">(stored?.mode ?? "split");
+  const [teamCount, setTeamCountState] = useState(stored?.teamCount ?? 2);
   const [shuffling, setShuffling] = useState(false);
   const [result, setResult] = useState<ShuffleResult | null>(null);
-  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [history, setHistory] = useState<HistoryEntry[]>(stored?.history ?? []);
 
-  // Synchronous guard — prevents double-trigger during animation
   const isShufflingRef = useRef(false);
-  // Mirror current state for stable reads inside callbacks
-  const namesRef = useRef<string[]>([]);
-  const modeRef = useRef<"pick-one" | "split">("split");
-  const teamCountRef = useRef(2);
-  // Pre-determined result stable during animation
+  const namesRef = useRef<string[]>(stored?.names ?? []);
+  const modeRef = useRef<"pick-one" | "split">(stored?.mode ?? "split");
+  const teamCountRef = useRef(stored?.teamCount ?? 2);
   const pendingResultRef = useRef<ShuffleResult | null>(null);
-  const nextIdRef = useRef(1);
+  const nextIdRef = useRef(stored?.history?.length ? Math.max(...stored.history.map((h) => h.id)) + 1 : 1);
+
+  useEffect(() => {
+    writeStorage<StoredTeamsState>(TEAMS_STORAGE_KEY, { names, mode, teamCount, history });
+  }, [names, mode, teamCount, history]);
 
   const setNames = useCallback((newNames: string[]) => {
     if (isShufflingRef.current) return;

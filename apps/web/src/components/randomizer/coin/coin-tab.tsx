@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Coins } from "lucide-react";
 import { useCoin, ANIMATION_DURATION } from "@base-project/web/lib/randomizer/use-coin";
 import { CoinDisplay } from "./coin-display";
 import { CoinControls } from "./coin-controls";
@@ -14,18 +15,14 @@ type CoinTabProps = {
 export function CoinTab({ onHistoryChange, registerClearSession }: CoinTabProps) {
   const { count, flipping, results, tally, history, sessionHeads, sessionTails, setCount, startFlip, onFlipEnd, clearSession } = useCoin();
 
-  // Sync history up to RandomizerPage for the shared history panel
   useEffect(() => {
     onHistoryChange(history);
   }, [history, onHistoryChange]);
 
-  // Register clearSession so parent can call it when clearing history
   useEffect(() => {
     registerClearSession?.(clearSession);
   }, [registerClearSession, clearSession]);
 
-  // Trigger onFlipEnd after the CSS animation completes
-  // Single setTimeout avoids coordinating N animationend events (one per coin)
   useEffect(() => {
     if (!flipping) return;
     const timer = setTimeout(onFlipEnd, ANIMATION_DURATION);
@@ -33,17 +30,44 @@ export function CoinTab({ onHistoryChange, registerClearSession }: CoinTabProps)
   }, [flipping, onFlipEnd]);
 
   return (
-    <div className="flex flex-col items-center gap-6">
+    <div className="flex flex-col items-center gap-6 w-full max-w-lg">
       <TutorialButton toolName="Coin Flipper" accentColor="#f59e0b" steps={coinTutorial} />
+
+      {/* Header */}
+      <div className="flex flex-col items-center gap-2">
+        <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-500 flex items-center justify-center text-white shadow-lg shadow-amber-500/25">
+          <Coins className="h-6 w-6" />
+        </div>
+        <h2 className="text-lg font-bold">Coin Flipper</h2>
+        <p className="text-sm text-muted-foreground text-center">Flip 1-10 coins with 3D tossing animation</p>
+      </div>
+
+      {/* Session tally */}
       {sessionHeads + sessionTails > 0 && (
-        <p className="text-sm font-medium text-muted-foreground" data-testid="session-tally">
-          {sessionHeads}H {sessionTails}T across {sessionHeads + sessionTails} flips
-        </p>
+        <div className="flex items-center gap-3 bg-muted/30 rounded-xl px-4 py-2 border border-border/40" data-testid="session-tally">
+          <span className="text-sm font-bold text-coin-accent">{sessionHeads}H</span>
+          <span className="text-xs text-muted-foreground">|</span>
+          <span className="text-sm font-bold text-coin-accent">{sessionTails}T</span>
+          <span className="text-xs text-muted-foreground">across {sessionHeads + sessionTails} flips</span>
+        </div>
       )}
+
       <CoinDisplay count={count} results={results} flipping={flipping} />
       <CoinControls count={count} flipping={flipping} onSetCount={setCount} onFlip={startFlip} />
+
+      {/* Result */}
       {tally !== null && !flipping && (
-        <p className="text-2xl font-bold">{tally.heads} Heads, {tally.tails} Tails</p>
+        <div className="flex items-center gap-4 animate-in fade-in zoom-in-95 duration-300">
+          <div className="flex flex-col items-center">
+            <span className="text-3xl font-black text-coin-accent">{tally.heads}</span>
+            <span className="text-xs text-muted-foreground font-medium">Heads</span>
+          </div>
+          <span className="text-muted-foreground text-lg">/</span>
+          <div className="flex flex-col items-center">
+            <span className="text-3xl font-black text-coin-accent">{tally.tails}</span>
+            <span className="text-xs text-muted-foreground font-medium">Tails</span>
+          </div>
+        </div>
       )}
     </div>
   );

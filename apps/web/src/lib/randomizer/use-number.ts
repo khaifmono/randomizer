@@ -1,24 +1,29 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import type { HistoryEntry } from "./types";
+import { readStorage, writeStorage } from "./local-storage";
 
-// Stagger timing per D-03: left digit locks first, each subsequent ~200ms later
 const REEL_STAGGER_MS = 200;
-// Base animation duration for the first (leftmost) reel
 const BASE_REEL_DURATION_MS = 1000;
 
+const NUMBER_STORAGE_KEY = "number-state";
+type StoredNumberState = { min: number; max: number; history: HistoryEntry[] };
+
 function useNumber() {
-  const [min, setMinState] = useState(1); // per D-05
-  const [max, setMaxState] = useState(100); // per D-05
+  const stored = readStorage<StoredNumberState | null>(NUMBER_STORAGE_KEY, null);
+  const [min, setMinState] = useState(stored?.min ?? 1);
+  const [max, setMaxState] = useState(stored?.max ?? 100);
   const [rolling, setRolling] = useState(false);
   const [result, setResult] = useState<number | null>(null);
   const [digits, setDigits] = useState<number[]>([]);
-  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [history, setHistory] = useState<HistoryEntry[]>(stored?.history ?? []);
 
-  // Synchronous guard — prevents double-trigger during animation
   const isRollingRef = useRef(false);
-  // Pre-determined values stable during animation
   const pendingResultRef = useRef<number | null>(null);
-  const nextIdRef = useRef(1);
+  const nextIdRef = useRef(stored?.history?.length ? Math.max(...stored.history.map((h) => h.id)) + 1 : 1);
+
+  useEffect(() => {
+    writeStorage<StoredNumberState>(NUMBER_STORAGE_KEY, { min, max, history });
+  }, [min, max, history]);
 
   const setRange = useCallback((newMin: number, newMax: number) => {
     if (isRollingRef.current) return;

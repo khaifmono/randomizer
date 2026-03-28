@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Hash } from "lucide-react";
 import { useNumber, REEL_STAGGER_MS, BASE_REEL_DURATION_MS } from "@base-project/web/lib/randomizer/use-number";
 import { NumberDisplay } from "./number-display";
 import { NumberControls } from "./number-controls";
@@ -14,15 +15,12 @@ export function NumberTab({ onHistoryChange }: NumberTabProps) {
   const { min, max, rolling, result, digits, history, setRange, startRoll, onRollEnd } = useNumber();
   const [stoppedReels, setStoppedReels] = useState<boolean[]>([]);
 
-  // Sync history up to RandomizerPage
   useEffect(() => {
     onHistoryChange(history);
   }, [history, onHistoryChange]);
 
-  // Compute per-reel durations based on digit count (per D-03 stagger)
   const reelDurations = digits.map((_, i) => BASE_REEL_DURATION_MS + i * REEL_STAGGER_MS);
 
-  // Staggered reel stop: when rolling starts, schedule each reel to "stop" after its duration
   useEffect(() => {
     if (!rolling) return;
     setStoppedReels(new Array(digits.length).fill(false));
@@ -37,21 +35,28 @@ export function NumberTab({ onHistoryChange }: NumberTabProps) {
       }, duration);
     });
 
-    // After the last reel stops, call onRollEnd
     const totalDuration = BASE_REEL_DURATION_MS + (digits.length - 1) * REEL_STAGGER_MS;
-    const endTimer = setTimeout(onRollEnd, totalDuration + 100); // +100ms for visual settle
+    const endTimer = setTimeout(onRollEnd, totalDuration + 100);
 
     return () => {
       timers.forEach(clearTimeout);
       clearTimeout(endTimer);
     };
   }, [rolling]); // eslint-disable-line react-hooks/exhaustive-deps
-  // Note: intentionally exclude digits/onRollEnd from deps — same pattern as dice-tab
-  // where onRollEnd is excluded to prevent animation restart on callback identity changes
 
   return (
-    <div className="flex flex-col items-center gap-6">
-      <TutorialButton toolName="Number Generator" accentColor="#a855f7" steps={numberTutorial} />
+    <div className="flex flex-col items-center gap-6 w-full max-w-lg">
+      <TutorialButton toolName="Number Generator" accentColor="#f97316" steps={numberTutorial} />
+
+      {/* Header */}
+      <div className="flex flex-col items-center gap-2">
+        <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white shadow-lg shadow-orange-500/25">
+          <Hash className="h-6 w-6" />
+        </div>
+        <h2 className="text-lg font-bold">Lucky Number</h2>
+        <p className="text-sm text-muted-foreground text-center">Pull the lever on a slot machine to get your number</p>
+      </div>
+
       <NumberDisplay
         digits={digits}
         result={result}

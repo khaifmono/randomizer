@@ -1,5 +1,6 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import type { HistoryEntry } from "./types";
+import { readStorage, writeStorage } from "./local-storage";
 
 // Matches the CSS @keyframes card-flip duration in index.css
 export const ANIMATION_DURATION = 800;
@@ -32,21 +33,26 @@ function cardLabel(card: Card): string {
   return `${card.rank}${card.suit}`;
 }
 
+const CARDS_STORAGE_KEY = "cards-state";
+type StoredCardsState = { deck: Card[]; history: HistoryEntry[]; mode: Mode; handSize: number };
+
 function useCards() {
-  const [deck, setDeck] = useState<Card[]>(() => buildDeck());
+  const stored = readStorage<StoredCardsState | null>(CARDS_STORAGE_KEY, null);
+  const [deck, setDeck] = useState<Card[]>(stored?.deck ?? buildDeck());
   const [drawnCards, setDrawnCards] = useState<Card[]>([]);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [history, setHistory] = useState<HistoryEntry[]>([]);
-  const [mode, setModeState] = useState<Mode>("single");
-  const [handSize, setHandSizeState] = useState(5);
+  const [history, setHistory] = useState<HistoryEntry[]>(stored?.history ?? []);
+  const [mode, setModeState] = useState<Mode>(stored?.mode ?? "single");
+  const [handSize, setHandSizeState] = useState(stored?.handSize ?? 5);
 
-  // Synchronous guard — prevents double-trigger during animation
   const isDrawingRef = useRef(false);
-  // Pre-determined drawn cards stable during animation
   const pendingDrawnRef = useRef<Card[]>([]);
-  // Remaining deck ref for synchronous depletion in onDrawEnd
-  const deckRef = useRef<Card[]>(deck);
-  const nextIdRef = useRef(1);
+  const deckRef = useRef<Card[]>(stored?.deck ?? deck);
+  const nextIdRef = useRef(stored?.history?.length ? Math.max(...stored.history.map((h) => h.id)) + 1 : 1);
+
+  useEffect(() => {
+    writeStorage<StoredCardsState>(CARDS_STORAGE_KEY, { deck, history, mode, handSize });
+  }, [deck, history, mode, handSize]);
 
   const drawCards = useCallback(() => {
     if (isDrawingRef.current) return;
