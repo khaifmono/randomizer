@@ -4,6 +4,6 @@ type HistoryEntry = {
   timestamp: number;
 };
 
-type TabId = "wheel" | "dice" | "coin" | "number" | "teams";
+type TabId = "wheel" | "dice" | "coin" | "number" | "teams" | "bracket";
 
 export type { HistoryEntry, TabId };

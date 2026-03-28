@@ -125,6 +125,9 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 4. Coin Flipper | 2/2 | Complete   | 2026-03-26 |
 | 5. Polish & Differentiators | 1/2 | In Progress|  |
 | 6. Number Generator | 2/2 | Complete   | 2026-03-27 |
+| 7. Team Shuffler | 2/2 | Complete | 2026-03-27 |
+| 8. Card Drawer | 2/2 | Complete | 2026-03-27 |
+| 9. Bracket Tournament | 1/2 | In Progress | |
 
 ### Phase 7: Team Shuffler — Enter names, randomly split into N teams or pick one person
 
@@ -148,13 +151,13 @@ Plans:
 - [x] 08-01-PLAN.md — useCards hook (TDD) with 52-card deck state machine, depletion, reshuffle, and CSS 3D card-flip animation classes
 - [x] 08-02-PLAN.md — CardFace, CardDisplay, CardControls, CardsTab components, page wiring, staggered hand flip, human verification
 
-### Phase 9: Bracket Tournament — Random single-elimination bracket with animated matchups
+### Phase 9: Bracket Tournament — Single-elimination bracket with VS animation, Random and Judge modes
 
-**Goal:** Users can enter options, watch them battle head-to-head in a random single-elimination bracket with animated matchups and a final winner reveal
-**Requirements**: BRKT-01, BRKT-02, BRKT-03, BRKT-04, BRKT-05, BRKT-06
+**Goal:** Users can enter 2-16 options and run a single-elimination bracket tournament with a dramatic VS animation per matchup, Random mode (browser picks) or Judge mode (user picks), bye handling for non-power-of-2 counts, and a winner celebration
+**Requirements**: BRKT-01, BRKT-02, BRKT-04, BRKT-05, BRKT-06
 **Depends on:** Phase 8
-**Plans:** 2 plans
+**Plans:** 1/2 plans complete
 
 Plans:
-- [ ] 09-01-PLAN.md — useBracket hook (TDD) with bracket generation algorithm, bye handling, state machine (entry/playing/complete), Random/Judge modes, and CSS VS animation keyframes
-- [ ] 09-02-PLAN.md — BracketEntry, BracketMatch, BracketDisplay, BracketWinner, BracketTab components, page wiring, tutorial, and human verification
+- [x] 09-01-PLAN.md — useBracket hook (TDD) with bracket algorithm, bye interleaving, state machine (entry/playing/complete), Random/Judge modes, and CSS VS animation keyframes
+- [ ] 09-02-PLAN.md — BracketEntry, BracketDisplay, BracketMatch, BracketWinner components, page wiring, and human verification
