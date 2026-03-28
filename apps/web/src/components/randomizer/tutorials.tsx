@@ -332,6 +332,80 @@ export const teamsTutorial = [
   },
 ];
 
+// ─── BRACKET TUTORIAL ──────────────────────────────────────
+export const bracketTutorial = [
+  {
+    title: "Enter your options",
+    description: "Type one option per line in the text area, or use the Add button to add them one at a time. You need at least 2 options to start.",
+    illustration: (
+      <IllustrationBox label="Bulk paste or add one at a time">
+        <svg viewBox="0 0 200 120" className="w-full h-full" fill="none">
+          <rect x="10" y="10" width="180" height="55" rx="6" stroke="#eab308" strokeWidth="2" fill="#fefce8" />
+          <text x="20" y="28" fontSize="10" fill="#713f12" fontFamily="sans-serif">Pizza</text>
+          <text x="20" y="42" fontSize="10" fill="#713f12" fontFamily="sans-serif">Sushi</text>
+          <text x="20" y="56" fontSize="10" fill="#713f12" fontFamily="sans-serif">Tacos</text>
+          <rect x="10" y="73" width="130" height="26" rx="6" fill="white" stroke="#d4d4d8" strokeWidth="1.5" />
+          <text x="20" y="90" fontSize="10" fill="#a1a1aa" fontFamily="sans-serif">Add an option...</text>
+          <rect x="148" y="73" width="42" height="26" rx="6" fill="#eab308" />
+          <text x="169" y="90" textAnchor="middle" fontSize="10" fill="white" fontWeight="bold" fontFamily="sans-serif">Add</text>
+          <text x="100" y="112" textAnchor="middle" fontSize="9" fill="#92400e" fontFamily="sans-serif">3 options entered</text>
+        </svg>
+      </IllustrationBox>
+    ),
+  },
+  {
+    title: "Watch them battle",
+    description: "Options face off one-on-one. In Random mode, click a match to auto-pick the winner. In Judge mode, click your preferred option after the VS animation plays.",
+    illustration: (
+      <IllustrationBox label="VS animation: shake → flash → winner">
+        <svg viewBox="0 0 200 120" className="w-full h-full" fill="none">
+          {/* Left match card */}
+          <rect x="15" y="20" width="70" height="80" rx="6" fill="white" stroke="#eab308" strokeWidth="2" />
+          <text x="50" y="47" textAnchor="middle" fontSize="9" fill="#334155" fontFamily="sans-serif">Pizza</text>
+          <line x1="15" y1="60" x2="85" y2="60" stroke="#e2e8f0" strokeWidth="1" />
+          <text x="50" y="80" textAnchor="middle" fontSize="9" fill="#334155" fontFamily="sans-serif">Sushi</text>
+          {/* VS badge */}
+          <rect x="82" y="48" width="36" height="24" rx="4" fill="#1a1a1a" opacity="0.85" />
+          <text x="100" y="64" textAnchor="middle" fontSize="12" fill="white" fontWeight="bold" fontFamily="sans-serif">VS</text>
+          {/* Right match card */}
+          <rect x="115" y="20" width="70" height="80" rx="6" fill="white" stroke="#d4d4d8" strokeWidth="2" />
+          <text x="150" y="47" textAnchor="middle" fontSize="9" fill="#eab308" fontWeight="bold" fontFamily="sans-serif">Tacos</text>
+          <line x1="115" y1="60" x2="185" y2="60" stroke="#e2e8f0" strokeWidth="1" />
+          <text x="150" y="80" textAnchor="middle" fontSize="9" fill="#a1a1aa" fontFamily="sans-serif" textDecoration="line-through">Burgers</text>
+        </svg>
+      </IllustrationBox>
+    ),
+  },
+  {
+    title: "Champion crowned!",
+    description: "The last option standing is your winner! A crown appears with a confetti burst. Click 'New Tournament' to start over with the same or new options.",
+    illustration: (
+      <IllustrationBox label="Crown + confetti = champion">
+        <svg viewBox="0 0 200 120" className="w-full h-full" fill="none">
+          {/* Confetti dots */}
+          <circle cx="40" cy="20" r="4" fill="#ffd700" />
+          <circle cx="70" cy="10" r="3" fill="#ff6b6b" />
+          <circle cx="130" cy="15" r="4" fill="#4ecdc4" />
+          <circle cx="160" cy="25" r="3" fill="#45b7d1" />
+          <circle cx="55" cy="35" r="3" fill="#96ceb4" />
+          <circle cx="145" cy="32" r="3" fill="#ffd700" />
+          {/* Crown icon */}
+          <polygon points="100,38 88,52 100,48 112,52" fill="#eab308" stroke="#ca8a04" strokeWidth="1" />
+          <circle cx="88" cy="52" r="3" fill="#eab308" />
+          <circle cx="100" cy="48" r="3" fill="#eab308" />
+          <circle cx="112" cy="52" r="3" fill="#eab308" />
+          {/* Winner text */}
+          <text x="100" y="73" textAnchor="middle" fontSize="9" fill="#6b7280" fontFamily="sans-serif">Winner!</text>
+          <text x="100" y="89" textAnchor="middle" fontSize="14" fill="#1a1a1a" fontWeight="bold" fontFamily="sans-serif">Pizza</text>
+          {/* New Tournament button */}
+          <rect x="55" y="98" width="90" height="18" rx="6" fill="white" stroke="#d4d4d8" strokeWidth="1.5" />
+          <text x="100" y="111" textAnchor="middle" fontSize="8" fill="#374151" fontFamily="sans-serif">New Tournament</text>
+        </svg>
+      </IllustrationBox>
+    ),
+  },
+];
+
 // ─── CARDS TUTORIAL ──────────────────────────────────────
 export const cardsTutorial = [
   {

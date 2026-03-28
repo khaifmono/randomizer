@@ -303,19 +303,21 @@ describe("useBracket", () => {
     });
 
     expect(result.current.bracketState.phase).toBe("playing");
-    if (result.current.bracketState.phase === "playing") {
-      const { rounds, activeMatchupId } = result.current.bracketState;
-      const activeMatchup = rounds[0].find((m) => m.id === activeMatchupId)!;
-      const winnerId = activeMatchup.topEntry!.id;
+    const playingState = result.current.bracketState;
+    // TypeScript guard: if not playing at this point, skip (already asserted above)
+    if (playingState.phase !== "playing") return;
+    const { rounds, activeMatchupId } = playingState;
+    const activeMatchup = rounds[0].find((m) => m.id === activeMatchupId)!;
+    const winnerId = activeMatchup.topEntry!.id;
 
-      act(() => {
-        result.current.resolveMatchup(activeMatchupId!, winnerId);
-      });
+    act(() => {
+      result.current.resolveMatchup(activeMatchupId!, winnerId);
+    });
 
-      expect(result.current.bracketState.phase).toBe("complete");
-      if (result.current.bracketState.phase === "complete") {
-        expect(result.current.bracketState.winnerId).toBe(winnerId);
-      }
+    expect(result.current.bracketState.phase).toBe("complete");
+    const completedState = result.current.bracketState;
+    if (completedState.phase === "complete") {
+      expect(completedState.winnerId).toBe(winnerId);
     }
   });
 
