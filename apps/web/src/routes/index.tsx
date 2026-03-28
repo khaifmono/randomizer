@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@base-project/web/components/ui/button";
 import { Card, CardContent } from "@base-project/web/components/ui/card";
-import { RotateCcw, Dices, Coins, Zap, Hash, Users, RectangleHorizontal, Eye } from "lucide-react";
+import { RotateCcw, Dices, Coins, Zap, Hash, Users, RectangleHorizontal, Trophy, Eye } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
@@ -96,6 +96,15 @@ function LandingPage() {
             gradientTo="to-rose-600"
             glowColor="shadow-rose-500/25"
             tab="cards"
+          />
+          <ToolCard
+            icon={<Trophy className="h-8 w-8" />}
+            title="Bracket Tournament"
+            description="Enter options and run a single-elimination bracket. VS animations decide each round."
+            gradientFrom="from-yellow-500"
+            gradientTo="to-amber-500"
+            glowColor="shadow-yellow-500/25"
+            tab="bracket"
           />
         </div>
 

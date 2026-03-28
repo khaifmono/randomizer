@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@base-project/web/comp
 import { Button } from "@base-project/web/components/ui/button";
 import { ResultHistory } from "@base-project/web/components/result-history";
 import { cn } from "@base-project/web/lib/utils";
-import { RotateCcw, Dices, Coins, History, ChevronLeft, Hash, Users, RectangleHorizontal } from "lucide-react";
+import { RotateCcw, Dices, Coins, History, ChevronLeft, Hash, Users, RectangleHorizontal, Trophy } from "lucide-react";
 import type { HistoryEntry } from "@base-project/web/lib/randomizer/types";
 import { WheelTab } from "@base-project/web/components/randomizer/wheel/wheel-tab";
 import { DiceTab } from "@base-project/web/components/randomizer/dice/dice-tab";
@@ -12,6 +12,7 @@ import { CoinTab } from "@base-project/web/components/randomizer/coin/coin-tab";
 import { NumberTab } from "@base-project/web/components/randomizer/number/number-tab";
 import { TeamsTab } from "@base-project/web/components/randomizer/teams/teams-tab";
 import { CardsTab } from "@base-project/web/components/randomizer/cards/cards-tab";
+import { BracketTab } from "@base-project/web/components/randomizer/bracket/bracket-tab";
 
 export const Route = createFileRoute("/randomizer")({
   component: RandomizerPage,
@@ -28,6 +29,7 @@ export function RandomizerPage() {
   const [numberHistory, setNumberHistory] = useState<HistoryEntry[]>([]);
   const [teamsHistory, setTeamsHistory] = useState<HistoryEntry[]>([]);
   const [cardsHistory, setCardsHistory] = useState<HistoryEntry[]>([]);
+  const [bracketHistory, setBracketHistory] = useState<HistoryEntry[]>([]);
   const [activeTab, setActiveTab] = useState<string>(initialTab);
   const [historyOpen, setHistoryOpen] = useState(false);
   const coinClearSessionRef = useRef<(() => void) | null>(null);
@@ -39,6 +41,7 @@ export function RandomizerPage() {
     number: numberHistory,
     teams: teamsHistory,
     cards: cardsHistory,
+    bracket: bracketHistory,
   };
   const activeHistory = historyMap[activeTab] || [];
 
@@ -52,6 +55,7 @@ export function RandomizerPage() {
     else if (activeTab === "number") setNumberHistory([]);
     else if (activeTab === "teams") setTeamsHistory([]);
     else if (activeTab === "cards") setCardsHistory([]);
+    else if (activeTab === "bracket") setBracketHistory([]);
   }
 
   const bgAccentMap: Record<string, string> = {
@@ -61,6 +65,7 @@ export function RandomizerPage() {
     number: "from-purple-50 via-background to-fuchsia-50/50",
     teams: "from-violet-50 via-background to-purple-50/50",
     cards: "from-rose-50 via-background to-pink-50/50",
+    bracket: "from-yellow-50 via-background to-amber-50/50",
   };
 
   const dotAccentMap: Record<string, string> = {
@@ -70,6 +75,7 @@ export function RandomizerPage() {
     number: "text-purple-200/40",
     teams: "text-violet-200/40",
     cards: "text-rose-200/40",
+    bracket: "text-yellow-200/40",
   };
 
   const tabs = [
@@ -79,6 +85,7 @@ export function RandomizerPage() {
     { value: "number", icon: Hash, label: "Number", accent: "data-[state=active]:border-number-accent data-[state=active]:text-number-accent" },
     { value: "teams", icon: Users, label: "Teams", accent: "data-[state=active]:border-teams-accent data-[state=active]:text-teams-accent" },
     { value: "cards", icon: RectangleHorizontal, label: "Cards", accent: "data-[state=active]:border-rose-500 data-[state=active]:text-rose-500" },
+    { value: "bracket", icon: Trophy, label: "Bracket", accent: "data-[state=active]:border-bracket-accent data-[state=active]:text-bracket-accent" },
   ];
 
   return (
@@ -163,6 +170,9 @@ export function RandomizerPage() {
             </TabsContent>
             <TabsContent value="cards" className="mt-0 p-6 flex items-start justify-center">
               <CardsTab onHistoryChange={setCardsHistory} />
+            </TabsContent>
+            <TabsContent value="bracket" className="mt-0 p-6 flex items-start justify-center">
+              <BracketTab onHistoryChange={setBracketHistory} />
             </TabsContent>
           </Tabs>
         </div>

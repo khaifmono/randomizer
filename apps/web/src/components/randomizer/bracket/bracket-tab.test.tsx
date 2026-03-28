@@ -1,11 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { BracketTab } from "./bracket-tab";
+import type { BracketState } from "@base-project/web/lib/randomizer/use-bracket";
 
 const defaultBracketState = {
   entries: [] as string[],
   mode: "random" as const,
-  bracketState: { phase: "entry" as const },
+  bracketState: { phase: "entry" } as BracketState,
   history: [] as { id: number; label: string; timestamp: number }[],
   addEntry: vi.fn(),
   setEntries: vi.fn(),
@@ -60,40 +61,41 @@ describe("BracketTab", () => {
   });
 
   it("shows bracket display when phase=playing", () => {
+    const playingState: BracketState = {
+      phase: "playing",
+      rounds: [
+        [
+          {
+            id: "r0-m0",
+            topEntry: { id: 1, name: "Alice", isBye: false },
+            bottomEntry: { id: 2, name: "Bob", isBye: false },
+            winnerId: null,
+            isBye: false,
+          },
+        ],
+      ],
+      activeMatchupId: "r0-m0",
+      animating: false,
+    };
     mockUseBracket.mockReturnValue({
       ...defaultBracketState,
-      bracketState: {
-        phase: "playing" as const,
-        rounds: [
-          [
-            {
-              id: "r0-m0",
-              topEntry: { id: 1, name: "Alice", isBye: false },
-              bottomEntry: { id: 2, name: "Bob", isBye: false },
-              winnerId: null,
-              isBye: false,
-            },
-          ],
-        ],
-        activeMatchupId: "r0-m0",
-        animating: false,
-      },
+      bracketState: playingState,
     });
     render(<BracketTab onHistoryChange={vi.fn()} />);
     expect(screen.getByText("Alice")).toBeInTheDocument();
     expect(screen.getByText("Bob")).toBeInTheDocument();
-    // Start Tournament button should not be visible in playing phase
     expect(screen.queryByRole("button", { name: /start tournament/i })).not.toBeInTheDocument();
   });
 
   it("shows winner name when phase=complete", () => {
+    const completeState: BracketState = {
+      phase: "complete",
+      winnerId: 1,
+    };
     mockUseBracket.mockReturnValue({
       ...defaultBracketState,
       entries: ["Alice", "Bob"],
-      bracketState: {
-        phase: "complete" as const,
-        winnerId: 1,
-      },
+      bracketState: completeState,
     });
     render(<BracketTab onHistoryChange={vi.fn()} />);
     expect(screen.getByText("Alice")).toBeInTheDocument();
