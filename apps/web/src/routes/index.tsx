@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Card, CardContent } from "@base-project/web/components/ui/card";
-import { RotateCcw, Dices, Coins, Zap, Hash, Users, RectangleHorizontal, Eye, Search, CircleHelp, Hand, Trophy, Timer, KeyRound, Palette, Lock } from "lucide-react";
+import { RotateCcw, Dices, Coins, Zap, Hash, Users, RectangleHorizontal, Eye, Search, CircleHelp, Hand, Trophy, Timer, KeyRound, Palette, Lock, Github, Linkedin, Mail, MapPin, ExternalLink } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
@@ -209,6 +209,62 @@ function LandingPage() {
             <p className="text-sm">Try a different search term</p>
           </div>
         )}
+      </section>
+
+      {/* About Me */}
+      <section className="relative px-4 pb-12 max-w-3xl mx-auto w-full">
+        <div className="rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 p-6 md:p-8">
+          <div className="flex flex-col sm:flex-row gap-6 items-start">
+            {/* Avatar + Name */}
+            <div className="flex flex-col items-center sm:items-start gap-3 shrink-0">
+              <div className="h-20 w-20 rounded-2xl bg-gradient-to-br from-blue-500 via-emerald-500 to-amber-500 flex items-center justify-center text-white text-2xl font-black shadow-lg">
+                KF
+              </div>
+              <div className="flex gap-2">
+                <a href="https://github.com/khaifmono" target="_blank" rel="noopener noreferrer" className="h-8 w-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/60 hover:text-white transition-colors">
+                  <Github className="h-4 w-4" />
+                </a>
+                <a href="https://www.linkedin.com/in/khairul-fahmi-mazlan" target="_blank" rel="noopener noreferrer" className="h-8 w-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/60 hover:text-white transition-colors">
+                  <Linkedin className="h-4 w-4" />
+                </a>
+                <a href="mailto:me@khaif.dev" className="h-8 w-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/60 hover:text-white transition-colors">
+                  <Mail className="h-4 w-4" />
+                </a>
+              </div>
+            </div>
+
+            {/* Bio */}
+            <div className="flex-1 space-y-3">
+              <div>
+                <h3 className="text-lg font-bold text-white">Khairul Fahmi</h3>
+                <p className="text-sm text-white/50">IT Enjoyer & Aspiring DevOps Guy</p>
+              </div>
+              <p className="text-sm text-white/60 leading-relaxed">
+                Fresh IT graduate from IIUM, hands-on with Linux, Proxmox, Docker, and networking. Building toward DevOps — shipping with AI, automating pipelines.
+              </p>
+              <div className="flex items-center gap-1.5 text-xs text-white/40">
+                <MapPin className="h-3 w-3" />
+                Kuala Lumpur, Malaysia
+              </div>
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {["React", "TypeScript", "Docker", "Linux", "Next.js", "Tailwind CSS", "Claude Code"].map((skill) => (
+                  <span key={skill} className="text-[10px] font-medium bg-white/10 text-white/50 px-2 py-0.5 rounded-full">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+              <a
+                href="https://khaif.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs text-blue-400 hover:text-blue-300 transition-colors mt-1"
+              >
+                <ExternalLink className="h-3 w-3" />
+                khaif.dev
+              </a>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Footer */}
